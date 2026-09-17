@@ -114,7 +114,7 @@ abrir el repo, leer `CLAUDE.md` y continuar desde la primera etapa sin tildar.
 - [x] **Etapa 2 — Datos y lógica de kana (con tests).** `src/data/kana.ts` (filas, tabla romaji con variantes),
       `src/lib/kana.ts` (`tokenize`, `toRomaji`, `matchesRomaji`, `normalizeHiragana`, `isEligible`, `checkAnswer`)
       y `src/lib/kana.test.ts` con los casos de la sección Verificación. Todo verde antes de seguir.
-- [ ] **Etapa 3 — Lista de palabras.** `src/data/words.ts` con ~500 palabras `{ kana, es }`. Test que valida
+- [x] **Etapa 3 — Lista de palabras.** `src/data/words.ts` con ~500 palabras `{ kana, es }`. Test que valida
       que cada palabra sea hiragana puro y tokenizable, sin duplicados, y que con solo あ+か haya ≥ 10 palabras.
 - [ ] **Etapa 4 — Pantalla de configuración.** `RowPicker` (chips por sección, Todas/Ninguna, contador en vivo)
       y `ModeCards` (dos tarjetas con ejemplo dinámico). Persistencia en localStorage (`storage.ts`). Botón Empezar.
