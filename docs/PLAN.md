@@ -109,7 +109,7 @@ abrir el repo, leer `CLAUDE.md` y continuar desde la primera etapa sin tildar.
 - [x] **Etapa 0 — Documentación en el repo.** Crear `CLAUDE.md` (qué es la app, stack, comandos, convenciones,
       "leé docs/PLAN.md y seguí la primera etapa sin tildar"), `docs/PLAN.md` (copia de este plan con la lista
       de etapas) y `docs/DECISIONS.md` (las decisiones tomadas con el usuario y su porqué). `git init` + primer commit.
-- [ ] **Etapa 1 — Scaffold.** Vite + React + TS, `vite-plugin-pwa`, Vitest, `styles.css` con tokens y dark mode,
+- [x] **Etapa 1 — Scaffold.** Vite + React + TS, `vite-plugin-pwa`, Vitest, `styles.css` con tokens y dark mode,
       `index.html` con viewport móvil. `npm run dev`, `npm test` y `npm run build` funcionan con una pantalla vacía.
 - [ ] **Etapa 2 — Datos y lógica de kana (con tests).** `src/data/kana.ts` (filas, tabla romaji con variantes),
       `src/lib/kana.ts` (`tokenize`, `toRomaji`, `matchesRomaji`, `normalizeHiragana`, `isEligible`, `checkAnswer`)
