@@ -121,7 +121,7 @@ abrir el repo, leer `CLAUDE.md` y continuar desde la primera etapa sin tildar.
 - [x] **Etapa 5 — Práctica y resultados.** `session.ts` (`pickRound` con peso ×3 a falladas), `Practice`
       (input, comprobar, feedback, siguiente, manejo de foco y Enter) y `Results` (score, falladas, Otra ronda /
       Cambiar filas). Stats por palabra guardadas.
-- [ ] **Etapa 6 — PWA y pulido móvil.** Manifest, íconos 192/512, service worker offline, `lang="ja"` en el input
+- [x] **Etapa 6 — PWA y pulido móvil.** Manifest, íconos 192/512, service worker offline, `lang="ja"` en el input
       de modo Escribir, prueba real en iPhone por LAN (`npm run dev -- --host`). README con instalación en iOS.
 - [ ] **Etapa 7 (futuro, no ahora) — App Store.** Capacitor + Xcode. Solo documentar en README.
 
