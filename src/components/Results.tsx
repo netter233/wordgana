@@ -12,12 +12,17 @@ interface ResultsProps {
 export function Results({ total, correctCount, missed, onRestartSameRound, onChangeRows }: ResultsProps) {
   return (
     <section>
-      <h2 className="score">
-        {correctCount} / {total}
-      </h2>
+      <div className="card score-card">
+        <p className="score">
+          {correctCount} / {total}
+        </p>
+        <p className="score-sub">
+          {missed.length === 0 ? '¡Ronda perfecta!' : `${missed.length} para repasar`}
+        </p>
+      </div>
 
       {missed.length > 0 && (
-        <div className="missed-list">
+        <div className="card missed-list">
           <h3 className="row-section-title">Para repasar</h3>
           <ul>
             {missed.map((w) => (
@@ -29,12 +34,14 @@ export function Results({ total, correctCount, missed, onRestartSameRound, onCha
         </div>
       )}
 
-      <button type="button" className="primary-btn" onClick={onRestartSameRound}>
-        Otra ronda
-      </button>
-      <button type="button" className="secondary-btn" onClick={onChangeRows}>
-        Cambiar filas
-      </button>
+      <div className="results-actions">
+        <button type="button" className="primary-btn" onClick={onRestartSameRound}>
+          Otra ronda
+        </button>
+        <button type="button" className="secondary-btn" onClick={onChangeRows}>
+          Cambiar filas
+        </button>
+      </div>
     </section>
   );
 }

@@ -12,8 +12,8 @@ export function ModeCards({ mode, onSelect, example }: ModeCardsProps) {
   const exampleRomaji = example ? toRomaji(example.kana) : '';
 
   return (
-    <section>
-      <h2>¿Cómo querés practicar?</h2>
+    <section className="card">
+      <h2>2. ¿Cómo querés practicar?</h2>
       <div className="mode-grid">
         <button
           type="button"

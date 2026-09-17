@@ -20,9 +20,9 @@ export function RowPicker({ enabledRowIds, onToggle, onSetAll, eligibleCount }: 
   const allRowIds = KANA_ROWS.map((r) => r.id);
 
   return (
-    <section>
+    <section className="card">
       <div className="section-head">
-        <h2>¿Qué filas ya sabés?</h2>
+        <h2>1. ¿Qué filas ya sabés?</h2>
         <div className="link-row">
           <button type="button" className="link-btn" onClick={() => onSetAll(allRowIds)}>
             Todas

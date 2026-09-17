@@ -53,9 +53,15 @@ export function Practice({ words, mode, onAnswer, onFinish }: PracticeProps) {
 
   return (
     <section>
-      <p className="progress">
-        {index + 1} / {words.length}
-      </p>
+      <div className="progress-row">
+        <span>
+          {index + 1} / {words.length}
+        </span>
+        <span>{mode === 'read' ? 'escribí en romaji' : 'escribí en hiragana'}</span>
+      </div>
+      <div className="progress-track">
+        <div className="progress-fill" style={{ width: `${((index + 1) / words.length) * 100}%` }} />
+      </div>
       <div className={promptClass}>{prompt}</div>
 
       <form onSubmit={handleSubmit}>

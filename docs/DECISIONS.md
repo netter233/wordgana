@@ -37,6 +37,24 @@ En modo Leer se acepta romaji **o** hiragana, así funciona también con un tecl
 `matchesRomaji` acepta variantes (shi/si, chi/ti, tsu/tu, fu/hu, ji/zi, o/wo, nn/n' para ん, macrones).
 **Por qué:** una sola fuente de verdad; evita inconsistencias en 500 entradas escritas a mano.
 
+## 2026-09-17 — Salir de la ronda en cualquier momento
+
+**Decisión:** barra superior fija (`TopBar`) con una ✕ a la izquierda en las pantallas de práctica y
+resultado, que vuelve a la configuración.
+**Por qué:** el usuario quedaba atrapado: para salir de una ronda había que contestar las 10 palabras.
+No pide confirmación porque cada respuesta ya se guardó en stats cuando se contestó: salir no pierde nada.
+
+## 2026-09-17 — Aspecto de app móvil (barra, tarjetas, CTA fija)
+
+**Decisión:** barra superior sticky con marca あ y título; secciones de la configuración dentro de
+tarjetas blancas con sombra y títulos numerados ("1. ¿Qué filas ya sabés?"); chips seleccionados con
+relleno de acento; botón principal en mayúsculas por CSS y fijo abajo (sticky) en la configuración;
+barra de progreso en la práctica.
+**Por qué:** el usuario pidió que se parezca más a una app móvil y pasó capturas de Kana Challenge como
+referencia (barra superior, tarjetas, chips rellenos, CTA grande en mayúsculas). El texto en el código
+sigue en minúsculas rioplatense; las mayúsculas son solo `text-transform`. La CTA fija resuelve además
+que con muchas filas activas el botón quedaba lejos, al final de un scroll largo.
+
 ## 2026-09-17 — Filas de kana como unidades de selección
 
 **Decisión:** básicas (あ か さ た な は ま や ら わ ん), dakuten/handakuten (が ざ だ ば ぱ), combinaciones

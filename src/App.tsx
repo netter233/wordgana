@@ -3,6 +3,7 @@ import { RowPicker } from './components/RowPicker';
 import { ModeCards } from './components/ModeCards';
 import { Practice } from './components/Practice';
 import { Results } from './components/Results';
+import { TopBar } from './components/TopBar';
 import { WORDS, type Word } from './data/words';
 import { isEligible, type PracticeMode } from './lib/kana';
 import { pickRound } from './lib/session';
@@ -70,7 +71,7 @@ export function App() {
   if (screen === 'practice') {
     return (
       <main className="app">
-        <h1>WordGana</h1>
+        <TopBar title="Ronda de práctica" onClose={() => setScreen('setup')} />
         <Practice words={round} mode={mode} onAnswer={handleAnswer} onFinish={handleFinish} />
       </main>
     );
@@ -79,7 +80,7 @@ export function App() {
   if (screen === 'results' && summary) {
     return (
       <main className="app">
-        <h1>WordGana</h1>
+        <TopBar title="Resultado" onClose={() => setScreen('setup')} />
         <Results
           total={round.length}
           correctCount={summary.correctCount}
@@ -92,8 +93,8 @@ export function App() {
   }
 
   return (
-    <main className="app">
-      <h1>WordGana</h1>
+    <main className="app app--setup">
+      <TopBar title="WordGana" />
       <p className="tagline">Practicá hiragana con palabras reales, fila por fila.</p>
 
       <RowPicker
@@ -105,14 +106,16 @@ export function App() {
 
       <ModeCards mode={mode} onSelect={setMode} example={exampleWord} />
 
-      <button type="button" className="primary-btn" disabled={!canStart} onClick={startRound}>
-        Empezar ronda
-      </button>
-      {!canStart && (
-        <p className="hint hint--center">
-          Activá más filas: hacen falta al menos {MIN_WORDS_TO_START} palabras disponibles.
-        </p>
-      )}
+      <div className="cta-bar">
+        <button type="button" className="primary-btn" disabled={!canStart} onClick={startRound}>
+          Empezar ronda
+        </button>
+        {!canStart && (
+          <p className="hint hint--center">
+            Activá más filas: hacen falta al menos {MIN_WORDS_TO_START} palabras disponibles.
+          </p>
+        )}
+      </div>
     </main>
   );
 }
