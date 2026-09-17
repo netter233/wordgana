@@ -156,3 +156,54 @@ h2 { font-size: 1.05rem; margin: 28px 0 10px; color: var(--muted); font-weight: 
   cursor: pointer;
 }
 .primary-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.secondary-btn {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* --- Práctica --- */
+.progress { margin: 0 0 6px; font-size: 0.85rem; color: var(--muted); }
+.prompt-word {
+  font-size: 2.6rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 28px 8px;
+  margin-bottom: 16px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+.answer-input {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  font-size: 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  margin-bottom: 12px;
+}
+.answer-input:disabled { opacity: 0.7; }
+.feedback { margin-top: 16px; font-size: 1rem; text-align: center; padding: 10px; border-radius: 10px; }
+.feedback--ok { background: var(--ok-soft); color: var(--ok); }
+.feedback--bad { background: var(--bad-soft); color: var(--bad); }
+
+/* --- Resultados --- */
+.score { font-size: 2.2rem; text-align: center; margin: 12px 0 20px; color: var(--text); }
+.missed-list ul { list-style: none; margin: 0; padding: 0; }
+.missed-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.95rem;
+}

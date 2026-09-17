@@ -118,7 +118,7 @@ abrir el repo, leer `CLAUDE.md` y continuar desde la primera etapa sin tildar.
       que cada palabra sea hiragana puro y tokenizable, sin duplicados, y que con solo あ+か haya ≥ 10 palabras.
 - [x] **Etapa 4 — Pantalla de configuración.** `RowPicker` (chips por sección, Todas/Ninguna, contador en vivo)
       y `ModeCards` (dos tarjetas con ejemplo dinámico). Persistencia en localStorage (`storage.ts`). Botón Empezar.
-- [ ] **Etapa 5 — Práctica y resultados.** `session.ts` (`pickRound` con peso ×3 a falladas), `Practice`
+- [x] **Etapa 5 — Práctica y resultados.** `session.ts` (`pickRound` con peso ×3 a falladas), `Practice`
       (input, comprobar, feedback, siguiente, manejo de foco y Enter) y `Results` (score, falladas, Otra ronda /
       Cambiar filas). Stats por palabra guardadas.
 - [ ] **Etapa 6 — PWA y pulido móvil.** Manifest, íconos 192/512, service worker offline, `lang="ja"` en el input

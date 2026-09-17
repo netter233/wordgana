@@ -1,19 +1,31 @@
 import { useEffect, useMemo, useState } from 'react';
 import { RowPicker } from './components/RowPicker';
 import { ModeCards } from './components/ModeCards';
-import { WORDS } from './data/words';
+import { Practice } from './components/Practice';
+import { Results } from './components/Results';
+import { WORDS, type Word } from './data/words';
 import { isEligible, type PracticeMode } from './lib/kana';
-import { loadSettings, saveSettings } from './lib/storage';
+import { pickRound } from './lib/session';
+import { loadSettings, saveSettings, loadStats, saveStats, recordAnswer, type StatsMap } from './lib/storage';
 
 const MIN_WORDS_TO_START = 3;
+const ROUND_SIZE = 10;
 
 type Screen = 'setup' | 'practice' | 'results';
+
+interface RoundSummary {
+  correctCount: number;
+  missed: Word[];
+}
 
 export function App() {
   const initial = useMemo(loadSettings, []);
   const [screen, setScreen] = useState<Screen>('setup');
   const [enabledRowIds, setEnabledRowIds] = useState<string[]>(initial.enabledRowIds);
   const [mode, setMode] = useState<PracticeMode>(initial.mode);
+  const [stats, setStats] = useState<StatsMap>(loadStats);
+  const [round, setRound] = useState<Word[]>([]);
+  const [summary, setSummary] = useState<RoundSummary | null>(null);
 
   useEffect(() => {
     saveSettings({ enabledRowIds, mode });
@@ -34,17 +46,47 @@ export function App() {
     );
   }
 
+  function startRound() {
+    setRound(pickRound(eligibleWords, ROUND_SIZE, stats));
+    setSummary(null);
+    setScreen('practice');
+  }
+
+  function handleAnswer(word: Word, correct: boolean) {
+    setStats((prev) => {
+      const next = recordAnswer(prev, word.kana, correct);
+      saveStats(next);
+      return next;
+    });
+  }
+
+  function handleFinish(roundSummary: RoundSummary) {
+    setSummary(roundSummary);
+    setScreen('results');
+  }
+
   const canStart = eligibleWords.length >= MIN_WORDS_TO_START;
 
-  if (screen === 'practice' || screen === 'results') {
-    // Se completa en la próxima etapa (Práctica y resultados).
+  if (screen === 'practice') {
     return (
       <main className="app">
         <h1>WordGana</h1>
-        <p>Ronda en construcción — se termina en la próxima etapa.</p>
-        <button type="button" className="primary-btn" onClick={() => setScreen('setup')}>
-          Volver a filas
-        </button>
+        <Practice words={round} mode={mode} onAnswer={handleAnswer} onFinish={handleFinish} />
+      </main>
+    );
+  }
+
+  if (screen === 'results' && summary) {
+    return (
+      <main className="app">
+        <h1>WordGana</h1>
+        <Results
+          total={round.length}
+          correctCount={summary.correctCount}
+          missed={summary.missed}
+          onRestartSameRound={startRound}
+          onChangeRows={() => setScreen('setup')}
+        />
       </main>
     );
   }
@@ -63,12 +105,7 @@ export function App() {
 
       <ModeCards mode={mode} onSelect={setMode} example={exampleWord} />
 
-      <button
-        type="button"
-        className="primary-btn"
-        disabled={!canStart}
-        onClick={() => setScreen('practice')}
-      >
+      <button type="button" className="primary-btn" disabled={!canStart} onClick={startRound}>
         Empezar ronda
       </button>
       {!canStart && (
