@@ -40,3 +40,11 @@ export function pickRound(
 
   return result;
 }
+
+/** Palabras dominadas: contestadas al menos una vez y nunca falladas. */
+export function countMastered(words: readonly Word[], stats: StatsMap): number {
+  return words.filter((word) => {
+    const stat = stats[word.kana];
+    return stat !== undefined && stat.seen > 0 && stat.missed === 0;
+  }).length;
+}

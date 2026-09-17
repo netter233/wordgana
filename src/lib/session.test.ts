@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { pickRound } from './session';
+import { countMastered, pickRound } from './session';
 import type { Word } from '../data/words';
 
 const words: Word[] = [
@@ -51,5 +51,26 @@ describe('pickRound', () => {
     const copy = [...words];
     pickRound(words, 2);
     expect(words).toEqual(copy);
+  });
+});
+
+describe('countMastered', () => {
+  it('cuenta las palabras vistas que nunca se fallaron', () => {
+    const stats = {
+      あい: { seen: 3, missed: 0 },
+      いえ: { seen: 2, missed: 1 },
+      うえ: { seen: 1, missed: 0 },
+    };
+    expect(countMastered(words, stats)).toBe(2);
+  });
+
+  it('no cuenta palabras sin estadísticas ni palabras nunca contestadas', () => {
+    expect(countMastered(words, {})).toBe(0);
+    expect(countMastered(words, { あい: { seen: 0, missed: 0 } })).toBe(0);
+  });
+
+  it('solo cuenta las palabras recibidas, no todas las del historial', () => {
+    const stats = { あい: { seen: 1, missed: 0 }, みず: { seen: 1, missed: 0 } };
+    expect(countMastered([{ kana: 'あい', es: 'amor' }], stats)).toBe(1);
   });
 });

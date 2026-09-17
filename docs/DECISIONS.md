@@ -67,6 +67,22 @@ Explícitamente solo para palabras con un emoji claro, no forzarlo en todas: un 
 (p. ej. para "razón" o "sociedad") resta más de lo que suma. Se deja afuera de `toRomaji`/`checkAnswer`:
 es puramente decorativo, no entra en la lógica de validación.
 
+## 2026-09-17 — Racha, rondas de hoy y palabras dominadas (sin programa de días)
+
+**Decisión:** tira de stats arriba del home: dos tiles (🔥 racha de días seguidos, 🎯 rondas de hoy) y
+una barra "palabras dominadas" (contestadas al menos una vez y nunca falladas) sobre el total elegible
+con las filas activas. Nueva clave `wordgana:progress:v1` con `{ lastDay, streak, roundsToday }`;
+`countMastered` en `session.ts` sale de las stats por palabra que ya existían.
+**Por qué:** el usuario quiso algo tipo Kana Challenge (racha, tiempo de estudio, "4 / 30 días"). Se
+descartó copiar la barra de programa de 30 días porque WordGana no tiene currícula: no habría con qué
+llenarla. El progreso real acá son las palabras dominadas, y el denominador son las palabras elegibles
+con tus filas, así que la barra baja al activar filas nuevas — es honesto y empuja a practicarlas.
+También se descartó el "tiempo de estudio": medir minutos en una PWA que se cierra sola es poco
+confiable y no dice nada sobre lo aprendido.
+**Detalles:** la racha solo cuenta rondas **terminadas** (salir con la ✕ no cuenta), el día se define
+con la hora local del teléfono (medianoche, sin corte a las 4am), y si la última ronda fue ayer la
+racha sigue viva sin sumar hasta que termines una hoy. No es punitiva: nunca avisa que la perdiste.
+
 ## 2026-09-17 — Filas de kana como unidades de selección
 
 **Decisión:** básicas (あ か さ た な は ま や ら わ ん), dakuten/handakuten (が ざ だ ば ぱ), combinaciones

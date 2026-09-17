@@ -77,3 +77,70 @@ export function recordAnswer(stats: StatsMap, kana: string, correct: boolean): S
     [kana]: { seen: prev.seen + 1, missed: prev.missed + (correct ? 0 : 1) },
   };
 }
+
+const PROGRESS_KEY = 'wordgana:progress:v1';
+
+export interface Progress {
+  /** Último día con una ronda terminada (YYYY-MM-DD). Vacío si nunca se terminó una. */
+  lastDay: string;
+  streak: number;
+  roundsToday: number;
+}
+
+export const EMPTY_PROGRESS: Progress = { lastDay: '', streak: 0, roundsToday: 0 };
+
+/** Día en hora local: la racha se corta a la medianoche del teléfono, no en UTC. */
+export function dayKey(date: Date): string {
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${date.getFullYear()}-${month}-${day}`;
+}
+
+function previousDayKey(date: Date): string {
+  const previous = new Date(date);
+  previous.setDate(previous.getDate() - 1);
+  return dayKey(previous);
+}
+
+/**
+ * Pone el progreso guardado al día: las rondas de hoy vuelven a cero al cambiar el día, y la racha
+ * se pierde solo si pasó más de un día sin practicar (si la última fue ayer sigue viva, sin sumar).
+ */
+export function normalizeProgress(progress: Progress, now = new Date()): Progress {
+  if (progress.lastDay === dayKey(now)) return progress;
+  if (progress.lastDay === previousDayKey(now)) return { ...progress, roundsToday: 0 };
+  return EMPTY_PROGRESS;
+}
+
+/** Suma una ronda terminada, extendiendo la racha si la última fue ayer y arrancándola si no. */
+export function recordRound(progress: Progress, now = new Date()): Progress {
+  const today = dayKey(now);
+  if (progress.lastDay === today) {
+    return { ...progress, roundsToday: progress.roundsToday + 1 };
+  }
+  const continues = progress.lastDay === previousDayKey(now);
+  return { lastDay: today, streak: continues ? progress.streak + 1 : 1, roundsToday: 1 };
+}
+
+export function loadProgress(): Progress {
+  try {
+    const raw = localStorage.getItem(PROGRESS_KEY);
+    if (!raw) return EMPTY_PROGRESS;
+    const parsed = JSON.parse(raw) as Partial<Progress>;
+    return normalizeProgress({
+      lastDay: typeof parsed.lastDay === 'string' ? parsed.lastDay : '',
+      streak: typeof parsed.streak === 'number' ? parsed.streak : 0,
+      roundsToday: typeof parsed.roundsToday === 'number' ? parsed.roundsToday : 0,
+    });
+  } catch {
+    return EMPTY_PROGRESS;
+  }
+}
+
+export function saveProgress(progress: Progress): void {
+  try {
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+  } catch {
+    // Sin persistencia esta sesión; la app sigue funcionando en memoria.
+  }
+}

@@ -4,10 +4,21 @@ import { ModeCards } from './components/ModeCards';
 import { Practice } from './components/Practice';
 import { Results } from './components/Results';
 import { TopBar } from './components/TopBar';
+import { StatsStrip } from './components/StatsStrip';
 import { WORDS, type Word } from './data/words';
 import { isEligible, type PracticeMode } from './lib/kana';
-import { pickRound } from './lib/session';
-import { loadSettings, saveSettings, loadStats, saveStats, recordAnswer, type StatsMap } from './lib/storage';
+import { countMastered, pickRound } from './lib/session';
+import {
+  loadSettings,
+  saveSettings,
+  loadStats,
+  saveStats,
+  recordAnswer,
+  loadProgress,
+  saveProgress,
+  recordRound,
+  type StatsMap,
+} from './lib/storage';
 
 const MIN_WORDS_TO_START = 3;
 const ROUND_SIZE = 10;
@@ -25,6 +36,7 @@ export function App() {
   const [enabledRowIds, setEnabledRowIds] = useState<string[]>(initial.enabledRowIds);
   const [mode, setMode] = useState<PracticeMode>(initial.mode);
   const [stats, setStats] = useState<StatsMap>(loadStats);
+  const [progress, setProgress] = useState(loadProgress);
   const [round, setRound] = useState<Word[]>([]);
   const [summary, setSummary] = useState<RoundSummary | null>(null);
 
@@ -62,6 +74,11 @@ export function App() {
   }
 
   function handleFinish(roundSummary: RoundSummary) {
+    setProgress((prev) => {
+      const next = recordRound(prev);
+      saveProgress(next);
+      return next;
+    });
     setSummary(roundSummary);
     setScreen('results');
   }
@@ -96,6 +113,13 @@ export function App() {
     <main className="app app--setup">
       <TopBar title="WordGana" />
       <p className="tagline">Practicá hiragana con palabras reales, fila por fila.</p>
+
+      <StatsStrip
+        streak={progress.streak}
+        roundsToday={progress.roundsToday}
+        mastered={countMastered(eligibleWords, stats)}
+        total={eligibleWords.length}
+      />
 
       <RowPicker
         enabledRowIds={enabledSet}
