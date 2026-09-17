@@ -111,7 +111,7 @@ abrir el repo, leer `CLAUDE.md` y continuar desde la primera etapa sin tildar.
       de etapas) y `docs/DECISIONS.md` (las decisiones tomadas con el usuario y su porqué). `git init` + primer commit.
 - [x] **Etapa 1 — Scaffold.** Vite + React + TS, `vite-plugin-pwa`, Vitest, `styles.css` con tokens y dark mode,
       `index.html` con viewport móvil. `npm run dev`, `npm test` y `npm run build` funcionan con una pantalla vacía.
-- [ ] **Etapa 2 — Datos y lógica de kana (con tests).** `src/data/kana.ts` (filas, tabla romaji con variantes),
+- [x] **Etapa 2 — Datos y lógica de kana (con tests).** `src/data/kana.ts` (filas, tabla romaji con variantes),
       `src/lib/kana.ts` (`tokenize`, `toRomaji`, `matchesRomaji`, `normalizeHiragana`, `isEligible`, `checkAnswer`)
       y `src/lib/kana.test.ts` con los casos de la sección Verificación. Todo verde antes de seguir.
 - [ ] **Etapa 3 — Lista de palabras.** `src/data/words.ts` con ~500 palabras `{ kana, es }`. Test que valida
