@@ -17,6 +17,20 @@ describe('WORDS', () => {
     expect(withoutMeaning).toEqual([]);
   });
 
+  it('los emojis, cuando están, son un emoji solo y sin texto', () => {
+    const invalid = WORDS.filter((w) => {
+      if (w.emoji === undefined) return false;
+      const codePoints = [...w.emoji];
+      return codePoints.length === 0 || codePoints.length > 8 || /[a-zA-Z\s]/.test(w.emoji);
+    });
+    expect(invalid).toEqual([]);
+  });
+
+  it('hay una cantidad razonable de palabras con emoji', () => {
+    const withEmoji = WORDS.filter((w) => w.emoji);
+    expect(withEmoji.length).toBeGreaterThanOrEqual(100);
+  });
+
   it('no hay palabras duplicadas', () => {
     const seen = new Map<string, number>();
     for (const w of WORDS) seen.set(w.kana, (seen.get(w.kana) ?? 0) + 1);

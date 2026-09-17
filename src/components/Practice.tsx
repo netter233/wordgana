@@ -87,6 +87,7 @@ export function Practice({ words, mode, onAnswer, onFinish }: PracticeProps) {
         <p className={correct ? 'feedback feedback--ok' : 'feedback feedback--bad'}>
           {correct ? '¡Bien! ' : 'Era: '}
           <span className="ja">{word.kana}</span> · {romaji} · {word.es}
+          {word.emoji && <span className="feedback-emoji"> {word.emoji}</span>}
         </p>
       )}
     </section>

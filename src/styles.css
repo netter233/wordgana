@@ -319,6 +319,7 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
   padding: 14px 10px;
   border-radius: var(--radius);
 }
+.feedback-emoji { font-size: 1.35em; vertical-align: -0.1em; }
 .feedback--ok { background: var(--ok-soft); color: var(--ok); }
 .feedback--bad { background: var(--bad-soft); color: var(--bad); }
 

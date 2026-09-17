@@ -55,6 +55,18 @@ referencia (barra superior, tarjetas, chips rellenos, CTA grande en mayúsculas)
 sigue en minúsculas rioplatense; las mayúsculas son solo `text-transform`. La CTA fija resuelve además
 que con muchas filas activas el botón quedaba lejos, al final de un scroll largo.
 
+## 2026-09-17 — Emoji opcional por palabra en el feedback
+
+**Decisión:** `Word` gana un campo `emoji?: string`, puesto a mano solo en las palabras donde hay un
+emoji que representa el significado sin ambigüedad (alrededor de 150 de ~370). Se muestra al final de
+la línea de feedback ("¡Bien! みず · mizu · agua 💧") al comprobar una respuesta, tanto si acertaste
+como si no. Test que valida que cuando existe sea un único emoji (sin texto) y que haya una cantidad
+razonable con emoji.
+**Por qué:** pedido del usuario como "bonus" visual, con el ejemplo de いき (respiración) → 😮‍💨.
+Explícitamente solo para palabras con un emoji claro, no forzarlo en todas: un emoji ambiguo o forzado
+(p. ej. para "razón" o "sociedad") resta más de lo que suma. Se deja afuera de `toRomaji`/`checkAnswer`:
+es puramente decorativo, no entra en la lógica de validación.
+
 ## 2026-09-17 — Filas de kana como unidades de selección
 
 **Decisión:** básicas (あ か さ た な は ま や ら わ ん), dakuten/handakuten (が ざ だ ば ぱ), combinaciones
