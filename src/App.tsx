@@ -31,7 +31,7 @@ const MIN_WORDS_TO_START = 3;
 const WORD_ROUND_SIZE = 10;
 const SENTENCE_ROUND_SIZE = 5;
 
-type Screen = 'setup' | 'practice' | 'results';
+type Screen = 'setup' | 'practice' | 'results' | 'settings';
 
 interface RoundSummary {
   correctCount: number;
@@ -186,13 +186,19 @@ export function App() {
     );
   }
 
+  if (screen === 'settings') {
+    return (
+      <main className="app">
+        <TopBar title={messages.settings} mark={mark} onClose={() => setScreen('setup')} />
+        <LanguagePicker />
+      </main>
+    );
+  }
+
   return (
     <main className="app app--setup">
-      <TopBar title="WordGana" mark={mark} />
-      <div className="intro-row">
-        <p className="tagline">{messages.tagline}</p>
-        <LanguagePicker />
-      </div>
+      <TopBar title="WordGana" mark={mark} onSettings={() => setScreen('settings')} />
+      <p className="tagline">{messages.tagline}</p>
 
       <ScriptSwitch value={activeScript} onChange={setActiveScript} />
 

@@ -6,9 +6,17 @@ export function LanguagePicker() {
   const { language, preference, setPreference, messages } = useI18n();
 
   return (
-    <label className="language-picker">
-      <span>🌐 {messages.languageLabel}</span>
+    <section className="card settings-card">
+      <div className="settings-card-heading">
+        <span className="settings-icon" aria-hidden="true">🌐</span>
+        <div>
+          <h2 id="language-setting-label">{messages.languageLabel}</h2>
+          <p>{messages.languageDescription}</p>
+        </div>
+      </div>
       <select
+        className="settings-select"
+        aria-labelledby="language-setting-label"
         value={preference}
         onChange={(event) => setPreference(event.target.value as LanguagePreference)}
       >
@@ -17,6 +25,6 @@ export function LanguagePicker() {
           <option key={code} value={code}>{LANGUAGE_NAMES[code]}</option>
         ))}
       </select>
-    </label>
+    </section>
   );
 }
