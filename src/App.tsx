@@ -189,7 +189,7 @@ export function App() {
   if (screen === 'settings') {
     return (
       <main className="app">
-        <TopBar title={messages.settings} mark={mark} onClose={() => setScreen('setup')} />
+        <TopBar title={messages.settings} mark={mark} onBack={() => setScreen('setup')} />
         <LanguagePicker />
       </main>
     );

@@ -47,6 +47,7 @@ export interface Messages {
   openSettings: string;
   tagline: string;
   closeHome: string;
+  back: string;
   scriptSelector: string;
   result: string;
   words: string;
@@ -113,7 +114,7 @@ const MESSAGES: Record<AppLanguage, Messages> = {
   en: {
     autoLanguage: (language) => `Automatic (${language})`, languageLabel: 'Language',
     languageDescription: "Use your device's language or choose one for WordGana.", settings: 'Settings', openSettings: 'Open settings',
-    tagline: 'Practice Japanese with real words, one row at a time.', closeHome: 'Back to home',
+    tagline: 'Practice Japanese with real words, one row at a time.', closeHome: 'Close and return home', back: 'Back',
     scriptSelector: 'Writing system to practice', result: 'Results', words: 'Words', sentences: 'Sentences',
     rowsTitle: (script) => `1. ${script} rows`,
     rowsSummary: (selected, total, words) => `${selected} of ${total} selected · ${words} words`,
@@ -149,7 +150,7 @@ const MESSAGES: Record<AppLanguage, Messages> = {
   es: {
     autoLanguage: (language) => `Automático (${language})`, languageLabel: 'Idioma',
     languageDescription: 'Usá el idioma de tu dispositivo o elegí uno para WordGana.', settings: 'Configuración', openSettings: 'Abrir configuración',
-    tagline: 'Practicá japonés con palabras reales, fila por fila.', closeHome: 'Salir al inicio',
+    tagline: 'Practicá japonés con palabras reales, fila por fila.', closeHome: 'Cerrar y volver al inicio', back: 'Volver',
     scriptSelector: 'Silabario para practicar', result: 'Resultado', words: 'Palabras', sentences: 'Oraciones',
     rowsTitle: (script) => `1. Filas de ${script}`,
     rowsSummary: (selected, total, words) => `${selected} de ${total} seleccionadas · ${words} palabras`,
@@ -184,7 +185,7 @@ const MESSAGES: Record<AppLanguage, Messages> = {
   fr: {
     autoLanguage: (language) => `Automatique (${language})`, languageLabel: 'Langue',
     languageDescription: "Utilisez la langue de votre appareil ou choisissez-en une pour WordGana.", settings: 'Réglages', openSettings: 'Ouvrir les réglages',
-    tagline: 'Pratiquez le japonais avec de vrais mots, ligne par ligne.', closeHome: "Retour à l'accueil",
+    tagline: 'Pratiquez le japonais avec de vrais mots, ligne par ligne.', closeHome: "Fermer et revenir à l'accueil", back: 'Retour',
     scriptSelector: "Système d'écriture à pratiquer", result: 'Résultats', words: 'Mots', sentences: 'Phrases',
     rowsTitle: (script) => `1. Lignes de ${script}`,
     rowsSummary: (selected, total, words) => `${selected} sur ${total} sélectionnées · ${words} mots`,
@@ -219,7 +220,7 @@ const MESSAGES: Record<AppLanguage, Messages> = {
   de: {
     autoLanguage: (language) => `Automatisch (${language})`, languageLabel: 'Sprache',
     languageDescription: 'Verwende die Sprache deines Geräts oder wähle eine für WordGana.', settings: 'Einstellungen', openSettings: 'Einstellungen öffnen',
-    tagline: 'Übe Japanisch mit echten Wörtern, Reihe für Reihe.', closeHome: 'Zurück zur Startseite',
+    tagline: 'Übe Japanisch mit echten Wörtern, Reihe für Reihe.', closeHome: 'Schließen und zur Startseite', back: 'Zurück',
     scriptSelector: 'Zu übendes Schriftsystem', result: 'Ergebnis', words: 'Wörter', sentences: 'Sätze',
     rowsTitle: (script) => `1. ${script}-Reihen`,
     rowsSummary: (selected, total, words) => `${selected} von ${total} ausgewählt · ${words} Wörter`,

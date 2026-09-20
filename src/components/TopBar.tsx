@@ -3,17 +3,49 @@ import { useI18n } from '../i18n';
 interface TopBarProps {
   title: string;
   onClose?: () => void;
+  onBack?: () => void;
   onSettings?: () => void;
   mark?: string;
 }
 
-export function TopBar({ title, onClose, onSettings, mark = 'あ' }: TopBarProps) {
+export function TopBar({ title, onClose, onBack, onSettings, mark = 'あ' }: TopBarProps) {
   const { messages } = useI18n();
+  const leadingAction = onBack ?? onClose;
   return (
     <header className="appbar">
-      {onClose ? (
-        <button type="button" className="appbar-btn" onClick={onClose} aria-label={messages.closeHome}>
-          ✕
+      {leadingAction ? (
+        <button
+          type="button"
+          className="appbar-btn"
+          onClick={leadingAction}
+          aria-label={onBack ? messages.back : messages.closeHome}
+        >
+          {onBack ? (
+            <svg
+              className="appbar-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.25"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          ) : (
+            <svg
+              className="appbar-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              aria-hidden="true"
+            >
+              <path d="M6 6l12 12M18 6 6 18" />
+            </svg>
+          )}
         </button>
       ) : (
         <span className="appbar-mark ja" aria-hidden="true">

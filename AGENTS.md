@@ -7,6 +7,7 @@ Apply these standards to every user-facing change in this repository. Treat them
 - Design mobile first while keeping the web experience complete. Use platform-neutral wording such as “device” instead of naming iPhone, Android, Safari, or another platform unless the instruction is genuinely platform-specific.
 - Keep the primary practice flow focused. Put infrequent preferences in Settings and keep the home screen for study choices, progress, and the main action.
 - Prefer familiar controls and conventional placement. Use text when an icon may be ambiguous. Icon-only controls must use a consistent vector icon and a localized accessible name; do not use emoji as functional UI icons.
+- Match navigation semantics: use a Back chevron to return through the app hierarchy and reserve Close (×) for dismissing a modal or abandoning a focused flow.
 - Preserve user progress and preferences across visual or localization changes. Never include the display language in learning-progress identifiers.
 - Support every shipped language across the entire interface and study corpus. English is the source fallback. New content must pass the translation-coverage test.
 
@@ -34,6 +35,7 @@ Apply these standards to every user-facing change in this repository. Treat them
 ## Primary references
 
 - [Apple Human Interface Guidelines — Buttons](https://developer.apple.com/design/human-interface-guidelines/buttons): familiar symbols, clear purpose, interaction states, and a minimum 44 × 44 pt hit region.
+- [Apple Human Interface Guidelines — Toolbars](https://developer.apple.com/design/human-interface-guidelines/toolbars): standard Back controls retrace a hierarchy; standard Close controls dismiss modal views.
 - [Apple Human Interface Guidelines — Accessibility](https://developer.apple.com/design/human-interface-guidelines/accessibility): adaptable, perceivable, and operable interfaces across input methods.
 - [Android Developers — Accessibility API defaults](https://developer.android.com/develop/ui/compose/accessibility/api-defaults): 48 dp touch targets and textual descriptions for actionable icons.
 - [WCAG 2.2](https://www.w3.org/TR/WCAG22/): Level AA is the minimum web accessibility target, including focus visibility, semantics, status messages, and target sizing.
