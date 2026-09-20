@@ -11,8 +11,8 @@ export default defineConfig({
       manifest: {
         name: 'WordGana',
         short_name: 'WordGana',
-        description: 'Practicá hiragana y katakana con palabras y oraciones reales.',
-        lang: 'es',
+        description: 'Practice hiragana and katakana with real words and sentences.',
+        lang: 'en',
         start_url: '.',
         display: 'standalone',
         background_color: '#f7f5f0',

@@ -1,4 +1,5 @@
 import type { KanaScript } from '../data/kana';
+import { useI18n } from '../i18n';
 
 interface ScriptSwitchProps {
   value: KanaScript;
@@ -6,8 +7,9 @@ interface ScriptSwitchProps {
 }
 
 export function ScriptSwitch({ value, onChange }: ScriptSwitchProps) {
+  const { messages } = useI18n();
   return (
-    <div className="script-switch" role="group" aria-label="Silabario para practicar">
+    <div className="script-switch" role="group" aria-label={messages.scriptSelector}>
       <button
         type="button"
         className={value === 'hiragana' ? 'script-switch-btn script-switch-btn--selected' : 'script-switch-btn'}

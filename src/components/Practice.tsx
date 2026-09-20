@@ -5,6 +5,8 @@ import type { PracticeKind } from '../data/sentences';
 import { checkAnswer, type PracticeMode } from '../lib/kana';
 import { alignAnswer } from '../lib/answerDiff';
 import { readingFor } from '../lib/study';
+import { localizedMeaning } from '../data/translations';
+import { useI18n } from '../i18n';
 
 interface PracticeProps {
   words: Word[];
@@ -16,6 +18,7 @@ interface PracticeProps {
 }
 
 export function Practice({ words, mode, script, practiceKind, onAnswer, onFinish }: PracticeProps) {
+  const { language, messages } = useI18n();
   const [index, setIndex] = useState(0);
   const [value, setValue] = useState('');
   const [correct, setCorrect] = useState<boolean | null>(null);
@@ -97,7 +100,7 @@ export function Practice({ words, mode, script, practiceKind, onAnswer, onFinish
     enterKeyHint: 'done' as const,
     spellCheck: false,
     disabled: correct !== null,
-    'aria-label': mode === 'read' ? 'Tu respuesta en romaji' : 'Tu respuesta en kana',
+    'aria-label': mode === 'read' ? messages.answerRomaji : messages.answerKana,
   };
 
   return (
@@ -108,10 +111,10 @@ export function Practice({ words, mode, script, practiceKind, onAnswer, onFinish
         </span>
         <span>
           {mode === 'read'
-            ? 'escribí en romaji'
+            ? messages.instructionRomaji
             : practiceKind === 'sentences'
-              ? 'escribí la oración en kana'
-              : `escribí en ${script === 'hiragana' ? 'hiragana' : 'katakana'}`}
+              ? messages.instructionSentenceKana
+              : messages.instructionScript(script === 'hiragana' ? 'hiragana' : 'katakana')}
         </span>
       </div>
       <div className="progress-track">
@@ -140,11 +143,11 @@ export function Practice({ words, mode, script, practiceKind, onAnswer, onFinish
           />
         )}
         <button type="submit" className="primary-btn" disabled={correct === null && !value.trim()}>
-          {correct === null ? 'Comprobar' : index + 1 >= words.length ? 'Ver resultados' : 'Siguiente'}
+          {correct === null ? messages.check : index + 1 >= words.length ? messages.viewResults : messages.next}
         </button>
         {correct === null && (
           <button type="button" className="reveal-btn" onClick={handleReveal}>
-            No me acuerdo
+            {messages.dontRemember}
           </button>
         )}
       </form>
@@ -156,14 +159,14 @@ export function Practice({ words, mode, script, practiceKind, onAnswer, onFinish
           aria-live="polite"
           aria-atomic="true"
         >
-          {correct ? '¡Bien! ' : 'Era: '}
-          <span className="ja">{word.kana}</span> · {reading} · {word.es}
+          {correct ? messages.correct : messages.expected}
+          <span className="ja">{word.kana}</span> · {reading} · {localizedMeaning(word, language)}
           {word.emoji && <span className="feedback-emoji"> {word.emoji}</span>}
           {!correct && practiceKind === 'sentences' && (
             <span className="answer-diff">
-              Tu respuesta:{' '}
+              {messages.yourAnswer}
               {compactValue.length === 0
-                ? '(vacía)'
+                ? messages.emptyAnswer
                 : answerDiff.map((part, characterIndex) => (
                   <span
                     key={characterIndex}

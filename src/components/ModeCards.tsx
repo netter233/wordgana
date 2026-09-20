@@ -3,6 +3,7 @@ import type { Word } from '../data/words';
 import type { KanaScript } from '../data/kana';
 import type { PracticeKind } from '../data/sentences';
 import { readingFor } from '../lib/study';
+import { useI18n } from '../i18n';
 
 interface ModeCardsProps {
   mode: PracticeMode;
@@ -14,19 +15,20 @@ interface ModeCardsProps {
 }
 
 export function ModeCards({ mode, onSelect, example, script, practiceKind, sectionNumber = 3 }: ModeCardsProps) {
+  const { messages } = useI18n();
   const exampleKana = example?.kana ?? '';
   const exampleRomaji = example ? readingFor(example) : '';
   const scriptName = script === 'hiragana' ? 'hiragana' : 'katakana';
   const readDescription = practiceKind === 'sentences'
-    ? 'Te muestro una oración, escribís en romaji'
-    : `Te muestro ${scriptName}, escribís en romaji`;
+    ? messages.readSentenceDescription
+    : messages.readScriptDescription(scriptName);
   const writeDescription = practiceKind === 'sentences'
-    ? 'Te muestro romaji, escribís la oración en kana'
-    : `Te muestro romaji, escribís en ${scriptName} (necesitás teclado japonés)`;
+    ? messages.writeSentenceDescription
+    : messages.writeScriptDescription(scriptName);
 
   return (
     <section className="card">
-      <h2>{sectionNumber}. ¿Cómo querés practicar?</h2>
+      <h2>{sectionNumber === 3 ? messages.practiceStyleTitle : `${sectionNumber}. ${messages.practiceStyleTitle.replace(/^3\.\s*/, '')}`}</h2>
       <div className="mode-grid">
         <button
           type="button"
@@ -34,7 +36,7 @@ export function ModeCards({ mode, onSelect, example, script, practiceKind, secti
           aria-pressed={mode === 'read'}
           onClick={() => onSelect('read')}
         >
-          <h3>Leer</h3>
+          <h3>{messages.read}</h3>
           <p className="sub">{readDescription}</p>
           <div className={practiceKind === 'sentences' ? 'example-top example-top--sentence ja' : 'example-top ja'}>
             {exampleKana || '…'}
@@ -48,7 +50,7 @@ export function ModeCards({ mode, onSelect, example, script, practiceKind, secti
           aria-pressed={mode === 'write'}
           onClick={() => onSelect('write')}
         >
-          <h3>Escribir</h3>
+          <h3>{messages.write}</h3>
           <p className="sub">{writeDescription}</p>
           <div className={practiceKind === 'sentences' ? 'example-top example-top--sentence' : 'example-top'}>
             {exampleRomaji || '…'}
@@ -57,7 +59,7 @@ export function ModeCards({ mode, onSelect, example, script, practiceKind, secti
         </button>
       </div>
       {!example && (
-        <p className="hint">Activá alguna fila para ver un ejemplo real acá.</p>
+        <p className="hint">{messages.exampleHint}</p>
       )}
     </section>
   );

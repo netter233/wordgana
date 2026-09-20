@@ -5,13 +5,7 @@ import {
   type KanaScript,
   type KanaSection,
 } from '../data/kana';
-
-const SECTION_LABELS: Record<KanaSection, string> = {
-  basic: 'Básicas',
-  dakuten: 'Con dakuten (゛゜)',
-  yoon: 'Combinaciones (ゃゅょ)',
-  special: 'Especial',
-};
+import { useI18n } from '../i18n';
 
 const SECTION_ORDER: KanaSection[] = ['basic', 'dakuten', 'yoon', 'special'];
 
@@ -36,6 +30,13 @@ export function RowPicker({
   expanded,
   onToggleExpanded,
 }: RowPickerProps) {
+  const { messages } = useI18n();
+  const sectionLabels: Record<KanaSection, string> = {
+    basic: messages.basicRows,
+    dakuten: messages.dakutenRows,
+    yoon: messages.combinationsRows,
+    special: messages.specialRows,
+  };
   const allRowIds = kanaRows.map((r) => r.id);
   const selectedCount = kanaRows.filter((row) => enabledRowIds.has(row.id)).length;
   const scriptName = script === 'hiragana' ? 'hiragana' : 'katakana';
@@ -44,9 +45,9 @@ export function RowPicker({
     <section className="card">
       <div className="section-head">
         <div>
-          <h2>1. Filas de {scriptName}</h2>
+          <h2>{messages.rowsTitle(scriptName)}</h2>
           <p className="section-summary">
-            {selectedCount} de {kanaRows.length} seleccionadas · {eligibleCount} palabras
+            {messages.rowsSummary(selectedCount, kanaRows.length, eligibleCount)}
           </p>
         </div>
         <button
@@ -56,7 +57,7 @@ export function RowPicker({
           aria-expanded={expanded}
           aria-controls={`rows-${script}`}
         >
-          {expanded ? 'Listo' : 'Editar'}
+          {expanded ? messages.done : messages.edit}
         </button>
       </div>
 
@@ -64,10 +65,10 @@ export function RowPicker({
         <div className="row-picker-details" id={`rows-${script}`}>
           <div className="link-row row-picker-actions">
             <button type="button" className="link-btn" onClick={() => onSetAll(allRowIds)}>
-              Seleccionar todas
+              {messages.selectAll}
             </button>
             <button type="button" className="link-btn" onClick={() => onSetAll([])}>
-              Quitar todas
+              {messages.clearAll}
             </button>
           </div>
 
@@ -76,7 +77,7 @@ export function RowPicker({
             if (rows.length === 0) return null;
             return (
               <div className="row-section" key={section}>
-                <h3 className="row-section-title">{SECTION_LABELS[section]}</h3>
+                <h3 className="row-section-title">{sectionLabels[section]}</h3>
                 <div className="chip-grid">
                   {rows.map((row) => {
                     const on = enabledRowIds.has(row.id);
@@ -93,10 +94,10 @@ export function RowPicker({
                           <span className="chip-kana ja">{row.units.map((u) => u.kana).join('')}</span>
                         )}
                         {row.id === SOKUON_ROW_ID && (
-                          <span className="chip-kana">duplica consonantes</span>
+                          <span className="chip-kana">{messages.doublesConsonants}</span>
                         )}
                         {row.id === CHOON_ROW_ID && (
-                          <span className="chip-kana">alarga la vocal</span>
+                          <span className="chip-kana">{messages.lengthensVowel}</span>
                         )}
                       </button>
                     );

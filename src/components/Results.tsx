@@ -1,5 +1,7 @@
 import type { Word } from '../data/words';
 import { readingFor } from '../lib/study';
+import { localizedMeaning } from '../data/translations';
+import { useI18n } from '../i18n';
 
 interface ResultsProps {
   total: number;
@@ -18,6 +20,7 @@ export function Results({
   onReviewMissed,
   onChangeRows,
 }: ResultsProps) {
+  const { language, messages } = useI18n();
   return (
     <section>
       <div className="card score-card">
@@ -25,17 +28,17 @@ export function Results({
           {correctCount} / {total}
         </p>
         <p className="score-sub">
-          {missed.length === 0 ? '¡Ronda perfecta!' : `${missed.length} para repasar`}
+          {missed.length === 0 ? messages.perfectRound : messages.toReview(missed.length)}
         </p>
       </div>
 
       {missed.length > 0 && (
         <div className="card missed-list">
-          <h3 className="row-section-title">Para repasar</h3>
+          <h3 className="row-section-title">{messages.reviewTitle}</h3>
           <ul>
             {missed.map((w) => (
               <li key={w.kana}>
-                <span className="ja">{w.kana}</span> · {readingFor(w)} · {w.es}
+                <span className="ja">{w.kana}</span> · {readingFor(w)} · {localizedMeaning(w, language)}
               </li>
             ))}
           </ul>
@@ -46,19 +49,19 @@ export function Results({
         {missed.length > 0 ? (
           <>
             <button type="button" className="primary-btn" onClick={onReviewMissed}>
-              {missed.length === 1 ? 'Repasar la que costó' : `Repasar las ${missed.length} que costaron`}
+              {messages.reviewMissed(missed.length)}
             </button>
             <button type="button" className="secondary-btn" onClick={onRestartSameRound}>
-              Otra ronda
+              {messages.anotherRound}
             </button>
           </>
         ) : (
           <button type="button" className="primary-btn" onClick={onRestartSameRound}>
-            Otra ronda
+            {messages.anotherRound}
           </button>
         )}
         <button type="button" className="secondary-btn" onClick={onChangeRows}>
-          Volver al inicio
+          {messages.backHome}
         </button>
       </div>
     </section>

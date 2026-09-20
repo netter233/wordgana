@@ -1,5 +1,6 @@
 import type { PracticeKind } from '../data/sentences';
 import type { KanaScript } from '../data/kana';
+import { useI18n } from '../i18n';
 
 interface ContentCardsProps {
   value: PracticeKind;
@@ -10,9 +11,10 @@ interface ContentCardsProps {
 }
 
 export function ContentCards({ value, unlocked, missingRows, script, onChange }: ContentCardsProps) {
+  const { messages } = useI18n();
   return (
     <section className="card">
-      <h2>2. ¿Qué querés practicar?</h2>
+      <h2>{messages.contentTitle}</h2>
       <div className="choice-grid">
         <button
           type="button"
@@ -21,8 +23,8 @@ export function ContentCards({ value, unlocked, missingRows, script, onChange }:
           onClick={() => onChange('words')}
         >
           <span className="choice-icon" aria-hidden="true">{script === 'hiragana' ? 'あ' : 'ア'}</span>
-          <strong>Palabras</strong>
-          <span>Rondas de 10</span>
+          <strong>{messages.words}</strong>
+          <span>{messages.roundsOf(10)}</span>
         </button>
         <button
           type="button"
@@ -32,16 +34,16 @@ export function ContentCards({ value, unlocked, missingRows, script, onChange }:
           onClick={() => onChange('sentences')}
         >
           <span className="choice-icon" aria-hidden="true">{unlocked ? '文' : '🔒'}</span>
-          <strong>Oraciones</strong>
-          <span>Avanzado · rondas de 5</span>
+          <strong>{messages.sentences}</strong>
+          <span>{messages.advancedRounds(5)}</span>
         </button>
       </div>
       <p className={unlocked ? 'unlock-note unlock-note--ready' : 'unlock-note'}>
         {unlocked
-          ? '¡Modo avanzado desbloqueado! Ya podés practicar oraciones.'
+          ? messages.advancedUnlocked
           : missingRows === 1
-            ? 'Te falta 1 fila para desbloquear Oraciones.'
-            : `Te faltan ${missingRows} filas para desbloquear Oraciones.`}
+            ? messages.oneRowMissing
+            : messages.rowsMissing(missingRows)}
       </p>
     </section>
   );

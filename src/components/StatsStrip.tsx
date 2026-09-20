@@ -1,12 +1,15 @@
+import { useI18n } from '../i18n';
+
 interface StatsStripProps {
   streak: number;
   roundsToday: number;
   mastered: number;
   total: number;
-  itemLabel?: 'Palabras' | 'Oraciones';
+  itemLabel: string;
 }
 
-export function StatsStrip({ streak, roundsToday, mastered, total, itemLabel = 'Palabras' }: StatsStripProps) {
+export function StatsStrip({ streak, roundsToday, mastered, total, itemLabel }: StatsStripProps) {
+  const { messages } = useI18n();
   const percent = total > 0 ? Math.round((mastered / total) * 100) : 0;
 
   return (
@@ -17,8 +20,8 @@ export function StatsStrip({ streak, roundsToday, mastered, total, itemLabel = '
             🔥
           </span>
           <div>
-            <p className="stat-label">Racha</p>
-            <p className="stat-value">{streak === 1 ? '1 día' : `${streak} días`}</p>
+            <p className="stat-label">{messages.streak}</p>
+            <p className="stat-value">{messages.days(streak)}</p>
           </div>
         </div>
         <div className="stat-tile">
@@ -26,14 +29,14 @@ export function StatsStrip({ streak, roundsToday, mastered, total, itemLabel = '
             🎯
           </span>
           <div>
-            <p className="stat-label">Hoy</p>
-            <p className="stat-value">{roundsToday === 1 ? '1 ronda' : `${roundsToday} rondas`}</p>
+            <p className="stat-label">{messages.today}</p>
+            <p className="stat-value">{messages.rounds(roundsToday)}</p>
           </div>
         </div>
       </div>
 
       <div className="progress-row">
-        <span>{itemLabel} afianzadas</span>
+        <span>{messages.mastered(itemLabel)}</span>
         <span>
           {mastered} / {total}
         </span>
@@ -43,8 +46,8 @@ export function StatsStrip({ streak, roundsToday, mastered, total, itemLabel = '
       </div>
       <p className="hint">
         {total === 0
-          ? 'Activá filas para tener contenido con el que practicar.'
-          : `${percent}% afianzado · hacen falta dos aciertos seguidos por ítem.`}
+          ? messages.emptyContent
+          : messages.masteryHint(percent)}
       </p>
     </section>
   );

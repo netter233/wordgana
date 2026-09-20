@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ContentCards } from './components/ContentCards';
+import { LanguagePicker } from './components/LanguagePicker';
 import { ModeCards } from './components/ModeCards';
 import { Practice } from './components/Practice';
 import { Results } from './components/Results';
@@ -12,6 +13,7 @@ import { rowsForScript, type KanaScript } from './data/kana';
 import { sentencesForScript, type PracticeKind } from './data/sentences';
 import { WORDS, type Word } from './data/words';
 import { isEligible, type PracticeMode } from './lib/kana';
+import { useI18n } from './i18n';
 import { countMastered, pickRound } from './lib/session';
 import {
   loadProgress,
@@ -37,6 +39,7 @@ interface RoundSummary {
 }
 
 export function App() {
+  const { messages } = useI18n();
   const initial = useMemo(loadSettings, []);
   const [screen, setScreen] = useState<Screen>('setup');
   const [activeScript, setActiveScript] = useState<KanaScript>(initial.activeScript);
@@ -148,7 +151,7 @@ export function App() {
     eligibleItems.length,
   );
   const scriptName = activeScript === 'hiragana' ? 'Hiragana' : 'Katakana';
-  const kindName = practiceKind === 'words' ? 'Palabras' : 'Oraciones';
+  const kindName = practiceKind === 'words' ? messages.words : messages.sentences;
   const mark = activeScript === 'hiragana' ? 'あ' : 'ア';
 
   if (screen === 'practice') {
@@ -170,7 +173,7 @@ export function App() {
   if (screen === 'results' && summary) {
     return (
       <main className="app">
-        <TopBar title="Resultado" mark={mark} onClose={() => setScreen('setup')} />
+        <TopBar title={messages.result} mark={mark} onClose={() => setScreen('setup')} />
         <Results
           total={round.length}
           correctCount={summary.correctCount}
@@ -186,7 +189,10 @@ export function App() {
   return (
     <main className="app app--setup">
       <TopBar title="WordGana" mark={mark} />
-      <p className="tagline">Practicá japonés con palabras reales, fila por fila.</p>
+      <div className="intro-row">
+        <p className="tagline">{messages.tagline}</p>
+        <LanguagePicker />
+      </div>
 
       <ScriptSwitch value={activeScript} onChange={setActiveScript} />
 
@@ -213,7 +219,7 @@ export function App() {
       />
       {activeScript === 'katakana' && practiceKind === 'sentences' && (
         <p className="advanced-assumption">
-          Las oraciones combinan katakana con hiragana, como se escribe naturalmente en japonés.
+          {messages.katakanaSentenceNote}
         </p>
       )}
       <ModeCards
@@ -229,20 +235,20 @@ export function App() {
         roundsToday={progress.roundsToday}
         mastered={countMastered(eligibleItems, stats, statKey)}
         total={eligibleItems.length}
-        itemLabel={practiceKind === 'words' ? 'Palabras' : 'Oraciones'}
+        itemLabel={practiceKind === 'words' ? messages.words : messages.sentences}
       />
 
       <div className="cta-bar">
         <button type="button" className="primary-btn" disabled={!canStart} onClick={startRound}>
           {!canStart
-            ? 'Elegí más filas'
+            ? messages.chooseMoreRows
             : practiceKind === 'sentences'
-              ? `Practicar ${nextRoundCount} oraciones`
-              : `Practicar ${nextRoundCount} palabras`}
+              ? messages.practiceItems(nextRoundCount, 'sentences')
+              : messages.practiceItems(nextRoundCount, 'words')}
         </button>
         {!canStart && (
           <p className="hint hint--center">
-            Activá más filas: hacen falta al menos {MIN_WORDS_TO_START} palabras disponibles.
+            {messages.minimumHint(MIN_WORDS_TO_START)}
           </p>
         )}
       </div>

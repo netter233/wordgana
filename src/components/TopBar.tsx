@@ -1,3 +1,5 @@
+import { useI18n } from '../i18n';
+
 interface TopBarProps {
   title: string;
   onClose?: () => void;
@@ -5,10 +7,11 @@ interface TopBarProps {
 }
 
 export function TopBar({ title, onClose, mark = 'あ' }: TopBarProps) {
+  const { messages } = useI18n();
   return (
     <header className="appbar">
       {onClose ? (
-        <button type="button" className="appbar-btn" onClick={onClose} aria-label="Salir al inicio">
+        <button type="button" className="appbar-btn" onClick={onClose} aria-label={messages.closeHome}>
           ✕
         </button>
       ) : (
