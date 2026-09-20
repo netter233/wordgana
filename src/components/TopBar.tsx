@@ -1,9 +1,10 @@
 interface TopBarProps {
   title: string;
   onClose?: () => void;
+  mark?: string;
 }
 
-export function TopBar({ title, onClose }: TopBarProps) {
+export function TopBar({ title, onClose, mark = 'あ' }: TopBarProps) {
   return (
     <header className="appbar">
       {onClose ? (
@@ -12,7 +13,7 @@ export function TopBar({ title, onClose }: TopBarProps) {
         </button>
       ) : (
         <span className="appbar-mark ja" aria-hidden="true">
-          あ
+          {mark}
         </span>
       )}
       <h1 className="appbar-title">{title}</h1>

@@ -2,6 +2,28 @@
 
 Registro de decisiones tomadas con el usuario (Bruno) y su porqué. Agregar una entrada por decisión nueva.
 
+## 2026-09-20 — Hiragana/Katakana y oraciones avanzadas
+
+**Decisión:** agregar un selector Hiragana/Katakana arriba de las estadísticas, con Hiragana a la izquierda.
+Cada silabario conserva por separado sus filas, modo Leer/Escribir y tipo Palabras/Oraciones; la racha y las
+rondas diarias siguen siendo globales. Katakana suma el alargador ー como fila especial además de ッ.
+
+**Avanzado:** Oraciones se desbloquea al seleccionar todas las filas del silabario activo. Es una elección
+separada de Leer/Escribir y no se activa automáticamente. Las rondas tienen 5 oraciones para compensar su
+longitud. El romaji de las oraciones se guarda explícitamente porque las partículas は, へ y を no tienen siempre
+su lectura literal.
+
+**Katakana en oraciones:** se presupone que quien completó katakana ya aprendió hiragana, siguiendo el orden
+de aprendizaje recomendado. Por eso las oraciones usan katakana para préstamos y nombres, e hiragana para
+partículas y flexiones, sin ayudas ni transliteración parcial.
+
+## 2026-09-20 — Proyecto iOS local con Capacitor
+
+**Decisión:** agregar Capacitor y un proyecto Xcode con el identificador
+`com.brunokupferberg.wordgana` para instalar WordGana directamente en un iPhone desde una Mac.
+**Por qué:** permite ejecutar la app como una aplicación local independiente del servidor de desarrollo y
+conserva el mismo código React/PWA. La firma queda gestionada por Xcode con el Apple ID del usuario.
+
 ## 2026-09-17 — Plataforma: PWA web, no app nativa
 
 **Decisión:** React + Vite + TypeScript como PWA instalable.

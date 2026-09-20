@@ -1,8 +1,9 @@
 # WordGana
 
-App web (PWA) para practicar hiragana de forma incremental: el usuario marca las filas del silabario que ya
-sabe y practica con palabras reales formadas solo por esas letras, en modo Leer (hiragana → romaji) o
-Escribir (romaji → hiragana con teclado japonés). Interfaz en español. Rondas de 10 palabras.
+App web (PWA) para practicar hiragana y katakana de forma incremental: el usuario marca las filas del
+silabario que ya sabe y practica con palabras reales formadas solo por esas letras, en modo Leer (kana →
+romaji) o Escribir (romaji → kana con teclado japonés). Al completar todas las filas se desbloquean rondas
+de 5 oraciones simples; las rondas de palabras son de 10. Interfaz en español.
 
 ## Cómo continuar el trabajo
 
@@ -32,8 +33,10 @@ npm run preview        # sirve dist/ (para probar PWA/offline)
 ## Estructura
 
 ```
-src/data/kana.ts      filas de hiragana y tabla kana → romaji con variantes aceptadas
-src/data/words.ts     lista curada de palabras { kana, es }
+src/data/kana.ts      filas de hiragana/katakana y tabla kana → romaji con variantes aceptadas
+src/data/words.ts     lista curada de palabras en hiragana { kana, es }
+src/data/katakanaWords.ts vocabulario curado que se escribe normalmente en katakana
+src/data/sentences.ts oraciones avanzadas con romaji explícito por las lecturas de partículas
 src/lib/kana.ts       tokenize, toRomaji, matchesRomaji, normalizeHiragana, isEligible, checkAnswer
 src/lib/session.ts    pickRound: arma la ronda de 10 sin repetidos, pesa ×3 las falladas; countMastered
 src/lib/storage.ts    localStorage (filas activas, modo, stats por palabra, racha), siempre con try/catch

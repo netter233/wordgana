@@ -4,28 +4,74 @@
  * persistencia para esa sesión.
  */
 import type { PracticeMode } from './kana';
+import type { KanaScript } from '../data/kana';
+import type { PracticeKind } from '../data/sentences';
 
-const SETTINGS_KEY = 'wordgana:settings:v1';
+const SETTINGS_KEY = 'wordgana:settings:v2';
+const LEGACY_SETTINGS_KEY = 'wordgana:settings:v1';
 
 export interface Settings {
-  enabledRowIds: string[];
-  mode: PracticeMode;
+  activeScript: KanaScript;
+  enabledRowIds: Record<KanaScript, string[]>;
+  mode: Record<KanaScript, PracticeMode>;
+  practiceKind: Record<KanaScript, PracticeKind>;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
-  enabledRowIds: ['a'],
-  mode: 'read',
+  activeScript: 'hiragana',
+  enabledRowIds: { hiragana: ['a'], katakana: ['a'] },
+  mode: { hiragana: 'read', katakana: 'read' },
+  practiceKind: { hiragana: 'words', katakana: 'words' },
 };
+
+function stringArray(value: unknown, fallback: string[]): string[] {
+  return Array.isArray(value)
+    ? value.filter((id): id is string => typeof id === 'string')
+    : fallback;
+}
+
+function practiceMode(value: unknown): PracticeMode {
+  return value === 'write' ? 'write' : 'read';
+}
+
+function practiceKind(value: unknown): PracticeKind {
+  return value === 'sentences' ? 'sentences' : 'words';
+}
 
 export function loadSettings(): Settings {
   try {
     const raw = localStorage.getItem(SETTINGS_KEY);
-    if (!raw) return DEFAULT_SETTINGS;
+    if (!raw) {
+      const legacyRaw = localStorage.getItem(LEGACY_SETTINGS_KEY);
+      if (!legacyRaw) return DEFAULT_SETTINGS;
+      const legacy = JSON.parse(legacyRaw) as { enabledRowIds?: unknown; mode?: unknown };
+      return {
+        ...DEFAULT_SETTINGS,
+        enabledRowIds: {
+          hiragana: stringArray(legacy.enabledRowIds, DEFAULT_SETTINGS.enabledRowIds.hiragana),
+          katakana: DEFAULT_SETTINGS.enabledRowIds.katakana,
+        },
+        mode: {
+          hiragana: practiceMode(legacy.mode),
+          katakana: DEFAULT_SETTINGS.mode.katakana,
+        },
+      };
+    }
     const parsed = JSON.parse(raw) as Partial<Settings>;
-    if (!Array.isArray(parsed.enabledRowIds)) return DEFAULT_SETTINGS;
     return {
-      enabledRowIds: parsed.enabledRowIds.filter((id): id is string => typeof id === 'string'),
-      mode: parsed.mode === 'write' ? 'write' : 'read',
+      activeScript: parsed.activeScript === 'katakana' ? 'katakana' : 'hiragana',
+      enabledRowIds: {
+        hiragana: stringArray(parsed.enabledRowIds?.hiragana, DEFAULT_SETTINGS.enabledRowIds.hiragana),
+        katakana: stringArray(parsed.enabledRowIds?.katakana, DEFAULT_SETTINGS.enabledRowIds.katakana),
+      },
+      mode: {
+        hiragana: practiceMode(parsed.mode?.hiragana),
+        katakana: practiceMode(parsed.mode?.katakana),
+      },
+      practiceKind: {
+        hiragana: practiceKind(parsed.practiceKind?.hiragana),
+        katakana: practiceKind(parsed.practiceKind?.katakana),
+      },
     };
   } catch {
     return DEFAULT_SETTINGS;

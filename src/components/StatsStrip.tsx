@@ -3,9 +3,10 @@ interface StatsStripProps {
   roundsToday: number;
   mastered: number;
   total: number;
+  itemLabel?: 'Palabras' | 'Oraciones';
 }
 
-export function StatsStrip({ streak, roundsToday, mastered, total }: StatsStripProps) {
+export function StatsStrip({ streak, roundsToday, mastered, total, itemLabel = 'Palabras' }: StatsStripProps) {
   const percent = total > 0 ? Math.round((mastered / total) * 100) : 0;
 
   return (
@@ -32,7 +33,7 @@ export function StatsStrip({ streak, roundsToday, mastered, total }: StatsStripP
       </div>
 
       <div className="progress-row">
-        <span>Palabras dominadas</span>
+        <span>{itemLabel} dominadas</span>
         <span>
           {mastered} / {total}
         </span>
@@ -42,7 +43,7 @@ export function StatsStrip({ streak, roundsToday, mastered, total }: StatsStripP
       </div>
       <p className="hint">
         {total === 0
-          ? 'Activá filas para tener palabras con las que practicar.'
+          ? 'Activá filas para tener contenido con el que practicar.'
           : `${percent}% dominado con las filas que tenés activas.`}
       </p>
     </section>

@@ -1,9 +1,49 @@
-import { describe, expect, it } from 'vitest';
-import { EMPTY_PROGRESS, dayKey, normalizeProgress, recordRound, type Progress } from './storage';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import {
+  EMPTY_PROGRESS,
+  dayKey,
+  loadSettings,
+  normalizeProgress,
+  recordRound,
+  saveSettings,
+  type Progress,
+} from './storage';
 
 const today = new Date(2026, 8, 17, 10, 0);
 const yesterday = new Date(2026, 8, 16, 10, 0);
 const twoDaysAgo = new Date(2026, 8, 15, 10, 0);
+
+describe('settings', () => {
+  const values = new Map<string, string>();
+
+  beforeEach(() => {
+    values.clear();
+    vi.stubGlobal('localStorage', {
+      getItem: (key: string) => values.get(key) ?? null,
+      setItem: (key: string, value: string) => values.set(key, value),
+    });
+  });
+
+  it('migra filas y modo de la configuración anterior sin perderlos', () => {
+    values.set('wordgana:settings:v1', JSON.stringify({ enabledRowIds: ['a', 'ka'], mode: 'write' }));
+    expect(loadSettings()).toMatchObject({
+      activeScript: 'hiragana',
+      enabledRowIds: { hiragana: ['a', 'ka'], katakana: ['a'] },
+      mode: { hiragana: 'write', katakana: 'read' },
+    });
+  });
+
+  it('guarda y recupera las preferencias independientes', () => {
+    const settings = {
+      activeScript: 'katakana' as const,
+      enabledRowIds: { hiragana: ['a'], katakana: ['a', 'ka'] },
+      mode: { hiragana: 'read' as const, katakana: 'write' as const },
+      practiceKind: { hiragana: 'words' as const, katakana: 'sentences' as const },
+    };
+    saveSettings(settings);
+    expect(loadSettings()).toEqual(settings);
+  });
+});
 
 describe('dayKey', () => {
   it('usa la fecha local, no UTC', () => {

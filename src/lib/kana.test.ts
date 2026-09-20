@@ -27,8 +27,8 @@ describe('tryTokenize', () => {
     expect(tokens.map((t) => t.type)).toEqual(['unit', 'unit', 'unit', 'unit']);
   });
 
-  it('devuelve null ante caracteres que no son hiragana conocido', () => {
-    expect(tryTokenize('カタカナ')).toBeNull();
+  it('tokeniza katakana y devuelve null ante caracteres desconocidos', () => {
+    expect(tryTokenize('カタカナ')).toHaveLength(4);
     expect(tryTokenize('abc')).toBeNull();
     expect(tryTokenize('')).toEqual([]);
   });
@@ -53,6 +53,10 @@ describe('toRomaji', () => {
 
   it('みず -> mizu', () => {
     expect(toRomaji('みず')).toBe('mizu');
+  });
+
+  it('コーヒー -> koohii (soporta el alargador de katakana)', () => {
+    expect(toRomaji('コーヒー')).toBe('koohii');
   });
 });
 
@@ -144,8 +148,17 @@ describe('checkAnswer', () => {
     expect(checkAnswer('mizu', 'みず', 'write')).toBe(false);
   });
 
-  it('modo write acepta katakana normalizado a hiragana', () => {
-    expect(checkAnswer('ミズ', 'みず', 'write')).toBe(true);
+  it('modo write exige el silabario seleccionado', () => {
+    expect(checkAnswer('ミズ', 'みず', 'write', 'hiragana')).toBe(false);
+    expect(checkAnswer('ミズ', 'ミズ', 'write', 'katakana')).toBe(true);
+    expect(checkAnswer('みず', 'ミズ', 'write', 'katakana')).toBe(false);
+  });
+
+  it('valida lectura y oraciones con romaji explícito', () => {
+    expect(checkAnswer('koohii', 'コーヒー', 'read', 'katakana')).toBe(true);
+    expect(checkAnswer('mizu o nomimasu', 'みずを のみます。', 'read', 'hiragana', 'mizu o nomimasu')).toBe(true);
+    expect(checkAnswer('みずをのみます', 'みずを のみます。', 'write', 'hiragana')).toBe(true);
+    expect(checkAnswer('Mizu o nomimasu.', 'みずを のみます。', 'read', 'hiragana', 'mizu o nomimasu')).toBe(true);
   });
 
   it('rechaza respuesta vacía', () => {

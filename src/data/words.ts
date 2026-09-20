@@ -14,6 +14,8 @@ export interface Word {
   kana: string;
   es: string;
   emoji?: string;
+  /** Se guarda sólo en oraciones, donde las partículas cambian la lectura literal del kana. */
+  romaji?: string;
 }
 
 export const WORDS: Word[] = [

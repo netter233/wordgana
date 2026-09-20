@@ -1,4 +1,4 @@
-import { KANA_ROWS, SOKUON_ROW_ID, type KanaSection } from '../data/kana';
+import { CHOON_ROW_ID, SOKUON_ROW_ID, type KanaRow, type KanaSection } from '../data/kana';
 
 const SECTION_LABELS: Record<KanaSection, string> = {
   basic: 'Básicas',
@@ -10,14 +10,15 @@ const SECTION_LABELS: Record<KanaSection, string> = {
 const SECTION_ORDER: KanaSection[] = ['basic', 'dakuten', 'yoon', 'special'];
 
 interface RowPickerProps {
+  rows: KanaRow[];
   enabledRowIds: Set<string>;
   onToggle: (rowId: string) => void;
   onSetAll: (rowIds: string[]) => void;
   eligibleCount: number;
 }
 
-export function RowPicker({ enabledRowIds, onToggle, onSetAll, eligibleCount }: RowPickerProps) {
-  const allRowIds = KANA_ROWS.map((r) => r.id);
+export function RowPicker({ rows: kanaRows, enabledRowIds, onToggle, onSetAll, eligibleCount }: RowPickerProps) {
+  const allRowIds = kanaRows.map((r) => r.id);
 
   return (
     <section className="card">
@@ -34,7 +35,7 @@ export function RowPicker({ enabledRowIds, onToggle, onSetAll, eligibleCount }: 
       </div>
 
       {SECTION_ORDER.map((section) => {
-        const rows = KANA_ROWS.filter((r) => r.section === section);
+        const rows = kanaRows.filter((r) => r.section === section);
         if (rows.length === 0) return null;
         return (
           <div className="row-section" key={section}>
@@ -56,6 +57,9 @@ export function RowPicker({ enabledRowIds, onToggle, onSetAll, eligibleCount }: 
                     )}
                     {row.id === SOKUON_ROW_ID && (
                       <span className="chip-kana">duplica consonantes</span>
+                    )}
+                    {row.id === CHOON_ROW_ID && (
+                      <span className="chip-kana">alarga la vocal</span>
                     )}
                   </button>
                 );

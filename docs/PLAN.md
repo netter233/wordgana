@@ -123,7 +123,13 @@ abrir el repo, leer `CLAUDE.md` y continuar desde la primera etapa sin tildar.
       Cambiar filas). Stats por palabra guardadas.
 - [x] **Etapa 6 — PWA y pulido móvil.** Manifest, íconos 192/512, service worker offline, `lang="ja"` en el input
       de modo Escribir, prueba real en iPhone por LAN (`npm run dev -- --host`). README con instalación en iOS.
-- [ ] **Etapa 7 (futuro, no ahora) — App Store.** Capacitor + Xcode. Solo documentar en README.
+- [x] **Etapa 7 — Proyecto iOS local.** Capacitor + Xcode configurados para compilar e instalar la app
+      directamente en un iPhone desde una Mac. La publicación en App Store sigue fuera de alcance.
+- [x] **Etapa 8 — Katakana.** Selector Hiragana/Katakana, filas y preferencias independientes, vocabulario
+      propio, soporte de ッ y ー, y rondas de lectura/escritura reutilizando el flujo existente.
+- [x] **Etapa 9 — Oraciones avanzadas.** Desbloqueo al seleccionar todas las filas, selector Palabras/Oraciones,
+      rondas de 5 frases simples, traducciones y lecturas de partículas correctas. Las oraciones de katakana
+      combinan katakana con hiragana gramatical y asumen que el usuario ya aprendió hiragana.
 
 ## Verificación
 

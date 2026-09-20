@@ -1,10 +1,19 @@
 /**
  * Lógica de kana: tokenización, generación de romaji canónico, validación de respuestas.
  *
- * El romaji nunca se guarda en los datos (ver src/data/words.ts): siempre se deriva de aquí,
- * a partir de la tabla de src/data/kana.ts, para tener una única fuente de verdad.
+ * El romaji de palabras se deriva siempre de la tabla de src/data/kana.ts. Las oraciones guardan
+ * una lectura explícita porque las partículas pueden tener una pronunciación distinta de su kana.
  */
-import { KANA_ROWS, SOKUON, SOKUON_ROW_ID, type KanaUnit } from '../data/kana';
+import {
+  CHOON,
+  CHOON_ROW_ID,
+  HIRAGANA_ROWS,
+  KATAKANA_ROWS,
+  SOKUON,
+  SOKUON_ROW_ID,
+  type KanaScript,
+  type KanaUnit,
+} from '../data/kana';
 
 export type PracticeMode = 'read' | 'write';
 
@@ -14,7 +23,7 @@ interface IndexedUnit extends KanaUnit {
 
 function buildUnitIndex(): Map<string, IndexedUnit> {
   const map = new Map<string, IndexedUnit>();
-  for (const row of KANA_ROWS) {
+  for (const row of [...HIRAGANA_ROWS, ...KATAKANA_ROWS]) {
     for (const unit of row.units) {
       map.set(unit.kana, { ...unit, rowId: row.id });
     }
@@ -24,10 +33,13 @@ function buildUnitIndex(): Map<string, IndexedUnit> {
 
 const UNIT_INDEX = buildUnitIndex();
 
-export type KanaToken = { type: 'unit'; unit: IndexedUnit } | { type: 'sokuon' };
+export type KanaToken =
+  | { type: 'unit'; unit: IndexedUnit }
+  | { type: 'sokuon' }
+  | { type: 'choon' };
 
 /**
- * Divide una palabra en hiragana en sus unidades (きゃ, き, っ, ん, ...), matcheando primero
+ * Divide una palabra en hiragana o katakana en sus unidades, matcheando primero
  * combinaciones de 2 caracteres (yōon) y después caracteres sueltos. Devuelve `null` si algún
  * carácter no es un hiragana conocido por la tabla (útil para validar datos).
  */
@@ -36,8 +48,13 @@ export function tryTokenize(kana: string): KanaToken[] | null {
   let i = 0;
   while (i < kana.length) {
     const ch = kana[i];
-    if (ch === SOKUON) {
+    if (ch === SOKUON || ch === 'ッ') {
       tokens.push({ type: 'sokuon' });
+      i += 1;
+      continue;
+    }
+    if (ch === CHOON) {
+      tokens.push({ type: 'choon' });
       i += 1;
       continue;
     }
@@ -87,6 +104,12 @@ function tokensToVariantGroups(tokens: KanaToken[]): string[][] {
       pendingSokuon = true;
       continue;
     }
+    if (token.type === 'choon') {
+      const previous = groups.at(-1);
+      if (!previous) continue;
+      groups.push(previous.map((variant) => variant.match(/[aeiou]$/)?.[0] ?? ''));
+      continue;
+    }
     const variants = [token.unit.romaji, ...(token.unit.variants ?? [])];
     groups.push(pendingSokuon ? variants.map(doubleConsonant) : variants);
     pendingSokuon = false;
@@ -94,7 +117,7 @@ function tokensToVariantGroups(tokens: KanaToken[]): string[][] {
   return groups;
 }
 
-/** Romaji canónico (Hepburn) de una palabra en hiragana. */
+/** Romaji canónico (Hepburn) de una palabra en hiragana o katakana. */
 export function toRomaji(kana: string): string {
   const groups = tokensToVariantGroups(tokenize(kana));
   return groups.map((group) => group[0]).join('');
@@ -108,7 +131,7 @@ function normalizeRomaji(input: string): string {
     .toLowerCase()
     .trim()
     .replace(/[āīūēō]/g, (m) => MACRONS[m] ?? m)
-    .replace(/\s+/g, '');
+    .replace(/[\s.,!?\-]+/g, '');
 }
 
 /** Backtracking simple: prueba cada variante posible en la posición actual antes de avanzar. */
@@ -148,13 +171,25 @@ export function normalizeHiragana(input: string): string {
   return out;
 }
 
+/** Normaliza espacios y puntuación opcional sin cambiar el silabario escrito. */
+export function normalizeKana(input: string): string {
+  return input
+    .normalize('NFKC')
+    .trim()
+    .replace(/[\s、。,.!?\-]/g, '');
+}
+
 /** ¿Todas las unidades de esta palabra pertenecen a filas ya marcadas como aprendidas? */
 export function isEligible(kanaWord: string, enabledRowIds: ReadonlySet<string> | readonly string[]): boolean {
   const enabled = enabledRowIds instanceof Set ? enabledRowIds : new Set(enabledRowIds);
   const tokens = tryTokenize(kanaWord);
   if (!tokens) return false;
   for (const token of tokens) {
-    const rowId = token.type === 'sokuon' ? SOKUON_ROW_ID : token.unit.rowId;
+    const rowId = token.type === 'sokuon'
+      ? SOKUON_ROW_ID
+      : token.type === 'choon'
+        ? CHOON_ROW_ID
+        : token.unit.rowId;
     if (!enabled.has(rowId)) return false;
   }
   return true;
@@ -162,14 +197,24 @@ export function isEligible(kanaWord: string, enabledRowIds: ReadonlySet<string> 
 
 /**
  * Valida la respuesta del usuario para una palabra dada.
- * - Modo "read" (se muestra hiragana): acepta romaji o el propio hiragana (teclados con IME).
- * - Modo "write" (se muestra romaji): solo acepta hiragana.
+ * - Modo "read": acepta romaji o el kana mostrado.
+ * - Modo "write": exige el mismo silabario que usa la respuesta esperada.
  */
-export function checkAnswer(input: string, wordKana: string, mode: PracticeMode): boolean {
+export function checkAnswer(
+  input: string,
+  wordKana: string,
+  mode: PracticeMode,
+  script: KanaScript = 'hiragana',
+  expectedRomaji?: string,
+): boolean {
   if (!input.trim()) return false;
   if (mode === 'write') {
-    return normalizeHiragana(input) === wordKana;
+    return normalizeKana(input) === normalizeKana(wordKana);
   }
-  if (normalizeHiragana(input) === wordKana) return true;
+  if (normalizeKana(input) === normalizeKana(wordKana)) return true;
+  if (expectedRomaji) return normalizeRomaji(input) === normalizeRomaji(expectedRomaji);
+  if (script === 'katakana' && normalizeHiragana(input) === normalizeHiragana(wordKana)) {
+    return false;
+  }
   return matchesRomaji(input, wordKana);
 }

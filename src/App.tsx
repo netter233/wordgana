@@ -1,27 +1,33 @@
 import { useEffect, useMemo, useState } from 'react';
-import { RowPicker } from './components/RowPicker';
+import { ContentCards } from './components/ContentCards';
 import { ModeCards } from './components/ModeCards';
 import { Practice } from './components/Practice';
 import { Results } from './components/Results';
-import { TopBar } from './components/TopBar';
+import { RowPicker } from './components/RowPicker';
+import { ScriptSwitch } from './components/ScriptSwitch';
 import { StatsStrip } from './components/StatsStrip';
+import { TopBar } from './components/TopBar';
+import { KATAKANA_WORDS } from './data/katakanaWords';
+import { rowsForScript, type KanaScript } from './data/kana';
+import { sentencesForScript, type PracticeKind } from './data/sentences';
 import { WORDS, type Word } from './data/words';
 import { isEligible, type PracticeMode } from './lib/kana';
 import { countMastered, pickRound } from './lib/session';
 import {
-  loadSettings,
-  saveSettings,
-  loadStats,
-  saveStats,
-  recordAnswer,
   loadProgress,
-  saveProgress,
+  loadSettings,
+  loadStats,
+  recordAnswer,
   recordRound,
+  saveProgress,
+  saveSettings,
+  saveStats,
   type StatsMap,
 } from './lib/storage';
 
 const MIN_WORDS_TO_START = 3;
-const ROUND_SIZE = 10;
+const WORD_ROUND_SIZE = 10;
+const SENTENCE_ROUND_SIZE = 5;
 
 type Screen = 'setup' | 'practice' | 'results';
 
@@ -33,49 +39,88 @@ interface RoundSummary {
 export function App() {
   const initial = useMemo(loadSettings, []);
   const [screen, setScreen] = useState<Screen>('setup');
-  const [enabledRowIds, setEnabledRowIds] = useState<string[]>(initial.enabledRowIds);
-  const [mode, setMode] = useState<PracticeMode>(initial.mode);
+  const [activeScript, setActiveScript] = useState<KanaScript>(initial.activeScript);
+  const [enabledRows, setEnabledRows] = useState(initial.enabledRowIds);
+  const [modes, setModes] = useState(initial.mode);
+  const [practiceKinds, setPracticeKinds] = useState(initial.practiceKind);
   const [stats, setStats] = useState<StatsMap>(loadStats);
   const [progress, setProgress] = useState(loadProgress);
   const [round, setRound] = useState<Word[]>([]);
   const [summary, setSummary] = useState<RoundSummary | null>(null);
 
-  useEffect(() => {
-    saveSettings({ enabledRowIds, mode });
-  }, [enabledRowIds, mode]);
-
+  const rows = rowsForScript(activeScript);
+  const enabledRowIds = enabledRows[activeScript];
   const enabledSet = useMemo(() => new Set(enabledRowIds), [enabledRowIds]);
+  const allRowsSelected = rows.every((row) => enabledSet.has(row.id));
+  const mode = modes[activeScript];
+  const practiceKind = practiceKinds[activeScript];
 
-  const eligibleWords = useMemo(
-    () => WORDS.filter((w) => isEligible(w.kana, enabledSet)),
-    [enabledSet],
-  );
+  useEffect(() => {
+    saveSettings({
+      activeScript,
+      enabledRowIds: enabledRows,
+      mode: modes,
+      practiceKind: practiceKinds,
+    });
+  }, [activeScript, enabledRows, modes, practiceKinds]);
 
-  const exampleWord = eligibleWords.length > 0 ? eligibleWords[Math.floor(eligibleWords.length / 2)] : null;
+  useEffect(() => {
+    if (practiceKinds[activeScript] === 'sentences' && !allRowsSelected) {
+      setPracticeKinds((previous) => ({ ...previous, [activeScript]: 'words' }));
+    }
+  }, [activeScript, allRowsSelected, practiceKinds]);
+
+  const eligibleWords = useMemo(() => {
+    const words = activeScript === 'hiragana' ? WORDS : KATAKANA_WORDS;
+    return words.filter((word) => isEligible(word.kana, enabledSet));
+  }, [activeScript, enabledSet]);
+
+  const eligibleItems = practiceKind === 'sentences' && allRowsSelected
+    ? sentencesForScript(activeScript)
+    : eligibleWords;
+  const example = eligibleItems.length > 0 ? eligibleItems[Math.floor(eligibleItems.length / 2)] : null;
 
   function toggleRow(rowId: string) {
-    setEnabledRowIds((prev) =>
-      prev.includes(rowId) ? prev.filter((id) => id !== rowId) : [...prev, rowId],
-    );
+    setEnabledRows((previous) => {
+      const current = previous[activeScript];
+      const next = current.includes(rowId)
+        ? current.filter((id) => id !== rowId)
+        : [...current, rowId];
+      return { ...previous, [activeScript]: next };
+    });
+  }
+
+  function setAllRows(rowIds: string[]) {
+    setEnabledRows((previous) => ({ ...previous, [activeScript]: rowIds }));
+  }
+
+  function setMode(modeValue: PracticeMode) {
+    setModes((previous) => ({ ...previous, [activeScript]: modeValue }));
+  }
+
+  function setPracticeKind(kind: PracticeKind) {
+    if (kind === 'sentences' && !allRowsSelected) return;
+    setPracticeKinds((previous) => ({ ...previous, [activeScript]: kind }));
   }
 
   function startRound() {
-    setRound(pickRound(eligibleWords, ROUND_SIZE, stats));
+    const size = practiceKind === 'sentences' ? SENTENCE_ROUND_SIZE : WORD_ROUND_SIZE;
+    setRound(pickRound(eligibleItems, size, stats));
     setSummary(null);
     setScreen('practice');
   }
 
-  function handleAnswer(word: Word, correct: boolean) {
-    setStats((prev) => {
-      const next = recordAnswer(prev, word.kana, correct);
+  function handleAnswer(item: Word, correct: boolean) {
+    setStats((previous) => {
+      const next = recordAnswer(previous, item.kana, correct);
       saveStats(next);
       return next;
     });
   }
 
   function handleFinish(roundSummary: RoundSummary) {
-    setProgress((prev) => {
-      const next = recordRound(prev);
+    setProgress((previous) => {
+      const next = recordRound(previous);
       saveProgress(next);
       return next;
     });
@@ -83,13 +128,24 @@ export function App() {
     setScreen('results');
   }
 
-  const canStart = eligibleWords.length >= MIN_WORDS_TO_START;
+  const minimum = practiceKind === 'sentences' ? 1 : MIN_WORDS_TO_START;
+  const canStart = eligibleItems.length >= minimum;
+  const scriptName = activeScript === 'hiragana' ? 'Hiragana' : 'Katakana';
+  const kindName = practiceKind === 'words' ? 'Palabras' : 'Oraciones';
+  const mark = activeScript === 'hiragana' ? 'あ' : 'ア';
 
   if (screen === 'practice') {
     return (
       <main className="app">
-        <TopBar title="Ronda de práctica" onClose={() => setScreen('setup')} />
-        <Practice words={round} mode={mode} onAnswer={handleAnswer} onFinish={handleFinish} />
+        <TopBar title={`${kindName} · ${scriptName}`} mark={mark} onClose={() => setScreen('setup')} />
+        <Practice
+          words={round}
+          mode={mode}
+          script={activeScript}
+          practiceKind={practiceKind}
+          onAnswer={handleAnswer}
+          onFinish={handleFinish}
+        />
       </main>
     );
   }
@@ -97,7 +153,7 @@ export function App() {
   if (screen === 'results' && summary) {
     return (
       <main className="app">
-        <TopBar title="Resultado" onClose={() => setScreen('setup')} />
+        <TopBar title="Resultado" mark={mark} onClose={() => setScreen('setup')} />
         <Results
           total={round.length}
           correctCount={summary.correctCount}
@@ -111,24 +167,41 @@ export function App() {
 
   return (
     <main className="app app--setup">
-      <TopBar title="WordGana" />
-      <p className="tagline">Practicá hiragana con palabras reales, fila por fila.</p>
+      <TopBar title="WordGana" mark={mark} />
+      <p className="tagline">Practicá japonés con palabras reales, fila por fila.</p>
+
+      <ScriptSwitch value={activeScript} onChange={setActiveScript} />
 
       <StatsStrip
         streak={progress.streak}
         roundsToday={progress.roundsToday}
-        mastered={countMastered(eligibleWords, stats)}
-        total={eligibleWords.length}
+        mastered={countMastered(eligibleItems, stats)}
+        total={eligibleItems.length}
+        itemLabel={practiceKind === 'words' ? 'Palabras' : 'Oraciones'}
       />
 
       <RowPicker
+        rows={rows}
         enabledRowIds={enabledSet}
         onToggle={toggleRow}
-        onSetAll={setEnabledRowIds}
+        onSetAll={setAllRows}
         eligibleCount={eligibleWords.length}
       />
 
-      <ModeCards mode={mode} onSelect={setMode} example={exampleWord} />
+      <ContentCards value={practiceKind} unlocked={allRowsSelected} onChange={setPracticeKind} />
+      <ModeCards
+        mode={mode}
+        onSelect={setMode}
+        example={example}
+        script={activeScript}
+        practiceKind={practiceKind}
+      />
+
+      {activeScript === 'katakana' && practiceKind === 'sentences' && (
+        <p className="advanced-assumption">
+          Las oraciones combinan katakana con hiragana, como se escribe naturalmente en japonés.
+        </p>
+      )}
 
       <div className="cta-bar">
         <button type="button" className="primary-btn" disabled={!canStart} onClick={startRound}>

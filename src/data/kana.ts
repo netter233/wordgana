@@ -8,6 +8,7 @@
  * como un caso aparte.
  */
 
+export type KanaScript = 'hiragana' | 'katakana';
 export type KanaSection = 'basic' | 'dakuten' | 'yoon' | 'special';
 
 export interface KanaUnit {
@@ -25,6 +26,8 @@ export interface KanaRow {
 
 export const SOKUON = 'っ';
 export const SOKUON_ROW_ID = 'sokuon';
+export const CHOON = 'ー';
+export const CHOON_ROW_ID = 'choon';
 
 const basicRows: KanaRow[] = [
   {
@@ -335,4 +338,34 @@ const specialRows: KanaRow[] = [
   },
 ];
 
-export const KANA_ROWS: KanaRow[] = [...basicRows, ...dakutenRows, ...yoonRows, ...specialRows];
+export const HIRAGANA_ROWS: KanaRow[] = [...basicRows, ...dakutenRows, ...yoonRows, ...specialRows];
+
+function hiraganaToKatakana(value: string): string {
+  return [...value].map((character) => {
+    const code = character.codePointAt(0)!;
+    return code >= 0x3041 && code <= 0x3096
+      ? String.fromCodePoint(code + 0x60)
+      : character;
+  }).join('');
+}
+
+export const KATAKANA_ROWS: KanaRow[] = [
+  ...HIRAGANA_ROWS.map((row) => ({
+    ...row,
+    label: hiraganaToKatakana(row.label),
+    units: row.units.map((unit) => ({ ...unit, kana: hiraganaToKatakana(unit.kana) })),
+  })),
+  {
+    id: CHOON_ROW_ID,
+    label: CHOON,
+    section: 'special',
+    units: [],
+  },
+];
+
+/** Alias histórico para consumidores que trabajan sólo con hiragana. */
+export const KANA_ROWS = HIRAGANA_ROWS;
+
+export function rowsForScript(script: KanaScript): KanaRow[] {
+  return script === 'hiragana' ? HIRAGANA_ROWS : KATAKANA_ROWS;
+}

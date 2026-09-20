@@ -1,5 +1,5 @@
-import { toRomaji } from '../lib/kana';
 import type { Word } from '../data/words';
+import { readingFor } from '../lib/study';
 
 interface ResultsProps {
   total: number;
@@ -27,7 +27,7 @@ export function Results({ total, correctCount, missed, onRestartSameRound, onCha
           <ul>
             {missed.map((w) => (
               <li key={w.kana}>
-                <span className="ja">{w.kana}</span> · {toRomaji(w.kana)} · {w.es}
+                <span className="ja">{w.kana}</span> · {readingFor(w)} · {w.es}
               </li>
             ))}
           </ul>
