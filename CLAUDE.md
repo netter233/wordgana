@@ -38,8 +38,8 @@ src/data/words.ts     lista curada de palabras en hiragana { kana, es }
 src/data/katakanaWords.ts vocabulario curado que se escribe normalmente en katakana
 src/data/sentences.ts oraciones avanzadas con romaji explícito por las lecturas de partículas
 src/lib/kana.ts       tokenize, toRomaji, matchesRomaji, normalizeHiragana, isEligible, checkAnswer
-src/lib/session.ts    pickRound: arma la ronda de 10 sin repetidos, pesa ×3 las falladas; countMastered
-src/lib/storage.ts    localStorage (filas activas, modo, stats por palabra, racha), siempre con try/catch
+src/lib/session.ts    arma rondas sin repetidos y prioriza ítems que necesitan repaso; countMastered
+src/lib/storage.ts    localStorage (filas, modo, stats por contexto, racha), siempre con try/catch
 src/components/       TopBar, StatsStrip, RowPicker, ModeCards, Practice, Results
 src/App.tsx           estado global: pantalla, filas, modo, ronda
 ```

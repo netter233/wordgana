@@ -130,6 +130,9 @@ abrir el repo, leer `CLAUDE.md` y continuar desde la primera etapa sin tildar.
 - [x] **Etapa 9 — Oraciones avanzadas.** Desbloqueo al seleccionar todas las filas, selector Palabras/Oraciones,
       rondas de 5 frases simples, traducciones y lecturas de partículas correctas. Las oraciones de katakana
       combinan katakana con hiragana gramatical y asumen que el usuario ya aprendió hiragana.
+- [x] **Etapa 10 — UX de práctica y progreso.** Progreso recuperable con dos aciertos consecutivos y separado
+      por modo, filas colapsables, corrección de texto alineada, "No me acuerdo", textarea compatible con IME
+      y repaso inmediato de los errores de una ronda.
 
 ## Verificación
 

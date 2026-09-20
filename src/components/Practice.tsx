@@ -3,6 +3,7 @@ import type { Word } from '../data/words';
 import type { KanaScript } from '../data/kana';
 import type { PracticeKind } from '../data/sentences';
 import { checkAnswer, type PracticeMode } from '../lib/kana';
+import { alignAnswer } from '../lib/answerDiff';
 import { readingFor } from '../lib/study';
 
 interface PracticeProps {
@@ -20,13 +21,16 @@ export function Practice({ words, mode, script, practiceKind, onAnswer, onFinish
   const [correct, setCorrect] = useState<boolean | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
   const [missed, setMissed] = useState<Word[]>([]);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const wordInputRef = useRef<HTMLInputElement>(null);
+  const sentenceInputRef = useRef<HTMLTextAreaElement>(null);
+  const composingRef = useRef(false);
 
   const word = words[index];
 
   useEffect(() => {
-    inputRef.current?.focus();
-  }, [index]);
+    if (practiceKind === 'sentences') sentenceInputRef.current?.focus();
+    else wordInputRef.current?.focus();
+  }, [index, practiceKind]);
 
   if (!word) return null;
 
@@ -36,16 +40,22 @@ export function Practice({ words, mode, script, practiceKind, onAnswer, onFinish
   const expectedAnswer = mode === 'read' ? reading : word.kana;
   const compactValue = value.trim().replace(/[\s、。,.!?\-]/g, '');
   const compactExpected = expectedAnswer.trim().replace(/[\s、。,.!?\-]/g, '').toLowerCase();
+  const answerDiff = alignAnswer(compactValue, compactExpected);
+
+  function gradeAnswer(ok: boolean) {
+    setCorrect(ok);
+    onAnswer(word, ok);
+    if (ok) setCorrectCount((count) => count + 1);
+    else setMissed((items) => [...items, word]);
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     if (correct === null) {
+      if (composingRef.current || !value.trim()) return;
       const ok = checkAnswer(value, word.kana, mode, script, word.romaji);
-      setCorrect(ok);
-      onAnswer(word, ok);
-      if (ok) setCorrectCount((c) => c + 1);
-      else setMissed((m) => [...m, word]);
+      gradeAnswer(ok);
       return;
     }
 
@@ -57,6 +67,38 @@ export function Practice({ words, mode, script, practiceKind, onAnswer, onFinish
     setValue('');
     setCorrect(null);
   }
+
+  function handleReveal() {
+    if (correct === null) gradeAnswer(false);
+  }
+
+  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    if (event.key !== 'Enter') return;
+    if (event.nativeEvent.isComposing || composingRef.current) {
+      event.preventDefault();
+      return;
+    }
+    if (practiceKind === 'sentences' && !event.shiftKey) {
+      event.preventDefault();
+      event.currentTarget.form?.requestSubmit();
+    }
+  }
+
+  const sharedInputProps = {
+    value,
+    onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setValue(event.target.value),
+    onCompositionStart: () => { composingRef.current = true; },
+    onCompositionEnd: () => { composingRef.current = false; },
+    onKeyDown: handleKeyDown,
+    lang: mode === 'write' ? 'ja' : undefined,
+    autoCapitalize: 'off' as const,
+    autoCorrect: 'off' as const,
+    autoComplete: 'off',
+    enterKeyHint: 'done' as const,
+    spellCheck: false,
+    disabled: correct !== null,
+    'aria-label': mode === 'read' ? 'Tu respuesta en romaji' : 'Tu respuesta en kana',
+  };
 
   return (
     <section>
@@ -78,30 +120,42 @@ export function Practice({ words, mode, script, practiceKind, onAnswer, onFinish
       <div className={promptClass}>{prompt}</div>
 
       <form onSubmit={handleSubmit}>
-        <input
-          ref={inputRef}
-          className="answer-input"
-          type="text"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          lang={mode === 'write' ? 'ja' : undefined}
-          autoCapitalize="off"
-          autoCorrect="off"
-          spellCheck={false}
-          disabled={correct !== null}
-          placeholder={mode === 'write'
-            ? practiceKind === 'sentences'
-              ? 'かなで…'
-              : script === 'hiragana' ? 'ひらがなで…' : 'カタカナで…'
-            : 'romaji…'}
-        />
-        <button type="submit" className="primary-btn">
+        {practiceKind === 'sentences' ? (
+          <textarea
+            {...sharedInputProps}
+            ref={sentenceInputRef}
+            className="answer-input answer-input--sentence"
+            rows={2}
+            placeholder={mode === 'write' ? 'かなで…' : 'romaji…'}
+          />
+        ) : (
+          <input
+            {...sharedInputProps}
+            ref={wordInputRef}
+            className="answer-input"
+            type="text"
+            placeholder={mode === 'write'
+              ? script === 'hiragana' ? 'ひらがなで…' : 'カタカナで…'
+              : 'romaji…'}
+          />
+        )}
+        <button type="submit" className="primary-btn" disabled={correct === null && !value.trim()}>
           {correct === null ? 'Comprobar' : index + 1 >= words.length ? 'Ver resultados' : 'Siguiente'}
         </button>
+        {correct === null && (
+          <button type="button" className="reveal-btn" onClick={handleReveal}>
+            No me acuerdo
+          </button>
+        )}
       </form>
 
       {correct !== null && (
-        <p className={correct ? 'feedback feedback--ok' : 'feedback feedback--bad'}>
+        <p
+          className={correct ? 'feedback feedback--ok' : 'feedback feedback--bad'}
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           {correct ? '¡Bien! ' : 'Era: '}
           <span className="ja">{word.kana}</span> · {reading} · {word.es}
           {word.emoji && <span className="feedback-emoji"> {word.emoji}</span>}
@@ -110,13 +164,12 @@ export function Practice({ words, mode, script, practiceKind, onAnswer, onFinish
               Tu respuesta:{' '}
               {compactValue.length === 0
                 ? '(vacía)'
-                : [...compactValue].map((character, characterIndex) => (
+                : answerDiff.map((part, characterIndex) => (
                   <span
-                    // La posición alcanza como clave: una respuesta puede repetir el mismo carácter.
                     key={characterIndex}
-                    className={character.toLowerCase() === compactExpected[characterIndex] ? undefined : 'answer-diff-error'}
+                    className={part.correct ? undefined : 'answer-diff-error'}
                   >
-                    {character}
+                    {part.value}
                   </span>
                 ))}
             </span>

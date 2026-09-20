@@ -1,23 +1,44 @@
 /**
  * Arma la ronda de práctica: hasta `count` palabras sin repetidos, tomadas del pool de palabras
- * elegibles. Las palabras falladas antes (según `stats`) pesan ×3 para aparecer más seguido,
- * usando muestreo ponderado sin reemplazo (sin generar todas las combinaciones posibles).
+ * elegibles. Los ítems fallados o todavía en aprendizaje pesan más para aparecer seguido,
+ * usando muestreo ponderado sin reemplazo.
  */
 import type { Word } from '../data/words';
 import type { StatsMap } from './storage';
 
-const MISSED_WEIGHT = 3;
+const NEEDS_REVIEW_WEIGHT = 4;
+const LEARNING_WEIGHT = 2;
 const BASE_WEIGHT = 1;
+
+type StatKey = (word: Word) => string;
+
+function statFor(wordsStats: StatsMap, word: Word, keyFor?: StatKey) {
+  return wordsStats[keyFor?.(word) ?? word.kana] ?? wordsStats[word.kana];
+}
+
+function correctStreak(stat: StatsMap[string] | undefined): number {
+  if (!stat) return 0;
+  return stat.correctStreak ?? (stat.missed === 0 ? stat.seen : 0);
+}
+
+function practiceWeight(stat: StatsMap[string] | undefined): number {
+  if (!stat) return BASE_WEIGHT;
+  const streak = correctStreak(stat);
+  if (streak === 0) return NEEDS_REVIEW_WEIGHT;
+  if (streak === 1) return LEARNING_WEIGHT;
+  return BASE_WEIGHT;
+}
 
 export function pickRound(
   words: readonly Word[],
   count: number,
   stats: StatsMap = {},
   random: () => number = Math.random,
+  keyFor?: StatKey,
 ): Word[] {
   const pool = words.map((word) => ({
     word,
-    weight: (stats[word.kana]?.missed ?? 0) > 0 ? MISSED_WEIGHT : BASE_WEIGHT,
+    weight: practiceWeight(statFor(stats, word, keyFor)),
   }));
 
   const result: Word[] = [];
@@ -42,9 +63,8 @@ export function pickRound(
 }
 
 /** Palabras dominadas: contestadas al menos una vez y nunca falladas. */
-export function countMastered(words: readonly Word[], stats: StatsMap): number {
+export function countMastered(words: readonly Word[], stats: StatsMap, keyFor?: StatKey): number {
   return words.filter((word) => {
-    const stat = stats[word.kana];
-    return stat !== undefined && stat.seen > 0 && stat.missed === 0;
+    return correctStreak(statFor(stats, word, keyFor)) >= 2;
   }).length;
 }

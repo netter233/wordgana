@@ -5,6 +5,9 @@ practicás con palabras reales formadas solo por esas letras, en modo Leer (kana
 (romaji → kana con teclado japonés). Al completar todas las filas de un silabario se desbloquean rondas
 avanzadas de oraciones simples.
 
+Cada ítem se afianza con dos aciertos consecutivos en el mismo modo. Los errores vuelven a aparecer con
+mayor frecuencia y pueden repasarse directamente al terminar una ronda.
+
 ## Desarrollo
 
 ```

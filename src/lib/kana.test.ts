@@ -159,6 +159,9 @@ describe('checkAnswer', () => {
     expect(checkAnswer('mizu o nomimasu', 'みずを のみます。', 'read', 'hiragana', 'mizu o nomimasu')).toBe(true);
     expect(checkAnswer('みずをのみます', 'みずを のみます。', 'write', 'hiragana')).toBe(true);
     expect(checkAnswer('Mizu o nomimasu.', 'みずを のみます。', 'read', 'hiragana', 'mizu o nomimasu')).toBe(true);
+    expect(checkAnswer('mizu o nomimasu', 'みずを のみます。', 'read', 'hiragana', 'mizu o nomimasu')).toBe(true);
+    expect(checkAnswer('simasu', 'します。', 'read', 'hiragana', 'shimasu')).toBe(true);
+    expect(checkAnswer('syawa', 'シャワー', 'read', 'katakana', 'shawa')).toBe(true);
   });
 
   it('rechaza respuesta vacía', () => {

@@ -1,12 +1,15 @@
 import type { PracticeKind } from '../data/sentences';
+import type { KanaScript } from '../data/kana';
 
 interface ContentCardsProps {
   value: PracticeKind;
   unlocked: boolean;
+  missingRows: number;
+  script: KanaScript;
   onChange: (kind: PracticeKind) => void;
 }
 
-export function ContentCards({ value, unlocked, onChange }: ContentCardsProps) {
+export function ContentCards({ value, unlocked, missingRows, script, onChange }: ContentCardsProps) {
   return (
     <section className="card">
       <h2>2. ¿Qué querés practicar?</h2>
@@ -17,7 +20,7 @@ export function ContentCards({ value, unlocked, onChange }: ContentCardsProps) {
           aria-pressed={value === 'words'}
           onClick={() => onChange('words')}
         >
-          <span className="choice-icon" aria-hidden="true">あ</span>
+          <span className="choice-icon" aria-hidden="true">{script === 'hiragana' ? 'あ' : 'ア'}</span>
           <strong>Palabras</strong>
           <span>Rondas de 10</span>
         </button>
@@ -36,7 +39,9 @@ export function ContentCards({ value, unlocked, onChange }: ContentCardsProps) {
       <p className={unlocked ? 'unlock-note unlock-note--ready' : 'unlock-note'}>
         {unlocked
           ? '¡Modo avanzado desbloqueado! Ya podés practicar oraciones.'
-          : 'Seleccioná todas las filas para desbloquear Oraciones.'}
+          : missingRows === 1
+            ? 'Te falta 1 fila para desbloquear Oraciones.'
+            : `Te faltan ${missingRows} filas para desbloquear Oraciones.`}
       </p>
     </section>
   );

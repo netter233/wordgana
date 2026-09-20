@@ -33,7 +33,7 @@ export function StatsStrip({ streak, roundsToday, mastered, total, itemLabel = '
       </div>
 
       <div className="progress-row">
-        <span>{itemLabel} dominadas</span>
+        <span>{itemLabel} afianzadas</span>
         <span>
           {mastered} / {total}
         </span>
@@ -44,7 +44,7 @@ export function StatsStrip({ streak, roundsToday, mastered, total, itemLabel = '
       <p className="hint">
         {total === 0
           ? 'Activá filas para tener contenido con el que practicar.'
-          : `${percent}% dominado con las filas que tenés activas.`}
+          : `${percent}% afianzado · hacen falta dos aciertos seguidos por ítem.`}
       </p>
     </section>
   );

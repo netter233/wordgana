@@ -47,11 +47,16 @@ export function App() {
   const [progress, setProgress] = useState(loadProgress);
   const [round, setRound] = useState<Word[]>([]);
   const [summary, setSummary] = useState<RoundSummary | null>(null);
+  const [rowsExpanded, setRowsExpanded] = useState<Record<KanaScript, boolean>>({
+    hiragana: initial.enabledRowIds.hiragana.length <= 1,
+    katakana: initial.enabledRowIds.katakana.length <= 1,
+  });
 
   const rows = rowsForScript(activeScript);
   const enabledRowIds = enabledRows[activeScript];
   const enabledSet = useMemo(() => new Set(enabledRowIds), [enabledRowIds]);
   const allRowsSelected = rows.every((row) => enabledSet.has(row.id));
+  const missingRows = rows.filter((row) => !enabledSet.has(row.id)).length;
   const mode = modes[activeScript];
   const practiceKind = practiceKinds[activeScript];
 
@@ -79,6 +84,7 @@ export function App() {
     ? sentencesForScript(activeScript)
     : eligibleWords;
   const example = eligibleItems.length > 0 ? eligibleItems[Math.floor(eligibleItems.length / 2)] : null;
+  const statKey = (item: Word) => `${activeScript}:${practiceKind}:${mode}:${item.kana}`;
 
   function toggleRow(rowId: string) {
     setEnabledRows((previous) => {
@@ -110,9 +116,16 @@ export function App() {
     setScreen('practice');
   }
 
+  function reviewMissed() {
+    if (!summary || summary.missed.length === 0) return;
+    setRound(summary.missed);
+    setSummary(null);
+    setScreen('practice');
+  }
+
   function handleAnswer(item: Word, correct: boolean) {
     setStats((previous) => {
-      const next = recordAnswer(previous, item.kana, correct);
+      const next = recordAnswer(previous, statKey(item), correct);
       saveStats(next);
       return next;
     });
@@ -130,6 +143,10 @@ export function App() {
 
   const minimum = practiceKind === 'sentences' ? 1 : MIN_WORDS_TO_START;
   const canStart = eligibleItems.length >= minimum;
+  const nextRoundCount = Math.min(
+    practiceKind === 'sentences' ? SENTENCE_ROUND_SIZE : WORD_ROUND_SIZE,
+    eligibleItems.length,
+  );
   const scriptName = activeScript === 'hiragana' ? 'Hiragana' : 'Katakana';
   const kindName = practiceKind === 'words' ? 'Palabras' : 'Oraciones';
   const mark = activeScript === 'hiragana' ? 'あ' : 'ア';
@@ -159,6 +176,7 @@ export function App() {
           correctCount={summary.correctCount}
           missed={summary.missed}
           onRestartSameRound={startRound}
+          onReviewMissed={reviewMissed}
           onChangeRows={() => setScreen('setup')}
         />
       </main>
@@ -172,23 +190,32 @@ export function App() {
 
       <ScriptSwitch value={activeScript} onChange={setActiveScript} />
 
-      <StatsStrip
-        streak={progress.streak}
-        roundsToday={progress.roundsToday}
-        mastered={countMastered(eligibleItems, stats)}
-        total={eligibleItems.length}
-        itemLabel={practiceKind === 'words' ? 'Palabras' : 'Oraciones'}
-      />
-
       <RowPicker
         rows={rows}
         enabledRowIds={enabledSet}
         onToggle={toggleRow}
         onSetAll={setAllRows}
         eligibleCount={eligibleWords.length}
+        script={activeScript}
+        expanded={rowsExpanded[activeScript]}
+        onToggleExpanded={() => setRowsExpanded((previous) => ({
+          ...previous,
+          [activeScript]: !previous[activeScript],
+        }))}
       />
 
-      <ContentCards value={practiceKind} unlocked={allRowsSelected} onChange={setPracticeKind} />
+      <ContentCards
+        value={practiceKind}
+        unlocked={allRowsSelected}
+        missingRows={missingRows}
+        script={activeScript}
+        onChange={setPracticeKind}
+      />
+      {activeScript === 'katakana' && practiceKind === 'sentences' && (
+        <p className="advanced-assumption">
+          Las oraciones combinan katakana con hiragana, como se escribe naturalmente en japonés.
+        </p>
+      )}
       <ModeCards
         mode={mode}
         onSelect={setMode}
@@ -197,15 +224,21 @@ export function App() {
         practiceKind={practiceKind}
       />
 
-      {activeScript === 'katakana' && practiceKind === 'sentences' && (
-        <p className="advanced-assumption">
-          Las oraciones combinan katakana con hiragana, como se escribe naturalmente en japonés.
-        </p>
-      )}
+      <StatsStrip
+        streak={progress.streak}
+        roundsToday={progress.roundsToday}
+        mastered={countMastered(eligibleItems, stats, statKey)}
+        total={eligibleItems.length}
+        itemLabel={practiceKind === 'words' ? 'Palabras' : 'Oraciones'}
+      />
 
       <div className="cta-bar">
         <button type="button" className="primary-btn" disabled={!canStart} onClick={startRound}>
-          Empezar ronda
+          {!canStart
+            ? 'Elegí más filas'
+            : practiceKind === 'sentences'
+              ? `Practicar ${nextRoundCount} oraciones`
+              : `Practicar ${nextRoundCount} palabras`}
         </button>
         {!canStart && (
           <p className="hint hint--center">

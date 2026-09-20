@@ -6,10 +6,18 @@ interface ResultsProps {
   correctCount: number;
   missed: Word[];
   onRestartSameRound: () => void;
+  onReviewMissed: () => void;
   onChangeRows: () => void;
 }
 
-export function Results({ total, correctCount, missed, onRestartSameRound, onChangeRows }: ResultsProps) {
+export function Results({
+  total,
+  correctCount,
+  missed,
+  onRestartSameRound,
+  onReviewMissed,
+  onChangeRows,
+}: ResultsProps) {
   return (
     <section>
       <div className="card score-card">
@@ -35,11 +43,22 @@ export function Results({ total, correctCount, missed, onRestartSameRound, onCha
       )}
 
       <div className="results-actions">
-        <button type="button" className="primary-btn" onClick={onRestartSameRound}>
-          Otra ronda
-        </button>
+        {missed.length > 0 ? (
+          <>
+            <button type="button" className="primary-btn" onClick={onReviewMissed}>
+              {missed.length === 1 ? 'Repasar la que costó' : `Repasar las ${missed.length} que costaron`}
+            </button>
+            <button type="button" className="secondary-btn" onClick={onRestartSameRound}>
+              Otra ronda
+            </button>
+          </>
+        ) : (
+          <button type="button" className="primary-btn" onClick={onRestartSameRound}>
+            Otra ronda
+          </button>
+        )}
         <button type="button" className="secondary-btn" onClick={onChangeRows}>
-          Cambiar filas
+          Volver al inicio
         </button>
       </div>
     </section>

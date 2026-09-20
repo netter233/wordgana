@@ -2,6 +2,20 @@
 
 Registro de decisiones tomadas con el usuario (Bruno) y su porqué. Agregar una entrada por decisión nueva.
 
+## 2026-09-20 — Progreso recuperable y práctica más directa
+
+**Decisión:** un ítem queda "afianzado" después de dos respuestas correctas consecutivas en la misma
+combinación de silabario, Palabras/Oraciones y Leer/Escribir. Un error reinicia esa racha corta y prioriza
+el ítem en rondas siguientes; dos nuevos aciertos permiten recuperarlo.
+
+**Por qué:** el criterio anterior exigía no haber fallado nunca, por lo que una palabra quedaba fuera de
+"dominadas" para siempre. También mezclaba comprensión y producción. El nuevo criterio comunica mejor el
+estado actual y permite que el progreso refleje aprendizaje posterior sin introducir todavía un SRS completo.
+
+**UX:** la selección de filas queda resumida detrás de Editar/Listo cuando ya está configurada. La práctica
+agrega "No me acuerdo", corrección alineada para omisiones, textarea para oraciones y repaso directo de los
+ítems fallados desde el resultado.
+
 ## 2026-09-20 — Hiragana/Katakana y oraciones avanzadas
 
 **Decisión:** agregar un selector Hiragana/Katakana arriba de las estadísticas, con Hiragana a la izquierda.

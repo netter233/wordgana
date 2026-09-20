@@ -91,9 +91,12 @@ const STATS_KEY = 'wordgana:stats:v1';
 export interface WordStat {
   seen: number;
   missed: number;
+  /** Aciertos consecutivos recientes. Dos o más indican que el ítem está afianzado. */
+  correctStreak?: number;
+  lastAnsweredAt?: string;
 }
 
-/** Estadísticas por palabra, indexadas por su kana. Usadas por pickRound para pesar falladas. */
+/** Estadísticas por ítem y contexto de práctica. Las claves antiguas por kana siguen siendo legibles. */
 export type StatsMap = Record<string, WordStat>;
 
 export function loadStats(): StatsMap {
@@ -116,11 +119,22 @@ export function saveStats(stats: StatsMap): void {
 }
 
 /** Devuelve un StatsMap nuevo con el resultado de responder `kana` sumado (no muta `stats`). */
-export function recordAnswer(stats: StatsMap, kana: string, correct: boolean): StatsMap {
-  const prev = stats[kana] ?? { seen: 0, missed: 0 };
+export function recordAnswer(
+  stats: StatsMap,
+  key: string,
+  correct: boolean,
+  now = new Date(),
+): StatsMap {
+  const prev = stats[key] ?? { seen: 0, missed: 0 };
+  const previousStreak = prev.correctStreak ?? (prev.missed === 0 ? prev.seen : 0);
   return {
     ...stats,
-    [kana]: { seen: prev.seen + 1, missed: prev.missed + (correct ? 0 : 1) },
+    [key]: {
+      seen: prev.seen + 1,
+      missed: prev.missed + (correct ? 0 : 1),
+      correctStreak: correct ? previousStreak + 1 : 0,
+      lastAnsweredAt: now.toISOString(),
+    },
   };
 }
 

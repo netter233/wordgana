@@ -4,6 +4,7 @@ import {
   dayKey,
   loadSettings,
   normalizeProgress,
+  recordAnswer,
   recordRound,
   saveSettings,
   type Progress,
@@ -42,6 +43,21 @@ describe('settings', () => {
     };
     saveSettings(settings);
     expect(loadSettings()).toEqual(settings);
+  });
+});
+
+describe('recordAnswer', () => {
+  it('afianza con aciertos consecutivos y permite recuperarse de un error', () => {
+    const first = recordAnswer({}, 'read:あい', false, today);
+    const second = recordAnswer(first, 'read:あい', true, today);
+    const third = recordAnswer(second, 'read:あい', true, today);
+
+    expect(third['read:あい']).toMatchObject({ seen: 3, missed: 1, correctStreak: 2 });
+  });
+
+  it('un error reinicia la racha de aciertos', () => {
+    const stats = { 'read:あい': { seen: 2, missed: 0, correctStreak: 2 } };
+    expect(recordAnswer(stats, 'read:あい', false, today)['read:あい'].correctStreak).toBe(0);
   });
 });
 

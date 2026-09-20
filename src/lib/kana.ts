@@ -134,6 +134,25 @@ function normalizeRomaji(input: string): string {
     .replace(/[\s.,!?\-]+/g, '');
 }
 
+/** Unifica variantes frecuentes para comparar romaji libre en oraciones. */
+export function normalizeRomajiForComparison(input: string): string {
+  return normalizeRomaji(input)
+    .replace(/sya/g, 'sha')
+    .replace(/syu/g, 'shu')
+    .replace(/syo/g, 'sho')
+    .replace(/tya/g, 'cha')
+    .replace(/tyu/g, 'chu')
+    .replace(/tyo/g, 'cho')
+    .replace(/jya|zya/g, 'ja')
+    .replace(/jyu|zyu/g, 'ju')
+    .replace(/jyo|zyo/g, 'jo')
+    .replace(/si/g, 'shi')
+    .replace(/ti/g, 'chi')
+    .replace(/tu/g, 'tsu')
+    .replace(/hu/g, 'fu')
+    .replace(/zi/g, 'ji');
+}
+
 /** Backtracking simple: prueba cada variante posible en la posición actual antes de avanzar. */
 function matchFrom(input: string, groups: string[][], groupIndex: number, pos: number): boolean {
   if (groupIndex === groups.length) return pos === input.length;
@@ -212,7 +231,9 @@ export function checkAnswer(
     return normalizeKana(input) === normalizeKana(wordKana);
   }
   if (normalizeKana(input) === normalizeKana(wordKana)) return true;
-  if (expectedRomaji) return normalizeRomaji(input) === normalizeRomaji(expectedRomaji);
+  if (expectedRomaji) {
+    return normalizeRomajiForComparison(input) === normalizeRomajiForComparison(expectedRomaji);
+  }
   if (script === 'katakana' && normalizeHiragana(input) === normalizeHiragana(wordKana)) {
     return false;
   }
