@@ -114,21 +114,23 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
 }
 .appbar-btn {
   flex: none;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   display: grid;
   place-items: center;
   padding: 0;
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  background: var(--surface);
-  color: var(--text);
-  font-size: 0.95rem;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  color: var(--muted);
   cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, transform 0.08s ease;
 }
-.appbar-btn:active { transform: scale(0.94); }
-.appbar-btn--trailing { margin-left: auto; font-size: 1.25rem; }
-.appbar-title { margin: 0; font-size: 1.3rem; font-weight: 700; letter-spacing: -0.01em; }
+.appbar-btn:hover { background: var(--surface-2); color: var(--text); }
+.appbar-btn:active { background: var(--accent-soft); color: var(--accent); transform: scale(0.94); }
+.appbar-btn--trailing { margin-left: auto; }
+.appbar-icon { width: 22px; height: 22px; }
+.appbar-title { min-width: 0; margin: 0; font-size: 1.3rem; font-weight: 700; letter-spacing: -0.01em; }
 
 .tagline { margin: 0 0 4px; color: var(--muted); font-size: 0.92rem; }
 .settings-card {

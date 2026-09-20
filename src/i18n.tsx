@@ -112,7 +112,7 @@ export interface Messages {
 const MESSAGES: Record<AppLanguage, Messages> = {
   en: {
     autoLanguage: (language) => `Automatic (${language})`, languageLabel: 'Language',
-    languageDescription: 'Use your iPhone language or choose one for WordGana.', settings: 'Settings', openSettings: 'Open settings',
+    languageDescription: "Use your device's language or choose one for WordGana.", settings: 'Settings', openSettings: 'Open settings',
     tagline: 'Practice Japanese with real words, one row at a time.', closeHome: 'Back to home',
     scriptSelector: 'Writing system to practice', result: 'Results', words: 'Words', sentences: 'Sentences',
     rowsTitle: (script) => `1. ${script} rows`,
@@ -148,7 +148,7 @@ const MESSAGES: Record<AppLanguage, Messages> = {
   },
   es: {
     autoLanguage: (language) => `Automático (${language})`, languageLabel: 'Idioma',
-    languageDescription: 'Usá el idioma de tu iPhone o elegí uno para WordGana.', settings: 'Configuración', openSettings: 'Abrir configuración',
+    languageDescription: 'Usá el idioma de tu dispositivo o elegí uno para WordGana.', settings: 'Configuración', openSettings: 'Abrir configuración',
     tagline: 'Practicá japonés con palabras reales, fila por fila.', closeHome: 'Salir al inicio',
     scriptSelector: 'Silabario para practicar', result: 'Resultado', words: 'Palabras', sentences: 'Oraciones',
     rowsTitle: (script) => `1. Filas de ${script}`,
@@ -183,7 +183,7 @@ const MESSAGES: Record<AppLanguage, Messages> = {
   },
   fr: {
     autoLanguage: (language) => `Automatique (${language})`, languageLabel: 'Langue',
-    languageDescription: "Utilisez la langue de votre iPhone ou choisissez-en une pour WordGana.", settings: 'Réglages', openSettings: 'Ouvrir les réglages',
+    languageDescription: "Utilisez la langue de votre appareil ou choisissez-en une pour WordGana.", settings: 'Réglages', openSettings: 'Ouvrir les réglages',
     tagline: 'Pratiquez le japonais avec de vrais mots, ligne par ligne.', closeHome: "Retour à l'accueil",
     scriptSelector: "Système d'écriture à pratiquer", result: 'Résultats', words: 'Mots', sentences: 'Phrases',
     rowsTitle: (script) => `1. Lignes de ${script}`,
@@ -218,7 +218,7 @@ const MESSAGES: Record<AppLanguage, Messages> = {
   },
   de: {
     autoLanguage: (language) => `Automatisch (${language})`, languageLabel: 'Sprache',
-    languageDescription: 'Verwende die Sprache deines iPhones oder wähle eine für WordGana.', settings: 'Einstellungen', openSettings: 'Einstellungen öffnen',
+    languageDescription: 'Verwende die Sprache deines Geräts oder wähle eine für WordGana.', settings: 'Einstellungen', openSettings: 'Einstellungen öffnen',
     tagline: 'Übe Japanisch mit echten Wörtern, Reihe für Reihe.', closeHome: 'Zurück zur Startseite',
     scriptSelector: 'Zu übendes Schriftsystem', result: 'Ergebnis', words: 'Wörter', sentences: 'Sätze',
     rowsTitle: (script) => `1. ${script}-Reihen`,
