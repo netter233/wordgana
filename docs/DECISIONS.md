@@ -125,3 +125,15 @@ racha sigue viva sin sumar hasta que termines una hoy. No es punitiva: nunca avi
 ゃゅょ (きゃ しゃ ちゃ にゃ ひゃ みゃ りゃ ぎゃ じゃ びゃ ぴゃ) y っ como toggle propio.
 **Por qué:** refleja el orden en que los libros de texto enseñan hiragana. Una palabra es elegible solo si
 todas sus unidades (tras tokenizar) pertenecen a filas activas.
+
+## 2026-10-07 — Preparación para la App Store
+
+**Decisión:** publicar la app de Capacitor en la App Store con una cuenta paga del Apple Developer Program.
+En `Info.plist` se reemplazó `armv7` por `arm64` en `UIRequiredDeviceCapabilities` y se agregó
+`ITSAppUsesNonExemptEncryption = false`. La política de privacidad vive en `docs/PRIVACY.md` y los pasos y
+textos de la ficha en `docs/APP_STORE.md`.
+**Por qué:** la firma gratuita vence cada 7 días y no permite distribuir la app a otras personas. `armv7` es
+una arquitectura de 32 bits que iOS 15 ya no soporta; `arm64` describe correctamente los dispositivos
+compatibles. La app solo usa el cifrado que trae iOS (HTTPS del sistema, aunque no hace pedidos de red), así
+que queda exenta de la declaración de exportación y no hace falta responderla en cada build. La política de
+privacidad se publica desde el repo público para no depender de un hosting aparte.
