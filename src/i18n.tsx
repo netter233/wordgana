@@ -6,6 +6,10 @@ export type LanguagePreference = 'auto' | AppLanguage;
 const LANGUAGE_KEY = 'wordgana:language:v1';
 const SUPPORTED_LANGUAGES: AppLanguage[] = ['en', 'es', 'fr', 'de'];
 
+function capitalize(text: string): string {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
 export const LANGUAGE_NAMES: Record<AppLanguage, string> = {
   en: 'English',
   es: 'Español',
@@ -116,7 +120,7 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     languageDescription: "Use your device's language or choose one for WordGana.", settings: 'Settings', openSettings: 'Open settings',
     tagline: 'Practice Japanese with real words, one row at a time.', closeHome: 'Close and return home', back: 'Back',
     scriptSelector: 'Writing system to practice', result: 'Results', words: 'Words', sentences: 'Sentences',
-    rowsTitle: (script) => `1. ${script} rows`,
+    rowsTitle: (script) => `1. ${capitalize(script)} rows`,
     rowsSummary: (selected, total, words) => `${selected} of ${total} selected · ${words} words`,
     done: 'Done', edit: 'Edit', selectAll: 'Select all', clearAll: 'Clear all', basicRows: 'Basic',
     dakutenRows: 'With dakuten (゛゜)', combinationsRows: 'Combinations (ゃゅょ)', specialRows: 'Special',
@@ -222,7 +226,7 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     languageDescription: 'Verwende die Sprache deines Geräts oder wähle eine für WordGana.', settings: 'Einstellungen', openSettings: 'Einstellungen öffnen',
     tagline: 'Übe Japanisch mit echten Wörtern, Reihe für Reihe.', closeHome: 'Schließen und zur Startseite', back: 'Zurück',
     scriptSelector: 'Zu übendes Schriftsystem', result: 'Ergebnis', words: 'Wörter', sentences: 'Sätze',
-    rowsTitle: (script) => `1. ${script}-Reihen`,
+    rowsTitle: (script) => `1. ${capitalize(script)}-Reihen`,
     rowsSummary: (selected, total, words) => `${selected} von ${total} ausgewählt · ${words} Wörter`,
     done: 'Fertig', edit: 'Bearbeiten', selectAll: 'Alle auswählen', clearAll: 'Alle abwählen', basicRows: 'Grundzeichen',
     dakutenRows: 'Mit Dakuten (゛゜)', combinationsRows: 'Kombinationen (ゃゅょ)', specialRows: 'Sonderzeichen',

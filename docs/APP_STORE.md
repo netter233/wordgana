@@ -161,8 +161,12 @@ Se cargan por tamaño de pantalla. Si subís el tamaño más grande, Apple lo re
 Cargá entre 3 y 10 capturas por dispositivo. Por ejemplo: elegir filas, elegir modo, practicar en Leer,
 practicar en Escribir y resultados.
 
-Para sacarlas, corré la app en el simulador de ese modelo desde Xcode y presioná **⌘S**. La captura queda
-en el escritorio con el tamaño correcto.
+Las capturas ya están en `docs/app-store-screenshots/`, en español (`es`) e inglés (`en`), con una
+carpeta para iPhone y otra para iPad. Ya tienen el tamaño correcto. Subí las de cada carpeta en su
+localización y en este orden: inicio, leer, correcto, escribir y resultados.
+
+Son de la app real con progreso de ejemplo, renderizadas con WebKit, el mismo motor que usa la app en iOS.
+Si cambiás la interfaz, podés regenerarlas así o sacar nuevas en el simulador de Xcode con **⌘S**.
 
 Si no querés mantener la versión para iPad, cambiá **Supported Destinations** en Xcode para que quede solo
 iPhone. En ese caso no hacen falta capturas de iPad.
