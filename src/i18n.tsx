@@ -1,3 +1,4 @@
+import type { PracticeKind } from './data/sentences';
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 
 export type AppLanguage = 'en' | 'es' | 'fr' | 'de';
@@ -9,6 +10,11 @@ const SUPPORTED_LANGUAGES: AppLanguage[] = ['en', 'es', 'fr', 'de'];
 function capitalize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
+
+const EN_ITEMS: Record<PracticeKind, string> = { kana: 'characters', words: 'words', sentences: 'sentences' };
+const ES_ITEMS: Record<PracticeKind, string> = { kana: 'letras', words: 'palabras', sentences: 'oraciones' };
+const FR_ITEMS: Record<PracticeKind, string> = { kana: 'caractères', words: 'mots', sentences: 'phrases' };
+const DE_ITEMS: Record<PracticeKind, string> = { kana: 'Zeichen', words: 'Wörter', sentences: 'Sätze' };
 
 export const LANGUAGE_NAMES: Record<AppLanguage, string> = {
   en: 'English',
@@ -54,6 +60,7 @@ export interface Messages {
   back: string;
   scriptSelector: string;
   result: string;
+  letters: string;
   words: string;
   sentences: string;
   rowsTitle: (script: string) => string;
@@ -91,8 +98,8 @@ export interface Messages {
   emptyContent: string;
   masteryHint: (percent: number) => string;
   chooseMoreRows: string;
-  practiceItems: (count: number, kind: 'words' | 'sentences') => string;
-  minimumHint: (count: number) => string;
+  practiceItems: (count: number, kind: PracticeKind) => string;
+  minimumHint: (count: number, kind: PracticeKind) => string;
   answerRomaji: string;
   answerKana: string;
   instructionRomaji: string;
@@ -119,7 +126,7 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     autoLanguage: (language) => `Automatic (${language})`, languageLabel: 'Language',
     languageDescription: "Use your device's language or choose one for WordGana.", settings: 'Settings', openSettings: 'Open settings',
     tagline: 'Practice Japanese with real words, one row at a time.', closeHome: 'Close and return home', back: 'Back',
-    scriptSelector: 'Writing system to practice', result: 'Results', words: 'Words', sentences: 'Sentences',
+    scriptSelector: 'Writing system to practice', result: 'Results', letters: 'Characters', words: 'Words', sentences: 'Sentences',
     rowsTitle: (script) => `1. ${capitalize(script)} rows`,
     rowsSummary: (selected, total, words) => `${selected} of ${total} selected · ${words} words`,
     done: 'Done', edit: 'Edit', selectAll: 'Select all', clearAll: 'Clear all', basicRows: 'Basic',
@@ -141,8 +148,8 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     mastered: (item) => `${item} mastered`, emptyContent: 'Select rows to get practice content.',
     masteryHint: (percent) => `${percent}% mastered · each item needs two correct answers in a row.`,
     chooseMoreRows: 'Select more rows',
-    practiceItems: (count, kind) => `Practice ${count} ${kind}`,
-    minimumHint: (count) => `Select more rows: at least ${count} available words are required.`,
+    practiceItems: (count, kind) => `Practice ${count} ${EN_ITEMS[kind]}`,
+    minimumHint: (count, kind) => `Select more rows: at least ${count} available ${EN_ITEMS[kind]} are required.`,
     answerRomaji: 'Your answer in romaji', answerKana: 'Your answer in kana', instructionRomaji: 'type in romaji',
     instructionSentenceKana: 'type the sentence in kana', instructionScript: (script) => `type in ${script}`,
     check: 'Check', viewResults: 'View results', next: 'Next', dontRemember: 'Skip',
@@ -155,7 +162,7 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     autoLanguage: (language) => `Automático (${language})`, languageLabel: 'Idioma',
     languageDescription: 'Usá el idioma de tu dispositivo o elegí uno para WordGana.', settings: 'Configuración', openSettings: 'Abrir configuración',
     tagline: 'Practicá japonés con palabras reales, fila por fila.', closeHome: 'Cerrar y volver al inicio', back: 'Volver',
-    scriptSelector: 'Silabario para practicar', result: 'Resultado', words: 'Palabras', sentences: 'Oraciones',
+    scriptSelector: 'Silabario para practicar', result: 'Resultado', letters: 'Letras', words: 'Palabras', sentences: 'Oraciones',
     rowsTitle: (script) => `1. Filas de ${script}`,
     rowsSummary: (selected, total, words) => `${selected} de ${total} seleccionadas · ${words} palabras`,
     done: 'Listo', edit: 'Editar', selectAll: 'Seleccionar todas', clearAll: 'Quitar todas', basicRows: 'Básicas',
@@ -176,8 +183,8 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     rounds: (count) => `${count} ${count === 1 ? 'ronda' : 'rondas'}`,
     mastered: (item) => `${item} afianzadas`, emptyContent: 'Activá filas para tener contenido con el que practicar.',
     masteryHint: (percent) => `${percent}% afianzado · hacen falta dos aciertos seguidos por ítem.`,
-    chooseMoreRows: 'Elegí más filas', practiceItems: (count, kind) => `Practicar ${count} ${kind === 'words' ? 'palabras' : 'oraciones'}`,
-    minimumHint: (count) => `Activá más filas: hacen falta al menos ${count} palabras disponibles.`,
+    chooseMoreRows: 'Elegí más filas', practiceItems: (count, kind) => `Practicar ${count} ${ES_ITEMS[kind]}`,
+    minimumHint: (count, kind) => `Activá más filas: hacen falta al menos ${count} ${ES_ITEMS[kind]} disponibles.`,
     answerRomaji: 'Tu respuesta en romaji', answerKana: 'Tu respuesta en kana', instructionRomaji: 'escribí en romaji',
     instructionSentenceKana: 'escribí la oración en kana', instructionScript: (script) => `escribí en ${script}`,
     check: 'Comprobar', viewResults: 'Ver resultados', next: 'Siguiente', dontRemember: 'Omitir',
@@ -190,7 +197,7 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     autoLanguage: (language) => `Automatique (${language})`, languageLabel: 'Langue',
     languageDescription: "Utilisez la langue de votre appareil ou choisissez-en une pour WordGana.", settings: 'Réglages', openSettings: 'Ouvrir les réglages',
     tagline: 'Pratiquez le japonais avec de vrais mots, ligne par ligne.', closeHome: "Fermer et revenir à l'accueil", back: 'Retour',
-    scriptSelector: "Système d'écriture à pratiquer", result: 'Résultats', words: 'Mots', sentences: 'Phrases',
+    scriptSelector: "Système d'écriture à pratiquer", result: 'Résultats', letters: 'Caractères', words: 'Mots', sentences: 'Phrases',
     rowsTitle: (script) => `1. Lignes de ${script}`,
     rowsSummary: (selected, total, words) => `${selected} sur ${total} sélectionnées · ${words} mots`,
     done: 'Terminé', edit: 'Modifier', selectAll: 'Tout sélectionner', clearAll: 'Tout désélectionner', basicRows: 'Bases',
@@ -211,8 +218,8 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     rounds: (count) => `${count} ${count === 1 ? 'série' : 'séries'}`,
     mastered: (item) => `Maîtrise : ${item}`, emptyContent: 'Sélectionnez des lignes pour obtenir du contenu à pratiquer.',
     masteryHint: (percent) => `${percent} % maîtrisé · chaque élément nécessite deux bonnes réponses consécutives.`,
-    chooseMoreRows: 'Sélectionnez plus de lignes', practiceItems: (count, kind) => `Pratiquer ${count} ${kind === 'words' ? 'mots' : 'phrases'}`,
-    minimumHint: (count) => `Sélectionnez plus de lignes : au moins ${count} mots disponibles sont nécessaires.`,
+    chooseMoreRows: 'Sélectionnez plus de lignes', practiceItems: (count, kind) => `Pratiquer ${count} ${FR_ITEMS[kind]}`,
+    minimumHint: (count, kind) => `Sélectionnez plus de lignes : il faut au moins ${count} ${FR_ITEMS[kind]} disponibles.`,
     answerRomaji: 'Votre réponse en romaji', answerKana: 'Votre réponse en kana', instructionRomaji: 'écrivez en romaji',
     instructionSentenceKana: 'écrivez la phrase en kana', instructionScript: (script) => `écrivez en ${script}`,
     check: 'Vérifier', viewResults: 'Voir les résultats', next: 'Suivant', dontRemember: 'Passer',
@@ -225,7 +232,7 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     autoLanguage: (language) => `Automatisch (${language})`, languageLabel: 'Sprache',
     languageDescription: 'Verwende die Sprache deines Geräts oder wähle eine für WordGana.', settings: 'Einstellungen', openSettings: 'Einstellungen öffnen',
     tagline: 'Übe Japanisch mit echten Wörtern, Reihe für Reihe.', closeHome: 'Schließen und zur Startseite', back: 'Zurück',
-    scriptSelector: 'Zu übendes Schriftsystem', result: 'Ergebnis', words: 'Wörter', sentences: 'Sätze',
+    scriptSelector: 'Zu übendes Schriftsystem', result: 'Ergebnis', letters: 'Zeichen', words: 'Wörter', sentences: 'Sätze',
     rowsTitle: (script) => `1. ${capitalize(script)}-Reihen`,
     rowsSummary: (selected, total, words) => `${selected} von ${total} ausgewählt · ${words} Wörter`,
     done: 'Fertig', edit: 'Bearbeiten', selectAll: 'Alle auswählen', clearAll: 'Alle abwählen', basicRows: 'Grundzeichen',
@@ -246,8 +253,8 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     rounds: (count) => `${count} ${count === 1 ? 'Runde' : 'Runden'}`,
     mastered: (item) => `Gefestigt: ${item}`, emptyContent: 'Wähle Reihen aus, um Übungsinhalte zu erhalten.',
     masteryHint: (percent) => `${percent} % gefestigt · jedes Element braucht zwei richtige Antworten in Folge.`,
-    chooseMoreRows: 'Mehr Reihen auswählen', practiceItems: (count, kind) => `${count} ${kind === 'words' ? 'Wörter' : 'Sätze'} üben`,
-    minimumHint: (count) => `Wähle mehr Reihen aus: Mindestens ${count} verfügbare Wörter sind erforderlich.`,
+    chooseMoreRows: 'Mehr Reihen auswählen', practiceItems: (count, kind) => `${count} ${DE_ITEMS[kind]} üben`,
+    minimumHint: (count, kind) => `Wähle mehr Reihen aus: Mindestens ${count} verfügbare ${DE_ITEMS[kind]} sind erforderlich.`,
     answerRomaji: 'Deine Antwort in Romaji', answerKana: 'Deine Antwort in Kana', instructionRomaji: 'in Romaji schreiben',
     instructionSentenceKana: 'den Satz in Kana schreiben', instructionScript: (script) => `in ${script} schreiben`,
     check: 'Prüfen', viewResults: 'Ergebnisse ansehen', next: 'Weiter', dontRemember: 'Überspringen',

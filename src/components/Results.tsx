@@ -38,7 +38,8 @@ export function Results({
           <ul>
             {missed.map((w) => (
               <li key={w.kana}>
-                <span className="ja">{w.kana}</span> · {readingFor(w)} · {localizedMeaning(w, language)}
+                <span className="ja">{w.kana}</span> · {readingFor(w)}
+                {w.es && ` · ${localizedMeaning(w, language)}`}
               </li>
             ))}
           </ul>

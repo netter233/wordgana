@@ -137,3 +137,12 @@ una arquitectura de 32 bits que iOS 15 ya no soporta; `arm64` describe correctam
 compatibles. La app solo usa el cifrado que trae iOS (HTTPS del sistema, aunque no hace pedidos de red), así
 que queda exenta de la declaración de exportación y no hace falta responderla en cada build. La política de
 privacidad se publica desde el repo público para no depender de un hosting aparte.
+
+## 2026-10-07 — Letras sueltas como tercer tipo de práctica
+
+**Decisión:** "Letras" es un `PracticeKind` más (`kana`), al lado de Palabras y Oraciones, con ítems generados
+desde las filas activas (`letterItems`) en vez de una lista aparte. Las letras no tienen significado: el
+feedback y el repaso muestran solo kana y romaji. El tipo por defecto sigue siendo Palabras.
+**Por qué:** reutiliza ronda, validación (`checkAnswer` acepta variantes también para una sola letra) y progreso
+por ítem sin código nuevo. Palabras sigue como default porque es la propuesta central de la app; Letras
+queda primera en el selector porque es el orden natural de aprendizaje de una fila nueva.

@@ -14,6 +14,7 @@ import { sentencesForScript, type PracticeKind } from './data/sentences';
 import { WORDS, type Word } from './data/words';
 import { isEligible, type PracticeMode } from './lib/kana';
 import { useI18n } from './i18n';
+import { letterItems } from './lib/letters';
 import { countMastered, pickRound } from './lib/session';
 import {
   loadProgress,
@@ -83,9 +84,13 @@ export function App() {
     return words.filter((word) => isEligible(word.kana, enabledSet));
   }, [activeScript, enabledSet]);
 
+  const eligibleLetters = useMemo(() => letterItems(rows, enabledSet), [rows, enabledSet]);
+
   const eligibleItems = practiceKind === 'sentences' && allRowsSelected
     ? sentencesForScript(activeScript)
-    : eligibleWords;
+    : practiceKind === 'kana'
+      ? eligibleLetters
+      : eligibleWords;
   const example = eligibleItems.length > 0 ? eligibleItems[Math.floor(eligibleItems.length / 2)] : null;
   const statKey = (item: Word) => `${activeScript}:${practiceKind}:${mode}:${item.kana}`;
 
@@ -151,7 +156,12 @@ export function App() {
     eligibleItems.length,
   );
   const scriptName = activeScript === 'hiragana' ? 'Hiragana' : 'Katakana';
-  const kindName = practiceKind === 'words' ? messages.words : messages.sentences;
+  const kindNames: Record<PracticeKind, string> = {
+    kana: messages.letters,
+    words: messages.words,
+    sentences: messages.sentences,
+  };
+  const kindName = kindNames[practiceKind];
   const mark = activeScript === 'hiragana' ? 'あ' : 'ア';
 
   if (screen === 'practice') {
@@ -241,20 +251,16 @@ export function App() {
         roundsToday={progress.roundsToday}
         mastered={countMastered(eligibleItems, stats, statKey)}
         total={eligibleItems.length}
-        itemLabel={practiceKind === 'words' ? messages.words : messages.sentences}
+        itemLabel={kindName}
       />
 
       <div className="cta-bar">
         <button type="button" className="primary-btn" disabled={!canStart} onClick={startRound}>
-          {!canStart
-            ? messages.chooseMoreRows
-            : practiceKind === 'sentences'
-              ? messages.practiceItems(nextRoundCount, 'sentences')
-              : messages.practiceItems(nextRoundCount, 'words')}
+          {canStart ? messages.practiceItems(nextRoundCount, practiceKind) : messages.chooseMoreRows}
         </button>
         {!canStart && (
           <p className="hint hint--center">
-            {messages.minimumHint(MIN_WORDS_TO_START)}
+            {messages.minimumHint(MIN_WORDS_TO_START, practiceKind)}
           </p>
         )}
       </div>

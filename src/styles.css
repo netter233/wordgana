@@ -338,6 +338,9 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
   cursor: pointer;
 }
 .choice-card--selected { border-color: var(--accent); background: var(--accent-soft); }
+.choice-grid--three { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.choice-grid--three .choice-card { padding: 12px 6px; text-align: center; }
+.choice-grid--three .choice-icon { font-size: 1.45rem; white-space: nowrap; }
 .choice-card:disabled { opacity: 0.52; cursor: not-allowed; }
 .choice-icon { font-family: var(--font-ja); font-size: 1.65rem; line-height: 1.15; }
 .choice-card strong { font-size: 0.95rem; }

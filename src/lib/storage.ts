@@ -35,7 +35,7 @@ function practiceMode(value: unknown): PracticeMode {
 }
 
 function practiceKind(value: unknown): PracticeKind {
-  return value === 'sentences' ? 'sentences' : 'words';
+  return value === 'sentences' || value === 'kana' ? value : 'words';
 }
 
 export function loadSettings(): Settings {

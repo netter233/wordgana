@@ -38,6 +38,7 @@ export function Practice({ words, mode, script, practiceKind, onAnswer, onFinish
   if (!word) return null;
 
   const reading = readingFor(word);
+  const meaning = localizedMeaning(word, language);
   const prompt = mode === 'read' ? word.kana : reading;
   const promptClass = `${mode === 'read' ? 'prompt-word ja' : 'prompt-word'}${practiceKind === 'sentences' ? ' prompt-word--sentence' : ''}`;
   const expectedAnswer = mode === 'read' ? reading : word.kana;
@@ -160,7 +161,8 @@ export function Practice({ words, mode, script, practiceKind, onAnswer, onFinish
           aria-atomic="true"
         >
           {correct ? messages.correct : messages.expected}
-          <span className="ja">{word.kana}</span> · {reading} · {localizedMeaning(word, language)}
+          <span className="ja">{word.kana}</span> · {reading}
+          {meaning && ` · ${meaning}`}
           {word.emoji && <span className="feedback-emoji"> {word.emoji}</span>}
           {!correct && practiceKind === 'sentences' && (
             <span className="answer-diff">

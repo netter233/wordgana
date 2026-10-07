@@ -39,7 +39,7 @@ describe('settings', () => {
       activeScript: 'katakana' as const,
       enabledRowIds: { hiragana: ['a'], katakana: ['a', 'ka'] },
       mode: { hiragana: 'read' as const, katakana: 'write' as const },
-      practiceKind: { hiragana: 'words' as const, katakana: 'sentences' as const },
+      practiceKind: { hiragana: 'kana' as const, katakana: 'sentences' as const },
     };
     saveSettings(settings);
     expect(loadSettings()).toEqual(settings);

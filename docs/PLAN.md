@@ -136,7 +136,7 @@ abrir el repo, leer `CLAUDE.md` y continuar desde la primera etapa sin tildar.
 - [x] **Etapa 11 — Más vocabulario.** Completar las filas con pocas palabras (ぱ, combinaciones ゃゅょ, ざ/だ/わ
       en hiragana; は/や/わ y combinaciones en katakana) con traducciones a los cuatro idiomas. Test que exige un
       mínimo de palabras por fila para que activar una fila nueva siempre sume material.
-- [ ] **Etapa 12 — Letras sueltas.** Tercer tipo de práctica "Letras": rondas con los kana individuales de las
+- [x] **Etapa 12 — Letras sueltas.** Tercer tipo de práctica "Letras": rondas con los kana individuales de las
       filas activas, en Leer y Escribir, con el mismo progreso por ítem que las palabras. Pensado para el primer
       contacto con una fila nueva.
 - [ ] **Etapa 13 — Audio.** Pronunciación con la voz japonesa del sistema (`speechSynthesis`), sin red. Botón de

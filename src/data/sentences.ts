@@ -1,7 +1,8 @@
 import type { KanaScript } from './kana';
 import type { Word } from './words';
 
-export type PracticeKind = 'words' | 'sentences';
+/** `kana`: letras sueltas de las filas activas; `words`: vocabulario; `sentences`: oraciones avanzadas. */
+export type PracticeKind = 'kana' | 'words' | 'sentences';
 
 export const HIRAGANA_SENTENCES: Word[] = [
   { kana: 'わたしは がくせいです。', romaji: 'watashi wa gakusei desu', es: 'Soy estudiante.' },

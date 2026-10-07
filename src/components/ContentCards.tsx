@@ -12,23 +12,34 @@ interface ContentCardsProps {
 
 export function ContentCards({ value, unlocked, missingRows, script, onChange }: ContentCardsProps) {
   const { messages } = useI18n();
+  const choiceClass = (kind: PracticeKind) => (value === kind ? 'choice-card choice-card--selected' : 'choice-card');
   return (
     <section className="card">
       <h2>{messages.contentTitle}</h2>
-      <div className="choice-grid">
+      <div className="choice-grid choice-grid--three">
         <button
           type="button"
-          className={value === 'words' ? 'choice-card choice-card--selected' : 'choice-card'}
+          className={choiceClass('kana')}
+          aria-pressed={value === 'kana'}
+          onClick={() => onChange('kana')}
+        >
+          <span className="choice-icon" aria-hidden="true">{script === 'hiragana' ? 'あ' : 'ア'}</span>
+          <strong>{messages.letters}</strong>
+          <span>{messages.roundsOf(10)}</span>
+        </button>
+        <button
+          type="button"
+          className={choiceClass('words')}
           aria-pressed={value === 'words'}
           onClick={() => onChange('words')}
         >
-          <span className="choice-icon" aria-hidden="true">{script === 'hiragana' ? 'あ' : 'ア'}</span>
+          <span className="choice-icon" aria-hidden="true">{script === 'hiragana' ? 'ねこ' : 'パン'}</span>
           <strong>{messages.words}</strong>
           <span>{messages.roundsOf(10)}</span>
         </button>
         <button
           type="button"
-          className={value === 'sentences' ? 'choice-card choice-card--selected' : 'choice-card'}
+          className={choiceClass('sentences')}
           aria-pressed={value === 'sentences'}
           disabled={!unlocked}
           onClick={() => onChange('sentences')}
