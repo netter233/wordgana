@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { isEligible, tryTokenize } from '../lib/kana';
+import { isEligible, tokenize, tryTokenize } from '../lib/kana';
+import { HIRAGANA_ROWS } from './kana';
 import { WORDS } from './words';
 
 describe('WORDS', () => {
@@ -52,5 +53,15 @@ describe('WORDS', () => {
     ];
     const ineligible = WORDS.filter((w) => !isEligible(w.kana, allRowIds));
     expect(ineligible).toEqual([]);
+  });
+
+  it('cada fila tiene al menos 4 palabras, así activar una fila nueva siempre suma material', () => {
+    const counts = new Map<string, number>();
+    for (const w of WORDS) {
+      const rowIds = new Set(tokenize(w.kana).map((t) => (t.type === 'unit' ? t.unit.rowId : 'sokuon')));
+      for (const id of rowIds) counts.set(id, (counts.get(id) ?? 0) + 1);
+    }
+    const thin = HIRAGANA_ROWS.filter((row) => (counts.get(row.id) ?? 0) < 4).map((row) => row.id);
+    expect(thin).toEqual([]);
   });
 });
