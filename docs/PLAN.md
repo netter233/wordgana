@@ -160,7 +160,7 @@ abrir el repo, leer `CLAUDE.md` y continuar desde la primera etapa sin tildar.
       recordatorio.
 - [x] **Etapa 20 — Cronómetro, carga manual y categorías.** Cronómetro que sobrevive a cerrar la app, formulario
       compartido de carga, categorías fijas (escucha, lectura, clase…) y personalizadas archivables.
-- [ ] **Etapa 21 — Historial editable.** Registros agrupados por día; editar o borrar los manuales y de
+- [x] **Etapa 21 — Historial editable.** Registros agrupados por día; editar o borrar los manuales y de
       cronómetro, borrar los automáticos.
 - [ ] **Etapa 22 — Logros por horas y cierre.** Logros de 1 a 1000 horas y de meta cumplida 7/30 días; README,
       CLAUDE.md, ficha de la tienda y capturas.

@@ -230,6 +230,15 @@ export interface Messages {
   builtInCategoriesTitle: string;
   timerShort: string;
   confirmRemoveCategory: (name: string) => string;
+  historyTitle: string;
+  sourceAuto: string;
+  sourceTimer: string;
+  sourceManual: string;
+  deleteEntry: string;
+  deleteShort: string;
+  confirmDeleteEntry: (label: string, duration: string) => string;
+  emptyHistory: string;
+  editEntryHint: string;
 }
 
 export const MESSAGES: Record<AppLanguage, Messages> = {
@@ -379,6 +388,15 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     builtInCategoriesTitle: 'Included',
     timerShort: 'Timer',
     confirmRemoveCategory: (name) => `Remove “${name}”? It won’t be offered for new entries.`,
+    historyTitle: 'History',
+    sourceAuto: 'In WordGana',
+    sourceTimer: 'Timer',
+    sourceManual: 'Added manually',
+    deleteEntry: 'Delete entry',
+    deleteShort: 'Delete',
+    confirmDeleteEntry: (label, duration) => `Delete ${duration} of ${label}? This can’t be undone.`,
+    emptyHistory: 'No entries yet. Practice a round or add time to see it here.',
+    editEntryHint: 'Edit',
   },
   es: {
     autoLanguage: (language) => `Automático (${language})`, languageLabel: 'Idioma',
@@ -525,6 +543,15 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     builtInCategoriesTitle: 'Incluidas',
     timerShort: 'Cronómetro',
     confirmRemoveCategory: (name) => `¿Quitar “${name}”? No se va a ofrecer para cargar tiempo.`,
+    historyTitle: 'Historial',
+    sourceAuto: 'En WordGana',
+    sourceTimer: 'Cronómetro',
+    sourceManual: 'Cargado a mano',
+    deleteEntry: 'Borrar registro',
+    deleteShort: 'Borrar',
+    confirmDeleteEntry: (label, duration) => `¿Borrar ${duration} de ${label}? No se puede deshacer.`,
+    emptyHistory: 'Todavía no hay registros. Practicá una ronda o agregá tiempo para verlo acá.',
+    editEntryHint: 'Editar',
   },
   fr: {
     autoLanguage: (language) => `Automatique (${language})`, languageLabel: 'Langue',
@@ -671,6 +698,15 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     builtInCategoriesTitle: 'Incluses',
     timerShort: 'Chrono',
     confirmRemoveCategory: (name) => `Retirer « ${name} » ? Elle ne sera plus proposée.`,
+    historyTitle: 'Historique',
+    sourceAuto: 'Dans WordGana',
+    sourceTimer: 'Chrono',
+    sourceManual: 'Ajouté à la main',
+    deleteEntry: 'Supprimer l’entrée',
+    deleteShort: 'Supprimer',
+    confirmDeleteEntry: (label, duration) => `Supprimer ${duration} de ${label} ? Action irréversible.`,
+    emptyHistory: 'Aucune entrée. Faites une série ou ajoutez du temps pour la voir ici.',
+    editEntryHint: 'Modifier',
   },
   de: {
     autoLanguage: (language) => `Automatisch (${language})`, languageLabel: 'Sprache',
@@ -817,6 +853,15 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     builtInCategoriesTitle: 'Enthalten',
     timerShort: 'Timer',
     confirmRemoveCategory: (name) => `„${name}“ entfernen? Sie wird nicht mehr angeboten.`,
+    historyTitle: 'Verlauf',
+    sourceAuto: 'In WordGana',
+    sourceTimer: 'Timer',
+    sourceManual: 'Manuell',
+    deleteEntry: 'Eintrag löschen',
+    deleteShort: 'Löschen',
+    confirmDeleteEntry: (label, duration) => `${duration} ${label} löschen? Das kann nicht rückgängig gemacht werden.`,
+    emptyHistory: 'Noch keine Einträge. Übe eine Runde oder füge Zeit hinzu.',
+    editEntryHint: 'Bearbeiten',
   },
 };
 

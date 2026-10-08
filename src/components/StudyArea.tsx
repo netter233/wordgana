@@ -2,6 +2,8 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { useI18n } from '../i18n';
 import {
   addCustomCategory,
+  categoryInfo,
+  formatDuration,
   removeCustomCategory,
   renameCustomCategory,
   type CustomCategory,
@@ -10,19 +12,23 @@ import { dayKey } from '../lib/storage';
 import {
   LONG_TIMER_SECONDS,
   addEntry,
+  deleteEntry,
+  updateEntry,
   timerElapsed,
   type EntryInput,
   type RunningTimer,
   type StudyEntry,
 } from '../lib/studyTime';
 import { CategoryPicker } from './CategoryPicker';
+import { Chevron } from './Chevron';
 import { StudyCategoriesScreen } from './StudyCategoriesScreen';
 import { StudyEntryForm } from './StudyEntryForm';
+import { StudyHistory } from './StudyHistory';
 import { StudyTimeScreen } from './StudyTimeScreen';
 import { TimerBanner } from './TimerBanner';
 import { TopBar } from './TopBar';
 
-export type StudyView = 'overview' | 'add' | 'timer-start' | 'timer-stop' | 'categories';
+export type StudyView = 'overview' | 'add' | 'timer-start' | 'timer-stop' | 'categories' | 'history' | 'edit';
 
 interface StudyAreaProps {
   initialView: StudyView;
@@ -55,9 +61,13 @@ export function StudyArea({
 }: StudyAreaProps) {
   const { messages } = useI18n();
   const [requestedView, setView] = useState<StudyView>(initialView);
-  // Sin cronómetro en marcha no hay nada que detener.
-  const view: StudyView = requestedView === 'timer-stop' && !timer ? 'overview' : requestedView;
   const [timerCategory, setTimerCategory] = useState('');
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const editing = entries.find((entry) => entry.id === editingId && entry.source !== 'auto') ?? null;
+  // Sin cronómetro en marcha no hay nada que detener, y sin registro elegido no hay nada que editar.
+  const view: StudyView = requestedView === 'timer-stop' && !timer ? 'overview'
+    : requestedView === 'edit' && !editing ? 'history'
+    : requestedView;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -75,13 +85,18 @@ export function StudyArea({
     setView('overview');
   }
 
-  const back = () => (view === 'overview' ? onExit() : setView('overview'));
+  const back = () => {
+    if (view === 'overview') onExit();
+    else setView(view === 'edit' ? 'history' : 'overview');
+  };
   const titles: Record<StudyView, string> = {
     overview: messages.studyTimeTitle,
     add: messages.addTimeTitle,
     'timer-start': messages.startTimer,
     'timer-stop': messages.stopTimerTitle,
     categories: messages.categoriesTitle,
+    history: messages.historyTitle,
+    edit: messages.editEntryTitle,
   };
 
   let content: ReactNode;
@@ -149,6 +164,52 @@ export function StudyArea({
         )}
       />
     );
+  } else if (view === 'history') {
+    content = (
+      <StudyHistory
+        entries={entries}
+        customCategories={customCategories}
+        onEdit={(entry) => {
+          setEditingId(entry.id);
+          setView('edit');
+        }}
+        onDelete={(entry) => onEntriesChange(deleteEntry(entries, entry.id))}
+        onAdd={() => setView('add')}
+      />
+    );
+  } else if (view === 'edit' && editing) {
+    const info = categoryInfo(editing.categoryId, messages, customCategories);
+    const duration = formatDuration(editing.seconds, messages);
+    content = (
+      <StudyEntryForm
+        key={editing.id}
+        initial={{
+          categoryId: editing.categoryId,
+          day: editing.day,
+          minutes: Math.round(editing.seconds / 60),
+          note: editing.note,
+        }}
+        customCategories={customCategories}
+        onCreateCategory={createCategory}
+        onSave={(input) => {
+          onEntriesChange(updateEntry(entries, editing.id, input));
+          setView('history');
+        }}
+        extraActions={(
+          <button
+            type="button"
+            className="reveal-btn reveal-btn--danger"
+            onClick={() => {
+              if (!window.confirm(messages.confirmDeleteEntry(info.label, duration))) return;
+              onEntriesChange(deleteEntry(entries, editing.id));
+              setView('history');
+            }}
+          >
+            {messages.deleteEntry}
+          </button>
+        )}
+      />
+    );
   } else if (view === 'categories') {
     const used = new Set(entries.map((entry) => entry.categoryId));
     content = (
@@ -187,6 +248,11 @@ export function StudyArea({
         )}
         footer={(
           <div className="nav-list">
+            <button type="button" className="nav-row" onClick={() => setView('history')}>
+              <span className="nav-row-icon" aria-hidden="true">🗓️</span>
+              <span className="nav-row-label">{messages.historyTitle}</span>
+              <Chevron />
+            </button>
             <button type="button" className="nav-row" onClick={() => setView('categories')}>
               <span className="nav-row-icon" aria-hidden="true">🏷️</span>
               <span className="nav-row-label">{messages.categoriesTitle}</span>
@@ -199,26 +265,9 @@ export function StudyArea({
   }
 
   return (
-    <main className={view === 'overview' || view === 'categories' ? 'app' : 'app app--setup'}>
+    <main className={['overview', 'categories', 'history'].includes(view) ? 'app' : 'app app--setup'}>
       <TopBar title={titles[view]} mark={mark} onBack={back} />
       {content}
     </main>
-  );
-}
-
-export function Chevron() {
-  return (
-    <svg
-      className="nav-row-chevron"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="m9 18 6-6-6-6" />
-    </svg>
   );
 }

@@ -630,6 +630,35 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
 .category-manage-list li:last-child { border-bottom: 0; }
 .category-rename { flex: 1; display: flex; gap: 8px; padding: 6px 0; }
 
+.history-day-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.history-day-title { margin: 0; font-size: 0.95rem; }
+.history-day-title::first-letter { text-transform: uppercase; }
+.history-day-total { flex: none; color: var(--muted); font-size: 0.85rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.history-list { margin: 6px 0 0; padding: 0; list-style: none; }
+.history-list li + li { border-top: 1px solid var(--border); }
+.history-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 56px;
+  padding: 8px 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+}
+.history-row--button { cursor: pointer; }
+.history-row--button:active { background: var(--surface-2); }
+.history-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.history-label { font-size: 0.92rem; font-weight: 600; }
+.history-meta { overflow: hidden; color: var(--muted); font-size: 0.78rem; text-overflow: ellipsis; white-space: nowrap; }
+.history-duration { flex: none; font-size: 0.9rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.history-delete { flex: none; min-width: 44px; font-size: 0.8rem; }
+.reveal-btn--danger { color: var(--bad); }
+.empty-note--first { margin: 0 0 4px; }
+
 /* --- Logros --- */
 .achievement-badge {
   flex: none;

@@ -1,4 +1,5 @@
 import { useI18n } from '../i18n';
+import { Chevron } from './Chevron';
 
 export interface StatsLink {
   icon: string;
@@ -66,18 +67,7 @@ export function StatsStrip({ links, streak, roundsToday, todayValue, mastered, t
             <span className="nav-row-icon" aria-hidden="true">{link.icon}</span>
             <span className="nav-row-label">{link.label}</span>
             {link.detail && <span className="nav-row-detail">{link.detail}</span>}
-            <svg
-              className="nav-row-chevron"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="m9 18 6-6-6-6" />
-            </svg>
+            <Chevron />
           </button>
         ))}
       </div>

@@ -7,6 +7,7 @@ import {
   deleteEntry,
   displayMinutes,
   goalStreak,
+  groupByDay,
   loadGoal,
   loadStudyEntries,
   practiceCategoryId,
@@ -185,5 +186,20 @@ describe('registros manuales', () => {
 
   it('calcula el tiempo del cronómetro', () => {
     expect(timerElapsed({ categoryId: 'reading', startedAt: new Date(2026, 9, 8, 11, 30).toISOString() }, today)).toBe(1800);
+  });
+});
+
+describe('groupByDay', () => {
+  it('agrupa por día del más nuevo al más viejo y ordena por duración', () => {
+    const groups = groupByDay([
+      entry('2026-10-06', 'a', 10),
+      entry('2026-10-08', 'b', 5),
+      entry('2026-10-08', 'c', 20),
+      { ...entry('2026-10-07', 'auto', 0), seconds: 0 },
+    ]);
+    expect(groups.map((g) => [g.day, g.seconds, g.entries.map((e) => e.categoryId)])).toEqual([
+      ['2026-10-08', 1500, ['c', 'b']],
+      ['2026-10-06', 600, ['a']],
+    ]);
   });
 });

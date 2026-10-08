@@ -299,3 +299,25 @@ export function deleteEntry(entries: readonly StudyEntry[], id: string): StudyEn
 export function timerElapsed(timer: RunningTimer, now = new Date()): number {
   return Math.max(0, Math.floor((now.getTime() - Date.parse(timer.startedAt)) / 1000));
 }
+
+export interface DayGroup {
+  day: string;
+  seconds: number;
+  entries: StudyEntry[];
+}
+
+/** Registros agrupados por día, del más nuevo al más viejo; dentro del día, primero lo más largo. */
+export function groupByDay(entries: readonly StudyEntry[]): DayGroup[] {
+  const groups = new Map<string, StudyEntry[]>();
+  for (const entry of entries) {
+    if (entry.seconds <= 0) continue;
+    groups.set(entry.day, [...(groups.get(entry.day) ?? []), entry]);
+  }
+  return [...groups.entries()]
+    .sort(([a], [b]) => (a < b ? 1 : a > b ? -1 : 0))
+    .map(([day, dayEntries]) => ({
+      day,
+      seconds: dayEntries.reduce((sum, entry) => sum + entry.seconds, 0),
+      entries: [...dayEntries].sort((a, b) => b.seconds - a.seconds),
+    }));
+}
