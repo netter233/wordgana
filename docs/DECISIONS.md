@@ -178,3 +178,16 @@ app y al terminar cada ronda. El permiso se pide recién al activar el recordato
 el de hoy desaparece apenas terminás una ronda, el primero puede mencionar la racha real y, si dejás de abrir la
 app, los avisos se terminan solos a las dos semanas en vez de insistir para siempre. Pedir el permiso en
 contexto (al tocar el interruptor) es la práctica recomendada por Apple y evita un rechazo prematuro.
+
+## 2026-10-07 — Logros
+
+**Decisión:** 22 logros en cinco categorías (rondas, racha, vocabulario, precisión, silabarios y modos), con
+meta numérica y progreso visible para los bloqueados. Se evalúan al terminar cada ronda y los nuevos se
+celebran en Resultados. Al abrir la app se desbloquean en silencio los que ya se cumplían. Un logro
+desbloqueado no se vuelve a bloquear. Las palabras aprendidas cuentan una vez por silabario aunque estén
+afianzadas en Leer y en Escribir; "Hiragana/Katakana básico" exige afianzar las 46 letras básicas en Letras.
+Los títulos viven en `src/data/achievements.ts` en los cuatro idiomas; las descripciones salen de i18n.
+**Por qué:** Resultados es el momento natural para festejar y no interrumpe la práctica. Desbloquear en
+silencio al abrir evita mostrar "10 / 10" bloqueado a quien ya tenía progreso de versiones anteriores. Mostrar
+el progreso y un "próximo logro" (el bloqueado más cercano a la meta) da un objetivo concreto.
+También: cada cambio de pantalla vuelve el scroll arriba (antes una pantalla nueva podía abrir por la mitad).

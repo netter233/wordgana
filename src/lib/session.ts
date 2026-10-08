@@ -21,6 +21,11 @@ function correctStreak(stat: StatsMap[string] | undefined): number {
   return stat.correctStreak ?? (stat.missed === 0 ? stat.seen : 0);
 }
 
+/** Un ítem está afianzado con dos aciertos seguidos. */
+export function isMastered(stat: StatsMap[string] | undefined): boolean {
+  return correctStreak(stat) >= 2;
+}
+
 function practiceWeight(stat: StatsMap[string] | undefined): number {
   if (!stat) return BASE_WEIGHT;
   const streak = correctStreak(stat);
@@ -65,6 +70,6 @@ export function pickRound(
 /** Palabras dominadas: contestadas al menos una vez y nunca falladas. */
 export function countMastered(words: readonly Word[], stats: StatsMap, keyFor?: StatKey): number {
   return words.filter((word) => {
-    return correctStreak(statFor(stats, word, keyFor)) >= 2;
+    return isMastered(statFor(stats, word, keyFor));
   }).length;
 }

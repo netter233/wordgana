@@ -1,14 +1,18 @@
+import type { Achievement } from '../data/achievements';
 import type { Word } from '../data/words';
 import { readingFor } from '../lib/study';
 import { localizedMeaning } from '../data/translations';
 import { useI18n } from '../i18n';
 import { useJapaneseSpeech } from '../lib/speech';
 import { SpeakButton } from './SpeakButton';
+import { UnlockedAchievements } from './UnlockedAchievements';
 
 interface ResultsProps {
   total: number;
   correctCount: number;
   missed: Word[];
+  newAchievements: Achievement[];
+  onOpenAchievements: () => void;
   onRestartSameRound: () => void;
   onReviewMissed: () => void;
   onChangeRows: () => void;
@@ -18,6 +22,8 @@ export function Results({
   total,
   correctCount,
   missed,
+  newAchievements,
+  onOpenAchievements,
   onRestartSameRound,
   onReviewMissed,
   onChangeRows,
@@ -34,6 +40,8 @@ export function Results({
           {missed.length === 0 ? messages.perfectRound : messages.toReview(missed.length)}
         </p>
       </div>
+
+      <UnlockedAchievements achievements={newAchievements} onViewAll={onOpenAchievements} />
 
       {missed.length > 0 && (
         <div className="card missed-list">

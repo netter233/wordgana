@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ContentCards } from './components/ContentCards';
+import { AchievementsScreen } from './components/AchievementsScreen';
 import { AudioSettings } from './components/AudioSettings';
 import { LanguagePicker } from './components/LanguagePicker';
 import { ModeCards } from './components/ModeCards';
@@ -14,9 +15,17 @@ import { TopBar } from './components/TopBar';
 import { KATAKANA_WORDS } from './data/katakanaWords';
 import { rowsForScript, type KanaScript } from './data/kana';
 import { sentencesForScript, type PracticeKind } from './data/sentences';
+import type { Achievement } from './data/achievements';
 import { WORDS, type Word } from './data/words';
 import { isEligible, type PracticeMode } from './lib/kana';
 import { useI18n } from './i18n';
+import {
+  achievementProgress,
+  computeMetrics,
+  evaluateAchievements,
+  loadUnlocked,
+  saveUnlocked,
+} from './lib/achievements';
 import { letterItems } from './lib/letters';
 import { loadReminder, syncReminders, type ReminderTexts } from './lib/reminders';
 import { countMastered, pickRound } from './lib/session';
@@ -40,7 +49,7 @@ const MIN_WORDS_TO_START = 3;
 const WORD_ROUND_SIZE = 10;
 const SENTENCE_ROUND_SIZE = 5;
 
-type Screen = 'setup' | 'practice' | 'results' | 'settings' | 'stats';
+type Screen = 'setup' | 'practice' | 'results' | 'settings' | 'stats' | 'achievements';
 
 interface RoundSummary {
   correctCount: number;
@@ -58,6 +67,16 @@ export function App() {
   const [stats, setStats] = useState<StatsMap>(loadStats);
   const [progress, setProgress] = useState(loadProgress);
   const [lifetime, setLifetime] = useState(loadLifetime);
+  const [unlocked, setUnlocked] = useState(() => {
+    // Al abrir, se desbloquea en silencio lo que ya se cumplía (por ejemplo, progreso de versiones
+    // anteriores). Los logros nuevos se celebran al terminar una ronda.
+    const saved = loadUnlocked();
+    const result = evaluateAchievements(computeMetrics(loadLifetime(), loadStats()), saved);
+    if (result.newly.length > 0) saveUnlocked(result.unlocked);
+    return result.unlocked;
+  });
+  const [newAchievements, setNewAchievements] = useState<Achievement[]>([]);
+  const [achievementsBack, setAchievementsBack] = useState<Screen>('setup');
   const [round, setRound] = useState<Word[]>([]);
   const [summary, setSummary] = useState<RoundSummary | null>(null);
   const [rowsExpanded, setRowsExpanded] = useState<Record<KanaScript, boolean>>({
@@ -94,6 +113,11 @@ export function App() {
     first: progress.streak > 0 ? messages.notificationStreak(progress.streak) : messages.notificationGeneric,
     later: messages.notificationGeneric,
   };
+
+  useEffect(() => {
+    // Cada pantalla empieza arriba, aunque vengas del final del home.
+    window.scrollTo(0, 0);
+  }, [screen]);
 
   useEffect(() => {
     // Reprograma los avisos al abrir la app y cada vez que cambia si ya practicaste hoy.
@@ -174,6 +198,12 @@ export function App() {
     });
     setLifetime(nextLifetime);
     saveLifetime(nextLifetime);
+    const evaluation = evaluateAchievements(computeMetrics(nextLifetime, stats), unlocked);
+    if (evaluation.newly.length > 0) {
+      setUnlocked(evaluation.unlocked);
+      saveUnlocked(evaluation.unlocked);
+    }
+    setNewAchievements(evaluation.newly);
     setSummary(roundSummary);
     setScreen('results');
   }
@@ -192,6 +222,23 @@ export function App() {
   };
   const kindName = kindNames[practiceKind];
   const mark = activeScript === 'hiragana' ? 'あ' : 'ア';
+
+  function openAchievements(from: Screen) {
+    setAchievementsBack(from);
+    setScreen('achievements');
+  }
+
+  const achievements = achievementProgress(computeMetrics(lifetime, stats), unlocked);
+  const unlockedCount = achievements.filter((entry) => entry.unlockedAt).length;
+
+  if (screen === 'achievements') {
+    return (
+      <main className="app">
+        <TopBar title={messages.achievementsTitle} mark={mark} onBack={() => setScreen(achievementsBack)} />
+        <AchievementsScreen progress={achievements} />
+      </main>
+    );
+  }
 
   if (screen === 'practice') {
     return (
@@ -217,6 +264,8 @@ export function App() {
           total={round.length}
           correctCount={summary.correctCount}
           missed={summary.missed}
+          newAchievements={newAchievements}
+          onOpenAchievements={() => openAchievements('results')}
           onRestartSameRound={startRound}
           onReviewMissed={reviewMissed}
           onChangeRows={() => setScreen('setup')}
@@ -292,7 +341,15 @@ export function App() {
       />
 
       <StatsStrip
-        links={[{ icon: '📊', label: messages.statsTitle, onClick: () => setScreen('stats') }]}
+        links={[
+          {
+            icon: '🏆',
+            label: messages.achievementsTitle,
+            detail: messages.achievementsCount(unlockedCount, achievements.length),
+            onClick: () => openAchievements('setup'),
+          },
+          { icon: '📊', label: messages.statsTitle, onClick: () => setScreen('stats') },
+        ]}
         streak={progress.streak}
         roundsToday={progress.roundsToday}
         mastered={countMastered(eligibleItems, stats, statKey)}

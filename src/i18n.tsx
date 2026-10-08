@@ -146,6 +146,26 @@ export interface Messages {
   reminderDenied: string;
   notificationStreak: (days: number) => string;
   notificationGeneric: string;
+  achievementsTitle: string;
+  achievementsCount: (unlocked: number, total: number) => string;
+  achievementsUnlocked: (count: number) => string;
+  viewAchievements: string;
+  nextAchievement: string;
+  allAchievementsDone: string;
+  unlockedOn: (date: string) => string;
+  categoryRounds: string;
+  categoryStreak: string;
+  categoryVocabulary: string;
+  categoryPrecision: string;
+  categoryMastery: string;
+  achRounds: (count: number) => string;
+  achStreak: (count: number) => string;
+  achWords: (count: number) => string;
+  achPerfect: (count: number) => string;
+  achBasic: (script: string) => string;
+  achBothModes: string;
+  achBothScripts: string;
+  achSentences: string;
 }
 
 const MESSAGES: Record<AppLanguage, Messages> = {
@@ -211,6 +231,26 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     reminderDenied: 'Notifications are turned off for WordGana. Turn them on in Settings → Notifications → WordGana.',
     notificationStreak: (days) => `Your ${days}-day streak is waiting. One quick round?`,
     notificationGeneric: 'Time for a quick round of kana. Just two minutes!',
+    achievementsTitle: 'Achievements',
+    achievementsCount: (unlocked, total) => `${unlocked} of ${total}`,
+    achievementsUnlocked: (count) => count === 1 ? 'Achievement unlocked!' : `${count} achievements unlocked!`,
+    viewAchievements: 'See all achievements',
+    nextAchievement: 'Up next',
+    allAchievementsDone: 'You unlocked every achievement. お疲れさま!',
+    unlockedOn: (date) => `Unlocked ${date}`,
+    categoryRounds: 'Rounds',
+    categoryStreak: 'Streak',
+    categoryVocabulary: 'Vocabulary',
+    categoryPrecision: 'Precision',
+    categoryMastery: 'Scripts and modes',
+    achRounds: (count) => count === 1 ? 'Finish your first round' : `Finish ${count} rounds`,
+    achStreak: (count) => `Practice ${count} days in a row`,
+    achWords: (count) => `Master ${count} words`,
+    achPerfect: (count) => count === 1 ? 'Finish a round of 5 or more without mistakes' : `Finish ${count} rounds without mistakes`,
+    achBasic: (script) => `Master all basic ${script} characters in Characters mode`,
+    achBothModes: 'Finish rounds in both Read and Write',
+    achBothScripts: 'Practice both hiragana and katakana',
+    achSentences: 'Finish a round of sentences',
   },
   es: {
     autoLanguage: (language) => `Automático (${language})`, languageLabel: 'Idioma',
@@ -273,6 +313,26 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     reminderDenied: 'Las notificaciones de WordGana están desactivadas. Activalas en Ajustes → Notificaciones → WordGana.',
     notificationStreak: (days) => `Tu racha de ${days} ${days === 1 ? 'día' : 'días'} te espera. ¿Una ronda rápida?`,
     notificationGeneric: '¿Una ronda rápida de kana? Son solo dos minutos.',
+    achievementsTitle: 'Logros',
+    achievementsCount: (unlocked, total) => `${unlocked} de ${total}`,
+    achievementsUnlocked: (count) => count === 1 ? '¡Logro desbloqueado!' : `¡${count} logros desbloqueados!`,
+    viewAchievements: 'Ver todos los logros',
+    nextAchievement: 'Tu próximo logro',
+    allAchievementsDone: 'Desbloqueaste todos los logros. ¡お疲れさま!',
+    unlockedOn: (date) => `Desbloqueado el ${date}`,
+    categoryRounds: 'Rondas',
+    categoryStreak: 'Racha',
+    categoryVocabulary: 'Vocabulario',
+    categoryPrecision: 'Precisión',
+    categoryMastery: 'Silabarios y modos',
+    achRounds: (count) => count === 1 ? 'Terminá tu primera ronda' : `Terminá ${count} rondas`,
+    achStreak: (count) => `Practicá ${count} días seguidos`,
+    achWords: (count) => `Afianzá ${count} palabras`,
+    achPerfect: (count) => count === 1 ? 'Terminá una ronda de 5 o más sin errores' : `Terminá ${count} rondas sin errores`,
+    achBasic: (script) => `Afianzá todas las letras básicas de ${script} en Letras`,
+    achBothModes: 'Terminá rondas en Leer y en Escribir',
+    achBothScripts: 'Practicá hiragana y katakana',
+    achSentences: 'Terminá una ronda de oraciones',
   },
   fr: {
     autoLanguage: (language) => `Automatique (${language})`, languageLabel: 'Langue',
@@ -335,6 +395,26 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     reminderDenied: 'Les notifications de WordGana sont désactivées. Activez-les dans Réglages → Notifications → WordGana.',
     notificationStreak: (days) => `Votre série de ${days} ${days === 1 ? 'jour' : 'jours'} vous attend. Une petite série ?`,
     notificationGeneric: 'Une petite série de kana ? Deux minutes suffisent.',
+    achievementsTitle: 'Succès',
+    achievementsCount: (unlocked, total) => `${unlocked} sur ${total}`,
+    achievementsUnlocked: (count) => count === 1 ? 'Succès débloqué !' : `${count} succès débloqués !`,
+    viewAchievements: 'Voir tous les succès',
+    nextAchievement: 'Prochain succès',
+    allAchievementsDone: 'Vous avez débloqué tous les succès. お疲れさま !',
+    unlockedOn: (date) => `Débloqué le ${date}`,
+    categoryRounds: 'Séries',
+    categoryStreak: 'Régularité',
+    categoryVocabulary: 'Vocabulaire',
+    categoryPrecision: 'Précision',
+    categoryMastery: 'Syllabaires et modes',
+    achRounds: (count) => count === 1 ? 'Terminez votre première série' : `Terminez ${count} séries`,
+    achStreak: (count) => `Pratiquez ${count} jours d’affilée`,
+    achWords: (count) => `Maîtrisez ${count} mots`,
+    achPerfect: (count) => count === 1 ? 'Terminez une série de 5 ou plus sans faute' : `Terminez ${count} séries sans faute`,
+    achBasic: (script) => `Maîtrisez tous les caractères ${script} de base en mode Caractères`,
+    achBothModes: 'Terminez des séries en Lire et en Écrire',
+    achBothScripts: 'Pratiquez les hiragana et les katakana',
+    achSentences: 'Terminez une série de phrases',
   },
   de: {
     autoLanguage: (language) => `Automatisch (${language})`, languageLabel: 'Sprache',
@@ -397,6 +477,26 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     reminderDenied: 'Mitteilungen für WordGana sind deaktiviert. Aktiviere sie unter Einstellungen → Mitteilungen → WordGana.',
     notificationStreak: (days) => `Deine Serie von ${days} ${days === 1 ? 'Tag' : 'Tagen'} wartet. Eine schnelle Runde?`,
     notificationGeneric: 'Zeit für eine schnelle Kana-Runde. Nur zwei Minuten!',
+    achievementsTitle: 'Erfolge',
+    achievementsCount: (unlocked, total) => `${unlocked} von ${total}`,
+    achievementsUnlocked: (count) => count === 1 ? 'Erfolg freigeschaltet!' : `${count} Erfolge freigeschaltet!`,
+    viewAchievements: 'Alle Erfolge ansehen',
+    nextAchievement: 'Als Nächstes',
+    allAchievementsDone: 'Du hast alle Erfolge freigeschaltet. お疲れさま!',
+    unlockedOn: (date) => `Freigeschaltet am ${date}`,
+    categoryRounds: 'Runden',
+    categoryStreak: 'Serie',
+    categoryVocabulary: 'Wortschatz',
+    categoryPrecision: 'Genauigkeit',
+    categoryMastery: 'Schriften und Modi',
+    achRounds: (count) => count === 1 ? 'Beende deine erste Runde' : `Beende ${count} Runden`,
+    achStreak: (count) => `Übe ${count} Tage in Folge`,
+    achWords: (count) => `Festige ${count} Wörter`,
+    achPerfect: (count) => count === 1 ? 'Beende eine Runde mit 5 oder mehr ohne Fehler' : `Beende ${count} Runden ohne Fehler`,
+    achBasic: (script) => `Festige alle ${capitalize(script)}-Grundzeichen im Modus Zeichen`,
+    achBothModes: 'Beende Runden in Lesen und Schreiben',
+    achBothScripts: 'Übe Hiragana und Katakana',
+    achSentences: 'Beende eine Runde mit Sätzen',
   },
 };
 

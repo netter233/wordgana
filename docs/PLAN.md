@@ -147,7 +147,7 @@ abrir el repo, leer `CLAUDE.md` y continuar desde la primera etapa sin tildar.
       palabras que las contienen) y palabras que más cuestan. Registro histórico en localStorage.
 - [x] **Etapa 15 — Recordatorio diario.** Notificación local con `@capacitor/local-notifications`, solo en la app
       nativa. Activación y hora en configuración, permiso pedido al activarla, y sin aviso si ya practicaste ese día.
-- [ ] **Etapa 16 — Logros.** Logros por rondas completadas, palabras aprendidas, racha, rondas perfectas, letras
+- [x] **Etapa 16 — Logros.** Logros por rondas completadas, palabras aprendidas, racha, rondas perfectas, letras
       dominadas y variedad de práctica. Se evalúan al terminar cada ronda y se celebran en Resultados. Pantalla
       de logros con progreso hacia los bloqueados.
 - [ ] **Etapa 17 — Ficha de la tienda.** Actualizar descripción y capturas de `docs/APP_STORE.md` con las
