@@ -4,7 +4,7 @@ App (PWA y app de iPhone con Capacitor) para practicar hiragana y katakana de fo
 marca las filas del silabario que ya sabe y practica con letras sueltas o palabras reales formadas solo por esas
 letras, en modo Leer (kana → romaji) o Escribir (romaji → kana con teclado japonés). Al completar todas las filas
 se desbloquean rondas de 5 oraciones simples; las de letras y palabras son de 10. Incluye audio, estadísticas,
-logros y recordatorio diario. Interfaz en español, inglés, francés y alemán.
+logros, tiempo de estudio y recordatorio diario. Interfaz en español, inglés, francés y alemán.
 
 ## Cómo continuar el trabajo
 
@@ -49,8 +49,11 @@ src/lib/insights.ts      estadísticas derivadas: totales, aciertos por modo, le
 src/lib/achievements.ts  métricas, evaluación y persistencia de logros
 src/lib/speech.ts        pronunciación con speechSynthesis (voz japonesa del sistema)
 src/lib/reminders.ts     recordatorio diario con @capacitor/local-notifications (solo app nativa)
+src/lib/studyTime.ts     tiempo de estudio: registros por día, cronómetro, meta, totales y racha de metas
+src/lib/studyCategories.ts categorías de estudio (práctica, fijas y personalizadas) y formato de duraciones
 src/i18n.tsx             textos de la interfaz en es/en/fr/de
-src/components/          pantallas y piezas de UI (Practice, Results, StatsScreen, AchievementsScreen…)
+src/components/          pantallas y piezas de UI (Practice, Results, StatsScreen, AchievementsScreen,
+                         StudyArea con tiempo de estudio, cronómetro, carga e historial…)
 src/App.tsx              estado global: pantalla, filas, modo, ronda, stats, historial y logros
 ```
 

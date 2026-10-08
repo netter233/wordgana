@@ -7,6 +7,7 @@ import { HIRAGANA_ROWS, KATAKANA_ROWS, type KanaRow } from '../data/kana';
 import { parseStatKey } from './insights';
 import { isMastered } from './session';
 import type { Lifetime, StatsMap } from './storage';
+import { goalStreak, totalSeconds, type StudyEntry } from './studyTime';
 
 export type AchievementMetrics = Record<AchievementMetric, number>;
 
@@ -17,7 +18,12 @@ function basicLetters(rows: KanaRow[]): Set<string> {
 const HIRAGANA_BASIC = basicLetters(HIRAGANA_ROWS);
 const KATAKANA_BASIC = basicLetters(KATAKANA_ROWS);
 
-export function computeMetrics(lifetime: Lifetime, stats: StatsMap): AchievementMetrics {
+export function computeMetrics(
+  lifetime: Lifetime,
+  stats: StatsMap,
+  studyEntries: readonly StudyEntry[] = [],
+  goalMinutes = 0,
+): AchievementMetrics {
   const words = new Set<string>();
   const hiragana = new Set<string>();
   const katakana = new Set<string>();
@@ -42,6 +48,8 @@ export function computeMetrics(lifetime: Lifetime, stats: StatsMap): Achievement
     modesPracticed: new Set(practiced.map(([, , mode]) => mode)).size,
     scriptsPracticed: new Set(practiced.map(([script]) => script)).size,
     sentenceRounds: practiced.some(([, kind]) => kind === 'sentences') ? 1 : 0,
+    studyMinutes: Math.floor(totalSeconds(studyEntries) / 60),
+    goalStreak: goalStreak(studyEntries, goalMinutes),
   };
 }
 

@@ -23,6 +23,8 @@ const zero: AchievementMetrics = {
   modesPracticed: 0,
   scriptsPracticed: 0,
   sentenceRounds: 0,
+  studyMinutes: 0,
+  goalStreak: 0,
 };
 
 describe('ACHIEVEMENTS', () => {
@@ -108,5 +110,25 @@ describe('nextAchievement', () => {
   it('devuelve null cuando está todo desbloqueado', () => {
     const all = Object.fromEntries(ACHIEVEMENTS.map((a) => [a.id, 'x']));
     expect(nextAchievement(achievementProgress(zero, all))).toBeNull();
+  });
+});
+
+describe('logros de tiempo de estudio', () => {
+  it('suma minutos de todas las fuentes y la racha de metas', () => {
+    const today = new Date();
+    const day = (offset: number) => {
+      const date = new Date(today);
+      date.setDate(date.getDate() - offset);
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    };
+    const entries = [0, 1, 2].map((offset) => ({
+      id: String(offset), day: day(offset), categoryId: 'reading', seconds: 1800, source: 'manual' as const, createdAt: '',
+    }));
+    const metrics = computeMetrics(EMPTY_LIFETIME, {}, entries, 30);
+    expect(metrics.studyMinutes).toBe(90);
+    expect(metrics.goalStreak).toBe(3);
+    const ids = evaluateAchievements(metrics, {}).newly.map((a) => a.id);
+    expect(ids).toContain('time-1h');
+    expect(ids).not.toContain('goal-7');
   });
 });

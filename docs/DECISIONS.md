@@ -214,3 +214,11 @@ crean desde el formulario o desde Categorías. Quitar una personalizada con tiem
 **Por qué:** guardar el inicio evita depender de procesos en segundo plano en iOS. Un único formulario mantiene
 consistente la carga. Archivar en vez de borrar evita que el historial y los totales muestren registros
 huérfanos.
+
+## 2026-10-08 — Logros de tiempo de estudio
+
+**Decisión:** ocho logros nuevos en la categoría "Tiempo de estudio": 1, 10, 50, 100, 500 y 1000 horas, y meta
+diaria cumplida 7 y 30 días seguidos. Cuentan todas las fuentes (automático, cronómetro y manual). Además de al
+terminar una ronda, se evalúan al guardar tiempo, y la celebración aparece arriba de la pantalla de tiempo.
+**Por qué:** el registro es personal y de confianza, así que el tiempo cargado a mano vale lo mismo que el
+automático. Celebrar donde se cargó el tiempo da la respuesta en el momento de la acción.

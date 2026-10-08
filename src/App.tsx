@@ -14,6 +14,7 @@ import { StatsScreen } from './components/StatsScreen';
 import { StatsStrip } from './components/StatsStrip';
 import { StudyArea, type StudyView } from './components/StudyArea';
 import { TimerBanner } from './components/TimerBanner';
+import { UnlockedAchievements } from './components/UnlockedAchievements';
 import { TopBar } from './components/TopBar';
 import { KATAKANA_WORDS } from './data/katakanaWords';
 import { rowsForScript, type KanaScript } from './data/kana';
@@ -93,12 +94,16 @@ export function App() {
     // Al abrir, se desbloquea en silencio lo que ya se cumplía (por ejemplo, progreso de versiones
     // anteriores). Los logros nuevos se celebran al terminar una ronda.
     const saved = loadUnlocked();
-    const result = evaluateAchievements(computeMetrics(loadLifetime(), loadStats()), saved);
+    const result = evaluateAchievements(
+      computeMetrics(loadLifetime(), loadStats(), loadStudyEntries(), loadGoal()),
+      saved,
+    );
     if (result.newly.length > 0) saveUnlocked(result.unlocked);
     return result.unlocked;
   });
   const [newAchievements, setNewAchievements] = useState<Achievement[]>([]);
   const [achievementsBack, setAchievementsBack] = useState<Screen>('setup');
+  const [studyCelebration, setStudyCelebration] = useState<Achievement[]>([]);
   const [round, setRound] = useState<Word[]>([]);
   const [summary, setSummary] = useState<RoundSummary | null>(null);
   const [rowsExpanded, setRowsExpanded] = useState<Record<KanaScript, boolean>>({
@@ -232,7 +237,10 @@ export function App() {
     });
     setLifetime(nextLifetime);
     saveLifetime(nextLifetime);
-    const evaluation = evaluateAchievements(computeMetrics(nextLifetime, stats), unlocked);
+    const evaluation = evaluateAchievements(
+      computeMetrics(nextLifetime, stats, studyEntries, goalMinutes),
+      unlocked,
+    );
     if (evaluation.newly.length > 0) {
       setUnlocked(evaluation.unlocked);
       saveUnlocked(evaluation.unlocked);
@@ -262,7 +270,7 @@ export function App() {
     setScreen('achievements');
   }
 
-  const achievements = achievementProgress(computeMetrics(lifetime, stats), unlocked);
+  const achievements = achievementProgress(computeMetrics(lifetime, stats, studyEntries, goalMinutes), unlocked);
   const unlockedCount = achievements.filter((entry) => entry.unlockedAt).length;
 
   const todayStudySeconds = secondsOnDay(studyEntries, dayKey(new Date()));
@@ -275,6 +283,13 @@ export function App() {
   function changeStudyEntries(next: StudyEntry[]) {
     setStudyEntries(next);
     saveStudyEntries(next);
+    // Cargar tiempo a mano o con el cronómetro también puede desbloquear logros.
+    const evaluation = evaluateAchievements(computeMetrics(lifetime, stats, next, goalMinutes), unlocked);
+    if (evaluation.newly.length > 0) {
+      setUnlocked(evaluation.unlocked);
+      saveUnlocked(evaluation.unlocked);
+      setStudyCelebration(evaluation.newly);
+    }
   }
 
   function changeCustomCategories(next: CustomCategory[]) {
@@ -304,7 +319,20 @@ export function App() {
         timer={timer}
         onTimerChange={changeTimer}
         mark={mark}
-        onExit={() => setScreen('setup')}
+        celebration={(
+          <UnlockedAchievements
+            achievements={studyCelebration}
+            onViewAll={() => {
+              setStudyCelebration([]);
+              setStudyView('overview');
+              openAchievements('study');
+            }}
+          />
+        )}
+        onExit={() => {
+          setStudyCelebration([]);
+          setScreen('setup');
+        }}
       />
     );
   }

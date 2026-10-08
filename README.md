@@ -15,8 +15,10 @@ conexión y sin cuentas. Interfaz en español, inglés, francés y alemán.
 - **Pronunciación:** botón para escuchar después de responder, con la voz japonesa del sistema (sin red).
   Opción para reproducir automáticamente.
 - **Estadísticas:** totales históricos, aciertos por modo y las letras y palabras que más cuestan.
-- **Logros:** 22 logros por rondas, racha, vocabulario, rondas perfectas y silabarios, celebrados en
-  Resultados.
+- **Tiempo de estudio:** la práctica en la app se registra sola; lo que estudiás afuera (clases, lectura,
+  escucha o categorías propias) se suma con cronómetro o a mano. Meta diaria, gráfico por día, reparto por
+  categoría e historial editable.
+- **Logros:** 30 logros por rondas, racha, horas de estudio, vocabulario, rondas perfectas y silabarios.
 - **Racha y recordatorio diario:** el recordatorio (solo en la app nativa) avisa a la hora elegida y solo los
   días que todavía no practicaste.
 

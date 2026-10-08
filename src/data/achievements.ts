@@ -5,7 +5,7 @@
  */
 import type { AppLanguage } from '../i18n';
 
-export type AchievementCategory = 'rounds' | 'streak' | 'vocabulary' | 'precision' | 'mastery';
+export type AchievementCategory = 'rounds' | 'streak' | 'vocabulary' | 'precision' | 'mastery' | 'time';
 
 export type AchievementMetric =
   | 'rounds'
@@ -16,7 +16,9 @@ export type AchievementMetric =
   | 'katakanaBasic'
   | 'modesPracticed'
   | 'scriptsPracticed'
-  | 'sentenceRounds';
+  | 'sentenceRounds'
+  | 'studyMinutes'
+  | 'goalStreak';
 
 export interface Achievement {
   id: string;
@@ -59,6 +61,15 @@ export const ACHIEVEMENTS: Achievement[] = [
   { id: 'both-modes', icon: '✍️', category: 'mastery', metric: 'modesPracticed', target: 2, title: t('Lector y escritor', 'Reader and writer', 'Lecteur et écrivain', 'Leser und Schreiber') },
   { id: 'both-scripts', icon: '🔀', category: 'mastery', metric: 'scriptsPracticed', target: 2, title: t('Dos silabarios', 'Both scripts', 'Deux syllabaires', 'Beide Silbenschriften') },
   { id: 'first-sentences', icon: '文', category: 'mastery', metric: 'sentenceRounds', target: 1, title: t('Primeras oraciones', 'First sentences', 'Premières phrases', 'Erste Sätze') },
+
+  { id: 'time-1h', icon: '🕐', category: 'time', metric: 'studyMinutes', target: 60, title: t('Primera hora', 'First hour', 'Première heure', 'Erste Stunde') },
+  { id: 'time-10h', icon: '⏳', category: 'time', metric: 'studyMinutes', target: 600, title: t('Diez horas', 'Ten hours', 'Dix heures', 'Zehn Stunden') },
+  { id: 'time-50h', icon: '📘', category: 'time', metric: 'studyMinutes', target: 3000, title: t('Cincuenta horas', 'Fifty hours', 'Cinquante heures', 'Fünfzig Stunden') },
+  { id: 'time-100h', icon: '🗾', category: 'time', metric: 'studyMinutes', target: 6000, title: t('Cien horas', 'A hundred hours', 'Cent heures', 'Hundert Stunden') },
+  { id: 'time-500h', icon: '🎌', category: 'time', metric: 'studyMinutes', target: 30000, title: t('Quinientas horas', 'Five hundred hours', 'Cinq cents heures', 'Fünfhundert Stunden') },
+  { id: 'time-1000h', icon: '🏅', category: 'time', metric: 'studyMinutes', target: 60000, title: t('Mil horas', 'A thousand hours', 'Mille heures', 'Tausend Stunden') },
+  { id: 'goal-7', icon: '🎯', category: 'time', metric: 'goalStreak', target: 7, title: t('Semana cumplida', 'Goal week', 'Semaine réussie', 'Ziel-Woche') },
+  { id: 'goal-30', icon: '🌟', category: 'time', metric: 'goalStreak', target: 30, title: t('Mes cumplido', 'Goal month', 'Mois réussi', 'Ziel-Monat') },
 ];
 
-export const ACHIEVEMENT_CATEGORIES: AchievementCategory[] = ['rounds', 'streak', 'vocabulary', 'precision', 'mastery'];
+export const ACHIEVEMENT_CATEGORIES: AchievementCategory[] = ['rounds', 'streak', 'time', 'vocabulary', 'precision', 'mastery'];

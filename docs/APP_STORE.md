@@ -93,9 +93,14 @@ PENSADA PARA APRENDER
 • Acepta variantes de romaji como shi/si o tsu/tu.
 • Estadísticas con las letras y palabras que más te cuestan.
 
+TIEMPO DE ESTUDIO
+• El tiempo que practicás en la app se registra solo.
+• Sumá lo que estudiás fuera de la app con cronómetro o a mano: clases, lectura, escucha y tus propias categorías.
+• Meta diaria, gráfico por día y reparto por categoría.
+
 MOTIVACIÓN PARA SEGUIR
 • Racha de días y recordatorio diario opcional, solo los días que todavía no practicaste.
-• 22 logros para desbloquear: rondas, racha, vocabulario, rondas perfectas y más.
+• 30 logros para desbloquear: rondas, racha, horas de estudio, vocabulario y más.
 
 SIN DISTRACCIONES
 • Funciona sin conexión.
@@ -150,9 +155,14 @@ BUILT FOR LEARNING
 • Accepts romaji variants like shi/si and tsu/tu.
 • Statistics show the characters and words you find hardest.
 
+STUDY TIME
+• Time spent practicing in the app is logged automatically.
+• Add what you study elsewhere with a timer or by hand: classes, reading, listening and your own categories.
+• Daily goal, day-by-day chart and breakdown by category.
+
 STAY MOTIVATED
 • Daily streak and an optional reminder, only on days you haven't practiced yet.
-• 22 achievements to unlock: rounds, streaks, vocabulary, perfect rounds and more.
+• 30 achievements to unlock: rounds, streaks, study hours, vocabulary and more.
 
 NO DISTRACTIONS
 • Works offline.
@@ -181,7 +191,7 @@ Cargá entre 3 y 10 capturas por dispositivo.
 Las capturas ya están en `docs/app-store-screenshots/`, en español (`es`) e inglés (`en`), con una
 carpeta para iPhone y otra para iPad. Ya tienen el tamaño correcto. Subí las de cada carpeta en su
 localización y en este orden: inicio, leer, correcto (con el botón de audio), escribir, resultados (con un
-logro desbloqueado), logros y estadísticas.
+logro desbloqueado), logros, estadísticas y tiempo de estudio.
 
 Son de la app real con progreso de ejemplo, renderizadas con WebKit, el mismo motor que usa la app en iOS.
 Si cambiás la interfaz, podés regenerarlas así o sacar nuevas en el simulador de Xcode con **⌘S**.

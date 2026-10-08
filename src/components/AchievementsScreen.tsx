@@ -13,6 +13,8 @@ export function achievementDescription(achievement: Achievement, messages: Messa
     case 'modesPracticed': return messages.achBothModes;
     case 'scriptsPracticed': return messages.achBothScripts;
     case 'sentenceRounds': return messages.achSentences;
+    case 'studyMinutes': return messages.achStudyHours(achievement.target / 60);
+    case 'goalStreak': return messages.achGoalStreak(achievement.target);
   }
 }
 
@@ -39,6 +41,7 @@ export function AchievementsScreen({ progress }: AchievementsScreenProps) {
     vocabulary: messages.categoryVocabulary,
     precision: messages.categoryPrecision,
     mastery: messages.categoryMastery,
+    time: messages.categoryTime,
   };
 
   return (
