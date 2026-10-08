@@ -142,7 +142,7 @@ abrir el repo, leer `CLAUDE.md` y continuar desde la primera etapa sin tildar.
 - [x] **Etapa 13 — Audio.** Pronunciación con la voz japonesa del sistema (`speechSynthesis`), sin red. Botón de
       escuchar en el feedback y en la lista de repaso, nunca antes de responder. Opción en configuración para
       reproducir automáticamente al responder. Se oculta si el dispositivo no tiene voz japonesa.
-- [ ] **Etapa 14 — Estadísticas.** Pantalla accesible desde el home con totales históricos (rondas, respuestas,
+- [x] **Etapa 14 — Estadísticas.** Pantalla accesible desde el home con totales históricos (rondas, respuestas,
       precisión, mejor racha), precisión por modo, letras que más cuestan (agregando las respuestas de las
       palabras que las contienen) y palabras que más cuestan. Registro histórico en localStorage.
 - [ ] **Etapa 15 — Recordatorio diario.** Notificación local con `@capacitor/local-notifications`, solo en la app

@@ -223,3 +223,69 @@ export function saveAutoSpeak(value: boolean): void {
     // Sin persistencia esta sesión.
   }
 }
+
+const LIFETIME_KEY = 'wordgana:lifetime:v1';
+
+/** Historial acumulado que no depende de un día: base de estadísticas y logros. */
+export interface Lifetime {
+  roundsCompleted: number;
+  /** Rondas de al menos `PERFECT_ROUND_MIN` ítems sin errores. */
+  perfectRounds: number;
+  bestStreak: number;
+  /** Combinaciones practicadas, como `hiragana:words:read`. */
+  practiced: string[];
+}
+
+export const PERFECT_ROUND_MIN = 5;
+
+export const EMPTY_LIFETIME: Lifetime = { roundsCompleted: 0, perfectRounds: 0, bestStreak: 0, practiced: [] };
+
+function count(value: unknown): number {
+  return typeof value === 'number' && Number.isFinite(value) && value > 0 ? Math.floor(value) : 0;
+}
+
+export function loadLifetime(): Lifetime {
+  try {
+    const raw = localStorage.getItem(LIFETIME_KEY);
+    if (!raw) return EMPTY_LIFETIME;
+    const parsed = JSON.parse(raw) as Partial<Lifetime>;
+    return {
+      roundsCompleted: count(parsed.roundsCompleted),
+      perfectRounds: count(parsed.perfectRounds),
+      bestStreak: count(parsed.bestStreak),
+      practiced: stringArray(parsed.practiced, []),
+    };
+  } catch {
+    return EMPTY_LIFETIME;
+  }
+}
+
+export function saveLifetime(lifetime: Lifetime): void {
+  try {
+    localStorage.setItem(LIFETIME_KEY, JSON.stringify(lifetime));
+  } catch {
+    // Sin persistencia esta sesión.
+  }
+}
+
+export interface FinishedRound {
+  script: KanaScript;
+  kind: PracticeKind;
+  mode: PracticeMode;
+  total: number;
+  correct: number;
+  /** Racha de días después de sumar esta ronda. */
+  streak: number;
+}
+
+/** Suma una ronda terminada al historial (no muta `lifetime`). */
+export function recordLifetimeRound(lifetime: Lifetime, round: FinishedRound): Lifetime {
+  const combo = `${round.script}:${round.kind}:${round.mode}`;
+  const perfect = round.total >= PERFECT_ROUND_MIN && round.correct === round.total;
+  return {
+    roundsCompleted: lifetime.roundsCompleted + 1,
+    perfectRounds: lifetime.perfectRounds + (perfect ? 1 : 0),
+    bestStreak: Math.max(lifetime.bestStreak, round.streak),
+    practiced: lifetime.practiced.includes(combo) ? lifetime.practiced : [...lifetime.practiced, combo],
+  };
+}

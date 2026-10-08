@@ -156,3 +156,14 @@ oculta y configuración explica cómo instalar una en iPhone.
 **Por qué:** escuchar antes de responder regala la respuesta en modo Leer. La voz del sistema funciona offline,
 no agrega peso a la app y suena natural en iOS (Kyoko/Otoya). Algunos WebView de iOS devuelven la lista de
 voces vacía aunque haya voces instaladas, así que una lista vacía no oculta el audio.
+
+## 2026-10-07 — Estadísticas e historial acumulado
+
+**Decisión:** un registro `wordgana:lifetime:v1` guarda rondas completadas, rondas perfectas (de al menos 5
+ítems), mejor racha y combinaciones script/tipo/modo practicadas. Respuestas y aciertos no se duplican ahí: se
+calculan desde las stats por ítem. Las "letras que más cuestan" reparten cada respuesta de una palabra u oración
+entre las letras distintas que la forman y exigen 3 respuestas mínimas.
+**Por qué:** las stats por ítem ya registran cada respuesta, así que sumarlas evita dos fuentes de verdad. Las
+rondas no se pueden reconstruir desde las stats: para quien ya usaba la app, el contador de rondas empieza en
+cero con esta versión y la mejor racha arranca desde la racha actual. Un repaso de 1 o 2 errores sin fallar no
+cuenta como ronda perfecta para que el logro no sea trivial.

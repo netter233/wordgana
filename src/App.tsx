@@ -7,6 +7,7 @@ import { Practice } from './components/Practice';
 import { Results } from './components/Results';
 import { RowPicker } from './components/RowPicker';
 import { ScriptSwitch } from './components/ScriptSwitch';
+import { StatsScreen } from './components/StatsScreen';
 import { StatsStrip } from './components/StatsStrip';
 import { TopBar } from './components/TopBar';
 import { KATAKANA_WORDS } from './data/katakanaWords';
@@ -18,11 +19,14 @@ import { useI18n } from './i18n';
 import { letterItems } from './lib/letters';
 import { countMastered, pickRound } from './lib/session';
 import {
+  loadLifetime,
   loadProgress,
   loadSettings,
   loadStats,
   recordAnswer,
+  recordLifetimeRound,
   recordRound,
+  saveLifetime,
   saveProgress,
   saveSettings,
   saveStats,
@@ -33,7 +37,7 @@ const MIN_WORDS_TO_START = 3;
 const WORD_ROUND_SIZE = 10;
 const SENTENCE_ROUND_SIZE = 5;
 
-type Screen = 'setup' | 'practice' | 'results' | 'settings';
+type Screen = 'setup' | 'practice' | 'results' | 'settings' | 'stats';
 
 interface RoundSummary {
   correctCount: number;
@@ -50,6 +54,7 @@ export function App() {
   const [practiceKinds, setPracticeKinds] = useState(initial.practiceKind);
   const [stats, setStats] = useState<StatsMap>(loadStats);
   const [progress, setProgress] = useState(loadProgress);
+  const [lifetime, setLifetime] = useState(loadLifetime);
   const [round, setRound] = useState<Word[]>([]);
   const [summary, setSummary] = useState<RoundSummary | null>(null);
   const [rowsExpanded, setRowsExpanded] = useState<Record<KanaScript, boolean>>({
@@ -141,11 +146,19 @@ export function App() {
   }
 
   function handleFinish(roundSummary: RoundSummary) {
-    setProgress((previous) => {
-      const next = recordRound(previous);
-      saveProgress(next);
-      return next;
+    const nextProgress = recordRound(progress);
+    setProgress(nextProgress);
+    saveProgress(nextProgress);
+    const nextLifetime = recordLifetimeRound(lifetime, {
+      script: activeScript,
+      kind: practiceKind,
+      mode,
+      total: round.length,
+      correct: roundSummary.correctCount,
+      streak: nextProgress.streak,
     });
+    setLifetime(nextLifetime);
+    saveLifetime(nextLifetime);
     setSummary(roundSummary);
     setScreen('results');
   }
@@ -192,6 +205,20 @@ export function App() {
           onRestartSameRound={startRound}
           onReviewMissed={reviewMissed}
           onChangeRows={() => setScreen('setup')}
+        />
+      </main>
+    );
+  }
+
+  if (screen === 'stats') {
+    return (
+      <main className="app">
+        <TopBar title={messages.statsTitle} mark={mark} onBack={() => setScreen('setup')} />
+        <StatsScreen
+          stats={stats}
+          lifetime={lifetime}
+          currentStreak={progress.streak}
+          initialScript={activeScript}
         />
       </main>
     );
@@ -249,6 +276,7 @@ export function App() {
       />
 
       <StatsStrip
+        links={[{ icon: '📊', label: messages.statsTitle, onClick: () => setScreen('stats') }]}
         streak={progress.streak}
         roundsToday={progress.roundsToday}
         mastered={countMastered(eligibleItems, stats, statKey)}

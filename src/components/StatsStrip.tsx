@@ -1,6 +1,14 @@
 import { useI18n } from '../i18n';
 
+export interface StatsLink {
+  icon: string;
+  label: string;
+  detail?: string;
+  onClick: () => void;
+}
+
 interface StatsStripProps {
+  links: StatsLink[];
   streak: number;
   roundsToday: number;
   mastered: number;
@@ -8,7 +16,7 @@ interface StatsStripProps {
   itemLabel: string;
 }
 
-export function StatsStrip({ streak, roundsToday, mastered, total, itemLabel }: StatsStripProps) {
+export function StatsStrip({ links, streak, roundsToday, mastered, total, itemLabel }: StatsStripProps) {
   const { messages } = useI18n();
   const percent = total > 0 ? Math.round((mastered / total) * 100) : 0;
 
@@ -49,6 +57,28 @@ export function StatsStrip({ streak, roundsToday, mastered, total, itemLabel }: 
           ? messages.emptyContent
           : messages.masteryHint(percent)}
       </p>
+
+      <div className="nav-list">
+        {links.map((link) => (
+          <button type="button" className="nav-row" key={link.label} onClick={link.onClick}>
+            <span className="nav-row-icon" aria-hidden="true">{link.icon}</span>
+            <span className="nav-row-label">{link.label}</span>
+            {link.detail && <span className="nav-row-detail">{link.detail}</span>}
+            <svg
+              className="nav-row-chevron"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.25"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </button>
+        ))}
+      </div>
     </section>
   );
 }

@@ -124,6 +124,21 @@ export interface Messages {
   audioDescription: string;
   autoSpeak: string;
   audioUnavailable: string;
+  statsTitle: string;
+  totalsTitle: string;
+  roundsLabel: string;
+  bestStreak: string;
+  answersLabel: string;
+  accuracyLabel: string;
+  accuracyByMode: string;
+  answersCount: (count: number) => string;
+  hardestLetters: string;
+  hardestLettersHint: string;
+  errorRate: (percent: number) => string;
+  hardestWords: string;
+  missedOf: (missed: number, seen: number) => string;
+  notEnoughData: string;
+  noAnswersYet: string;
 }
 
 const MESSAGES: Record<AppLanguage, Messages> = {
@@ -167,6 +182,21 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     audioDescription: 'Hear each answer with your device’s Japanese voice. Works offline.',
     autoSpeak: 'Play after each answer',
     audioUnavailable: 'Your device has no Japanese voice. On iPhone, add one in Settings → Accessibility → Spoken Content → Voices → Japanese.',
+    statsTitle: 'Statistics',
+    totalsTitle: 'All time',
+    roundsLabel: 'Rounds',
+    bestStreak: 'Best streak',
+    answersLabel: 'Answers',
+    accuracyLabel: 'Accuracy',
+    accuracyByMode: 'Accuracy by mode',
+    answersCount: (count) => `${count} ${count === 1 ? 'answer' : 'answers'}`,
+    hardestLetters: 'Trickiest characters',
+    hardestLettersHint: 'Based on your answers to characters, words and sentences.',
+    errorRate: (percent) => `${percent}% missed`,
+    hardestWords: 'Words to review',
+    missedOf: (missed, seen) => `${missed} of ${seen} missed`,
+    notEnoughData: 'Not enough answers yet. Keep practicing and you’ll see what to focus on here.',
+    noAnswersYet: 'No answers yet',
   },
   es: {
     autoLanguage: (language) => `Automático (${language})`, languageLabel: 'Idioma',
@@ -207,6 +237,21 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     audioDescription: 'Escuchá cada respuesta con la voz japonesa de tu dispositivo. Funciona sin conexión.',
     autoSpeak: 'Reproducir al responder',
     audioUnavailable: 'Tu dispositivo no tiene una voz japonesa. En iPhone podés agregarla en Ajustes → Accesibilidad → Contenido leído → Voces → Japonés.',
+    statsTitle: 'Estadísticas',
+    totalsTitle: 'Desde que empezaste',
+    roundsLabel: 'Rondas',
+    bestStreak: 'Mejor racha',
+    answersLabel: 'Respuestas',
+    accuracyLabel: 'Aciertos',
+    accuracyByMode: 'Aciertos por modo',
+    answersCount: (count) => `${count} ${count === 1 ? 'respuesta' : 'respuestas'}`,
+    hardestLetters: 'Letras que más te cuestan',
+    hardestLettersHint: 'Según tus respuestas en letras, palabras y oraciones.',
+    errorRate: (percent) => `${percent}% mal`,
+    hardestWords: 'Palabras para repasar',
+    missedOf: (missed, seen) => `${missed} de ${seen} mal`,
+    notEnoughData: 'Todavía no hay suficientes respuestas. Seguí practicando y acá vas a ver en qué conviene enfocarte.',
+    noAnswersYet: 'Sin respuestas todavía',
   },
   fr: {
     autoLanguage: (language) => `Automatique (${language})`, languageLabel: 'Langue',
@@ -247,6 +292,21 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     audioDescription: 'Écoutez chaque réponse avec la voix japonaise de votre appareil. Fonctionne hors ligne.',
     autoSpeak: 'Lire après chaque réponse',
     audioUnavailable: 'Votre appareil n’a pas de voix japonaise. Sur iPhone, ajoutez-en une dans Réglages → Accessibilité → Contenu énoncé → Voix → Japonais.',
+    statsTitle: 'Statistiques',
+    totalsTitle: "Depuis le début",
+    roundsLabel: 'Séries',
+    bestStreak: 'Meilleure série',
+    answersLabel: 'Réponses',
+    accuracyLabel: 'Réussite',
+    accuracyByMode: 'Réussite par mode',
+    answersCount: (count) => `${count} ${count === 1 ? 'réponse' : 'réponses'}`,
+    hardestLetters: 'Caractères les plus difficiles',
+    hardestLettersHint: 'D’après vos réponses aux caractères, mots et phrases.',
+    errorRate: (percent) => `${percent} % ratées`,
+    hardestWords: 'Mots à revoir',
+    missedOf: (missed, seen) => `${missed} sur ${seen} ratées`,
+    notEnoughData: 'Pas encore assez de réponses. Continuez à pratiquer et vous verrez ici sur quoi vous concentrer.',
+    noAnswersYet: 'Pas encore de réponses',
   },
   de: {
     autoLanguage: (language) => `Automatisch (${language})`, languageLabel: 'Sprache',
@@ -287,6 +347,21 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     audioDescription: 'Höre jede Antwort mit der japanischen Stimme deines Geräts. Funktioniert offline.',
     autoSpeak: 'Nach jeder Antwort abspielen',
     audioUnavailable: 'Dein Gerät hat keine japanische Stimme. Auf dem iPhone kannst du eine unter Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen → Japanisch hinzufügen.',
+    statsTitle: 'Statistik',
+    totalsTitle: 'Seit Beginn',
+    roundsLabel: 'Runden',
+    bestStreak: 'Beste Serie',
+    answersLabel: 'Antworten',
+    accuracyLabel: 'Trefferquote',
+    accuracyByMode: 'Trefferquote nach Modus',
+    answersCount: (count) => `${count} ${count === 1 ? 'Antwort' : 'Antworten'}`,
+    hardestLetters: 'Schwierigste Zeichen',
+    hardestLettersHint: 'Basierend auf deinen Antworten zu Zeichen, Wörtern und Sätzen.',
+    errorRate: (percent) => `${percent} % falsch`,
+    hardestWords: 'Wörter zum Wiederholen',
+    missedOf: (missed, seen) => `${missed} von ${seen} falsch`,
+    notEnoughData: 'Noch nicht genug Antworten. Übe weiter, dann siehst du hier, worauf du dich konzentrieren solltest.',
+    noAnswersYet: 'Noch keine Antworten',
   },
 };
 

@@ -261,6 +261,77 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
 .stat-label { margin: 0; font-size: 0.72rem; font-weight: 600; color: var(--muted); }
 .stat-value { margin: 0; font-size: 1.05rem; font-weight: 700; white-space: nowrap; }
 
+.stat-tiles--spaced { margin-top: 12px; }
+.nav-list {
+  margin: 14px -16px -16px;
+  border-top: 1px solid var(--border);
+}
+.nav-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 52px;
+  padding: 8px 16px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+.nav-row:last-child { border-bottom: 0; border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
+.nav-row:active { background: var(--surface-2); }
+.nav-row-icon { flex: none; width: 28px; font-size: 1.15rem; text-align: center; }
+.nav-row-label { flex: 1; min-width: 0; }
+.nav-row-detail { color: var(--muted); font-size: 0.85rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.nav-row-chevron { flex: none; width: 18px; height: 18px; color: var(--muted); }
+
+/* --- Estadísticas --- */
+.empty-note { margin: 10px 0 0; color: var(--muted); font-size: 0.88rem; }
+.mode-accuracy { margin-top: 12px; }
+.mode-accuracy .progress-row { margin: 0 0 6px; }
+.mode-accuracy-label { color: var(--text); font-size: 0.92rem; }
+.mode-accuracy .hint { margin-top: 6px; }
+.progress-track.progress-track--compact { margin-bottom: 0; }
+.progress-track .progress-fill--ok { background: var(--ok); }
+.letter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: 8px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.letter-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 6px 8px;
+  border-radius: 12px;
+  background: var(--surface-2);
+}
+.letter-tile-kana { font-size: 1.6rem; font-weight: 600; line-height: 1.1; }
+.letter-tile-rate { color: var(--bad); font-size: 0.72rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.letter-tile-bar { width: 100%; height: 4px; border-radius: 999px; background: var(--border); overflow: hidden; }
+.letter-tile-bar > span { display: block; height: 100%; border-radius: 999px; background: var(--bad); }
+.difficulty-list { margin: 8px 0 0; padding: 0; list-style: none; }
+.difficulty-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.95rem;
+}
+.difficulty-list li:last-child { border-bottom: 0; }
+.difficulty-word { min-width: 0; }
+.difficulty-count { flex: none; color: var(--bad); font-size: 0.8rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+
 /* --- RowPicker --- */
 .section-head {
   display: flex;

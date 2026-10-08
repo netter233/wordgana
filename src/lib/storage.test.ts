@@ -1,6 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
+  EMPTY_LIFETIME,
   EMPTY_PROGRESS,
+  loadLifetime,
+  recordLifetimeRound,
+  saveLifetime,
   dayKey,
   loadSettings,
   normalizeProgress,
@@ -124,5 +128,37 @@ describe('normalizeProgress', () => {
   it('borra la racha si la última ronda fue hace más de un día', () => {
     const progress: Progress = { lastDay: dayKey(twoDaysAgo), streak: 3, roundsToday: 2 };
     expect(normalizeProgress(progress, today)).toEqual(EMPTY_PROGRESS);
+  });
+});
+
+describe('recordLifetimeRound', () => {
+  const round = { script: 'hiragana' as const, kind: 'words' as const, mode: 'read' as const, total: 10, correct: 10, streak: 4 };
+
+  it('cuenta rondas, perfectas, mejor racha y combinaciones practicadas', () => {
+    const first = recordLifetimeRound(EMPTY_LIFETIME, round);
+    const second = recordLifetimeRound(first, { ...round, correct: 8, streak: 2, mode: 'write' });
+    expect(second).toEqual({
+      roundsCompleted: 2,
+      perfectRounds: 1,
+      bestStreak: 4,
+      practiced: ['hiragana:words:read', 'hiragana:words:write'],
+    });
+  });
+
+  it('una ronda corta sin errores (por ejemplo, un repaso de 2) no cuenta como perfecta', () => {
+    expect(recordLifetimeRound(EMPTY_LIFETIME, { ...round, total: 2, correct: 2 }).perfectRounds).toBe(0);
+  });
+
+  it('no repite combinaciones', () => {
+    const twice = recordLifetimeRound(recordLifetimeRound(EMPTY_LIFETIME, round), round);
+    expect(twice.practiced).toEqual(['hiragana:words:read']);
+  });
+
+  it('se guarda y se recupera, descartando valores inválidos', () => {
+    const lifetime = { roundsCompleted: 3, perfectRounds: 1, bestStreak: 2, practiced: ['katakana:kana:read'] };
+    saveLifetime(lifetime);
+    expect(loadLifetime()).toEqual(lifetime);
+    localStorage.setItem('wordgana:lifetime:v1', JSON.stringify({ roundsCompleted: -4, practiced: 'x' }));
+    expect(loadLifetime()).toEqual(EMPTY_LIFETIME);
   });
 });
