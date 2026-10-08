@@ -321,3 +321,30 @@ export function groupByDay(entries: readonly StudyEntry[]): DayGroup[] {
       entries: [...dayEntries].sort((a, b) => b.seconds - a.seconds),
     }));
 }
+
+export interface DayBreakdown {
+  day: string;
+  seconds: number;
+  /** Segundos por grupo (por ejemplo, serie de color), solo los que tienen tiempo. */
+  parts: Record<string, number>;
+}
+
+/** Como `totalsByDay`, pero con el tiempo de cada día repartido según `groupFor`. */
+export function breakdownByDay(
+  entries: readonly StudyEntry[],
+  days: number,
+  groupFor: (categoryId: string) => string,
+  today = new Date(),
+): DayBreakdown[] {
+  const result = totalsByDay([], days, today).map(({ day }) => ({ day, seconds: 0, parts: {} as Record<string, number> }));
+  const index = new Map(result.map((entry, position) => [entry.day, position]));
+  for (const entry of entries) {
+    const position = index.get(entry.day);
+    if (position === undefined || entry.seconds <= 0) continue;
+    const target = result[position];
+    const group = groupFor(entry.categoryId);
+    target.seconds += entry.seconds;
+    target.parts[group] = (target.parts[group] ?? 0) + entry.seconds;
+  }
+  return result;
+}

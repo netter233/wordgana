@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   addCustomCategory,
   categoryInfo,
+  chartSeriesFor,
   removeCustomCategory,
   renameCustomCategory,
   selectableCategories,
@@ -33,5 +34,16 @@ describe('categorías', () => {
     expect(removeCustomCategory(list, 'custom:b', new Set())).toHaveLength(1);
     expect(selectableCategories(messages, result).map((c) => c.id)).not.toContain('custom:a');
     expect(selectableCategories(messages, result).map((c) => c.id)).toContain('custom:b');
+  });
+});
+
+describe('series del gráfico', () => {
+  it('agrupa la práctica por tipo y lo demás en Otras', () => {
+    expect(chartSeriesFor('practice:hiragana:kana')).toBe('letters');
+    expect(chartSeriesFor('practice:katakana:kana')).toBe('letters');
+    expect(chartSeriesFor('practice:hiragana:sentences')).toBe('sentences');
+    expect(chartSeriesFor('reading')).toBe('reading');
+    expect(chartSeriesFor('apps')).toBe('other');
+    expect(chartSeriesFor('custom:anime')).toBe('other');
   });
 });

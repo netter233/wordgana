@@ -4,6 +4,7 @@ import {
   activeDelta,
   addAutoTime,
   addEntry,
+  breakdownByDay,
   deleteEntry,
   displayMinutes,
   goalStreak,
@@ -200,6 +201,22 @@ describe('groupByDay', () => {
     expect(groups.map((g) => [g.day, g.seconds, g.entries.map((e) => e.categoryId)])).toEqual([
       ['2026-10-08', 1500, ['c', 'b']],
       ['2026-10-06', 600, ['a']],
+    ]);
+  });
+});
+
+describe('breakdownByDay', () => {
+  it('reparte el tiempo de cada día por grupo y deja días vacíos', () => {
+    const today = new Date(2026, 9, 8, 12);
+    const result = breakdownByDay(
+      [entry('2026-10-08', 'practice:hiragana:words', 10), entry('2026-10-08', 'practice:katakana:words', 5), entry('2026-10-08', 'reading', 20)],
+      2,
+      (id) => (id.startsWith('practice') ? 'words' : id),
+      today,
+    );
+    expect(result).toEqual([
+      { day: '2026-10-07', seconds: 0, parts: {} },
+      { day: '2026-10-08', seconds: 2100, parts: { words: 900, reading: 1200 } },
     ]);
   });
 });

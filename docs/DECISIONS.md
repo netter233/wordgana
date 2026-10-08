@@ -222,3 +222,15 @@ diaria cumplida 7 y 30 días seguidos. Cuentan todas las fuentes (automático, c
 terminar una ronda, se evalúan al guardar tiempo, y la celebración aparece arriba de la pantalla de tiempo.
 **Por qué:** el registro es personal y de confianza, así que el tiempo cargado a mano vale lo mismo que el
 automático. Celebrar donde se cargó el tiempo da la respuesta en el momento de la acción.
+
+## 2026-10-08 — Colores por categoría en el gráfico día por día
+
+**Decisión:** las columnas del gráfico día por día se apilan por grupo de categoría con la paleta categórica de
+referencia del skill de visualización (8 colores en orden fijo, validados contra las superficies reales de la
+app: blanco en claro y `#202024` en oscuro). Grupos: Letras, Palabras, Oraciones (ambos silabarios juntos),
+Escucha, Lectura, Clase, Conversación y Escritura a mano; Otras apps y las categorías personalizadas van juntas en
+"Otras", en gris. Cada grupo tiene siempre el mismo color, en el gráfico y en las barras por categoría. Hay
+leyenda y, al tocar un día, el detalle por categoría en texto.
+**Por qué:** con un solo color, un día con varias categorías se veía como un bloque uniforme. Más de ocho colores
+ya no se distinguen bien (tampoco con daltonismo), así que lo menos frecuente se agrupa. Tres colores tienen
+contraste menor a 3:1 sobre blanco; la leyenda y el detalle en texto cubren esa lectura, como exige la paleta.

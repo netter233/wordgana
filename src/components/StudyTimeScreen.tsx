@@ -1,8 +1,9 @@
 import { useMemo, useState, type ReactNode } from 'react';
 import { useI18n } from '../i18n';
-import { categoryInfo, formatDuration, type CustomCategory } from '../lib/studyCategories';
+import { categoryInfo, chartSeriesFor, formatDuration, type CustomCategory } from '../lib/studyCategories';
 import { dayKey } from '../lib/storage';
 import {
+  breakdownByDay,
   goalStreak,
   rangeStart,
   secondsOnDay,
@@ -35,7 +36,7 @@ export function StudyTimeScreen({ entries, goalMinutes, customCategories, header
   const today = dayKey(new Date());
   const todaySeconds = secondsOnDay(entries, today);
   const todayMinutes = Math.floor(todaySeconds / 60);
-  const days = useMemo(() => totalsByDay(entries, chartRange), [entries, chartRange]);
+  const days = useMemo(() => breakdownByDay(entries, chartRange, chartSeriesFor), [entries, chartRange]);
   const week = useMemo(() => totalsByDay(entries, 7), [entries]);
   const weekSeconds = week.reduce((sum, day) => sum + day.seconds, 0);
   const categories = useMemo(
@@ -108,7 +109,10 @@ export function StudyTimeScreen({ entries, goalMinutes, customCategories, header
                     <span className="category-bar-value">{formatDuration(entry.seconds, messages)}</span>
                   </div>
                   <span className="category-bar-track" aria-hidden="true">
-                    <span style={{ width: `${(entry.seconds / maxCategory) * 100}%` }} />
+                    <span
+                      className={`series-${chartSeriesFor(entry.categoryId)}`}
+                      style={{ width: `${(entry.seconds / maxCategory) * 100}%` }}
+                    />
                   </span>
                 </li>
               );

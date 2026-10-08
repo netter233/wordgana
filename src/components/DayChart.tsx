@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useI18n } from '../i18n';
-import { formatDuration } from '../lib/studyCategories';
+import { CHART_SERIES, chartSeriesLabel, formatDuration, type ChartSeries } from '../lib/studyCategories';
+import type { DayBreakdown } from '../lib/studyTime';
 
 interface DayChartProps {
-  days: Array<{ day: string; seconds: number }>;
+  days: DayBreakdown[];
   goalMinutes: number;
 }
 
@@ -15,8 +16,9 @@ function parseDay(day: string): Date {
 }
 
 /**
- * Columnas de minutos por día con la línea de la meta. Una sola serie: un color, sin leyenda. Cada columna
- * es un botón; tocarla muestra su valor arriba (en el celular no hay hover).
+ * Columnas apiladas de minutos por día, una serie de color por grupo de categorías, con la línea de la
+ * meta. Cada columna es un botón: al tocarla se muestra el detalle del día con cada categoría en texto,
+ * que además es la vía accesible para los colores de poco contraste.
  */
 export function DayChart({ days, goalMinutes }: DayChartProps) {
   const { language, messages } = useI18n();
@@ -28,12 +30,31 @@ export function DayChart({ days, goalMinutes }: DayChartProps) {
   const narrowWeekday = new Intl.DateTimeFormat(language, { weekday: 'narrow' });
   const shortDate = new Intl.DateTimeFormat(language, { day: 'numeric', month: 'short' });
   const current = days[Math.min(selected, days.length - 1)];
+  const seriesInRange = CHART_SERIES.filter((series) => days.some((day) => day.parts[series]));
+  const partsOf = (day: DayBreakdown) => CHART_SERIES.filter((series) => day.parts[series]);
+  const describe = (day: DayBreakdown) => [
+    messages.dayDetail(longDate.format(parseDay(day.day)), formatDuration(day.seconds, messages)),
+    ...partsOf(day).map((series) => `${chartSeriesLabel(series, messages)} ${formatDuration(day.parts[series], messages)}`),
+  ].join(', ');
 
   return (
     <div className="day-chart">
-      <p className="day-chart-readout" aria-live="polite">
-        {messages.dayDetail(longDate.format(parseDay(current.day)), formatDuration(current.seconds, messages))}
-      </p>
+      <div className="day-chart-detail" aria-live="polite">
+        <p className="day-chart-readout">
+          {messages.dayDetail(longDate.format(parseDay(current.day)), formatDuration(current.seconds, messages))}
+        </p>
+        {partsOf(current).length > 0 && (
+          <ul className="day-chart-breakdown">
+            {partsOf(current).map((series) => (
+              <li key={series}>
+                <Swatch series={series} />
+                <span>{chartSeriesLabel(series, messages)}</span>
+                <span className="day-chart-breakdown-value">{formatDuration(current.parts[series], messages)}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
       <div className="day-chart-plot">
         <span className="day-chart-max">{messages.durationM(scale)}</span>
         {goalMinutes > 0 && (
@@ -46,13 +67,22 @@ export function DayChart({ days, goalMinutes }: DayChartProps) {
               type="button"
               className={index === selected ? 'day-chart-col day-chart-col--selected' : 'day-chart-col'}
               aria-pressed={index === selected}
-              aria-label={messages.dayDetail(longDate.format(parseDay(entry.day)), formatDuration(entry.seconds, messages))}
+              aria-label={describe(entry)}
               onClick={() => setSelected(index)}
             >
-              <span
-                className={entry.seconds > 0 ? 'day-chart-bar' : 'day-chart-bar day-chart-bar--empty'}
-                style={{ height: entry.seconds > 0 ? `${Math.max(2, (entry.seconds / 60 / scale) * 100)}%` : undefined }}
-              />
+              {entry.seconds > 0 ? (
+                <span className="day-chart-stack" style={{ height: `${Math.max(2, (entry.seconds / 60 / scale) * 100)}%` }}>
+                  {partsOf(entry).map((series) => (
+                    <span
+                      key={series}
+                      className={`day-chart-segment series-${series}`}
+                      style={{ flexGrow: entry.parts[series] }}
+                    />
+                  ))}
+                </span>
+              ) : (
+                <span className="day-chart-stack day-chart-stack--empty" />
+              )}
             </button>
           ))}
         </div>
@@ -66,12 +96,26 @@ export function DayChart({ days, goalMinutes }: DayChartProps) {
           </span>
         ))}
       </div>
-      {goalMinutes > 0 && (
-        <p className="day-chart-key">
-          <span className="day-chart-key-line" aria-hidden="true" />
-          {messages.goalLine(goalMinutes)}
-        </p>
+      {(seriesInRange.length > 0 || goalMinutes > 0) && (
+        <ul className="day-chart-legend">
+          {seriesInRange.map((series) => (
+            <li key={series}>
+              <Swatch series={series} />
+              {chartSeriesLabel(series, messages)}
+            </li>
+          ))}
+          {goalMinutes > 0 && (
+            <li>
+              <span className="day-chart-key-line" aria-hidden="true" />
+              {messages.goalLine(goalMinutes)}
+            </li>
+          )}
+        </ul>
       )}
     </div>
   );
+}
+
+export function Swatch({ series }: { series: ChartSeries }) {
+  return <span className={`series-swatch series-${series}`} aria-hidden="true" />;
 }

@@ -148,3 +148,44 @@ export function selectableCategories(messages: Messages, custom: readonly Custom
     ...custom.filter((category) => !category.archived).map((category) => categoryInfo(category.id, messages, custom)),
   ];
 }
+
+// --- Series del gráfico día por día --------------------------------------------------------------
+
+/**
+ * Series de color del gráfico apilado. Cada categoría tiene siempre la misma serie (el color sigue a la
+ * categoría, no a su posición). Hay ocho colores validados; Otras apps y las personalizadas se agrupan
+ * en "Otras", en gris, porque un noveno color ya no se distinguiría bien.
+ */
+export type ChartSeries =
+  | 'letters'
+  | 'words'
+  | 'sentences'
+  | 'listening'
+  | 'reading'
+  | 'class'
+  | 'conversation'
+  | 'handwriting'
+  | 'other';
+
+export const CHART_SERIES: ChartSeries[] = [
+  'letters', 'words', 'sentences', 'listening', 'reading', 'class', 'conversation', 'handwriting', 'other',
+];
+
+export function chartSeriesFor(categoryId: string): ChartSeries {
+  const practice = parsePracticeId(categoryId);
+  if (practice) return practice.kind === 'kana' ? 'letters' : practice.kind;
+  if (['listening', 'reading', 'class', 'conversation', 'handwriting'].includes(categoryId)) {
+    return categoryId as ChartSeries;
+  }
+  return 'other';
+}
+
+export function chartSeriesLabel(series: ChartSeries, messages: Messages): string {
+  switch (series) {
+    case 'letters': return messages.letters;
+    case 'words': return messages.words;
+    case 'sentences': return messages.sentences;
+    case 'other': return messages.otherCategories;
+    default: return messages.studyCategoryNames[series];
+  }
+}

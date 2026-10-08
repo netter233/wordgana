@@ -242,6 +242,7 @@ export interface Messages {
   categoryTime: string;
   achStudyHours: (hours: number) => string;
   achGoalStreak: (days: number) => string;
+  otherCategories: string;
 }
 
 export const MESSAGES: Record<AppLanguage, Messages> = {
@@ -403,6 +404,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     categoryTime: 'Study time',
     achStudyHours: (hours) => hours === 1 ? 'Log your first hour of Japanese' : `Log ${hours} hours of Japanese`,
     achGoalStreak: (days) => `Reach your daily goal ${days} days in a row`,
+    otherCategories: 'Other',
   },
   es: {
     autoLanguage: (language) => `Automático (${language})`, languageLabel: 'Idioma',
@@ -561,6 +563,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     categoryTime: 'Tiempo de estudio',
     achStudyHours: (hours) => hours === 1 ? 'Registrá tu primera hora de japonés' : `Registrá ${hours} horas de japonés`,
     achGoalStreak: (days) => `Cumplí tu meta diaria ${days} días seguidos`,
+    otherCategories: 'Otras',
   },
   fr: {
     autoLanguage: (language) => `Automatique (${language})`, languageLabel: 'Langue',
@@ -719,6 +722,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     categoryTime: 'Temps d’étude',
     achStudyHours: (hours) => hours === 1 ? 'Enregistrez votre première heure de japonais' : `Enregistrez ${hours} heures de japonais`,
     achGoalStreak: (days) => `Atteignez votre objectif quotidien ${days} jours d’affilée`,
+    otherCategories: 'Autres',
   },
   de: {
     autoLanguage: (language) => `Automatisch (${language})`, languageLabel: 'Sprache',
@@ -877,6 +881,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     categoryTime: 'Lernzeit',
     achStudyHours: (hours) => hours === 1 ? 'Erfasse deine erste Stunde Japanisch' : `Erfasse ${hours} Stunden Japanisch`,
     achGoalStreak: (days) => `Erreiche dein Tagesziel ${days} Tage in Folge`,
+    otherCategories: 'Sonstige',
   },
 };
 
