@@ -128,6 +128,7 @@ Si no aparece el perfil, intentá instalar con **Run** y revisá el error que mu
 | `No provisioning profiles` o un error de firma | Revisá la cuenta, **Team**, **Automatically manage signing** y la conexión a internet. Volvé a intentar **Run**. |
 | `A build only device cannot be used to run this target` | Seleccioná **iPhone de Bruno** como destino físico. |
 | “Desarrollador no fiable” o un error que menciona un perfil no confiado | Seguí el paso 5. Si ya confiaste en el perfil, revisá también la firma en Xcode; el mensaje puede incluir otras causas. |
+| `Couldn't load local-notifications because it is already opened from another project or workspace` o `Missing package product` | Hay otra ventana de Xcode abierta con un archivo de la carpeta WordGana (por ejemplo, `AGENTS.md`), y Xcode toma esa carpeta como otro proyecto. Cerrá esa ventana, dejá solo `App.xcodeproj` y elegí **File → Packages → Resolve Package Versions**. Si sigue, usá **File → Packages → Reset Package Caches**. |
 | La app no refleja los últimos cambios | Ejecutá `npm run ios:sync` y después **⌘R**. Comprobá que estés abriendo la app instalada desde Xcode. |
 | Dejó de abrir después de varios días | Si usás un **Personal Team** gratuito, el perfil caduca a los 7 días. Volvé a conectar el iPhone y ejecutá **Run** para renovar la instalación. |
 
