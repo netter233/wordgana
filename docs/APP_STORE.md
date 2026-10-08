@@ -77,21 +77,30 @@ WordGana te ayuda a aprender hiragana y katakana de forma progresiva, con palabr
 
 Marcá las filas del silabario que ya conocés y WordGana arma rondas usando solo palabras formadas con esas letras. A medida que sumás filas, aparecen palabras nuevas.
 
+DE LA LETRA A LA ORACIÓN
+• Letras: practicá los kana sueltos de cada fila nueva.
+• Palabras: cerca de 450 en hiragana y más de 140 en katakana, cada una con su significado.
+• Oraciones: al completar todas las filas se desbloquean rondas de oraciones simples.
+
 DOS MODOS DE PRÁCTICA
-• Leer: ves la palabra en kana y escribís cómo se lee en romaji.
-• Escribir: ves el romaji y escribís la palabra en kana con el teclado japonés.
+• Leer: ves el kana y escribís cómo se lee en romaji.
+• Escribir: ves el romaji y escribís en kana con el teclado japonés.
 
 PENSADA PARA APRENDER
-• Rondas cortas de 10 palabras.
-• Prioriza las palabras en las que más te equivocás.
+• Rondas cortas de 10.
+• Prioriza lo que más te cuesta.
+• Escuchá la pronunciación con la voz japonesa de tu dispositivo.
 • Acepta variantes de romaji como shi/si o tsu/tu.
-• Cada palabra viene con su significado.
-• Al completar todas las filas se desbloquean rondas de oraciones simples.
+• Estadísticas con las letras y palabras que más te cuestan.
+
+MOTIVACIÓN PARA SEGUIR
+• Racha de días y recordatorio diario opcional, solo los días que todavía no practicaste.
+• 22 logros para desbloquear: rondas, racha, vocabulario, rondas perfectas y más.
 
 SIN DISTRACCIONES
 • Funciona sin conexión.
 • Sin cuentas, sin publicidad y sin recolección de datos.
-• Tu progreso y tu racha quedan guardados en tu dispositivo.
+• Tu progreso queda guardado en tu dispositivo.
 
 Disponible en español, inglés, francés y alemán.
 ```
@@ -125,21 +134,30 @@ WordGana helps you learn hiragana and katakana step by step, using real Japanese
 
 Check off the kana rows you already know, and WordGana builds rounds using only words made from those characters. As you add rows, new words unlock.
 
+FROM CHARACTERS TO SENTENCES
+• Characters: practice the individual kana of each new row.
+• Words: nearly 450 in hiragana and over 140 in katakana, each with its meaning.
+• Sentences: complete every row to unlock rounds of simple sentences.
+
 TWO PRACTICE MODES
-• Read: see the word in kana and type its reading in romaji.
-• Write: see the romaji and type the word in kana with the Japanese keyboard.
+• Read: see the kana and type its reading in romaji.
+• Write: see the romaji and type it in kana with the Japanese keyboard.
 
 BUILT FOR LEARNING
-• Short rounds of 10 words.
-• Words you miss come back more often.
+• Short rounds of 10.
+• What you miss comes back more often.
+• Hear the pronunciation with your device's Japanese voice.
 • Accepts romaji variants like shi/si and tsu/tu.
-• Every word comes with its meaning.
-• Complete every row to unlock rounds of simple sentences.
+• Statistics show the characters and words you find hardest.
+
+STAY MOTIVATED
+• Daily streak and an optional reminder, only on days you haven't practiced yet.
+• 22 achievements to unlock: rounds, streaks, vocabulary, perfect rounds and more.
 
 NO DISTRACTIONS
 • Works offline.
 • No accounts, no ads, no data collection.
-• Your progress and streak are saved on your device.
+• Your progress is saved on your device.
 
 Available in English, Spanish, French and German.
 ```
@@ -158,12 +176,12 @@ Se cargan por tamaño de pantalla. Si subís el tamaño más grande, Apple lo re
 | iPhone 6,9" (por ejemplo, iPhone 17 Pro Max) | 1320 × 2868 | Sí |
 | iPad 13" (por ejemplo, iPad Pro 13") | 2064 × 2752 | Sí, porque la app también es para iPad |
 
-Cargá entre 3 y 10 capturas por dispositivo. Por ejemplo: elegir filas, elegir modo, practicar en Leer,
-practicar en Escribir y resultados.
+Cargá entre 3 y 10 capturas por dispositivo.
 
 Las capturas ya están en `docs/app-store-screenshots/`, en español (`es`) e inglés (`en`), con una
 carpeta para iPhone y otra para iPad. Ya tienen el tamaño correcto. Subí las de cada carpeta en su
-localización y en este orden: inicio, leer, correcto, escribir y resultados.
+localización y en este orden: inicio, leer, correcto (con el botón de audio), escribir, resultados (con un
+logro desbloqueado), logros y estadísticas.
 
 Son de la app real con progreso de ejemplo, renderizadas con WebKit, el mismo motor que usa la app en iOS.
 Si cambiás la interfaz, podés regenerarlas así o sacar nuevas en el simulador de Xcode con **⌘S**.
@@ -197,7 +215,7 @@ la app TestFlight en el iPhone. Sirve para comprobar que la versión que va a la
 1. En la pestaña de la app, abrí la versión 1.0 y en **Build** elegí la que subiste.
 2. En **Información para la revisión**, desmarcá **Inicio de sesión requerido** y agregá esta nota:
    ```
-   No account is required. The app works fully offline. To try it, select one or more kana rows on the home screen, pick Read or Write mode and start a round. Write mode uses the Japanese (Kana) keyboard; Read mode uses the standard keyboard.
+   No account is required. The app works fully offline. To try it, select one or more kana rows on the home screen, pick Read or Write mode and start a round. Write mode uses the Japanese (Kana) keyboard; Read mode uses the standard keyboard. The optional daily reminder (Settings) uses local notifications only; nothing is sent to a server.
    ```
 3. En **Lanzamiento de la versión**, elegí si se publica automáticamente al aprobarse o manualmente.
 4. Tocá **Agregar para revisión** y después **Enviar a revisión de la app**.

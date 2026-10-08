@@ -150,7 +150,7 @@ abrir el repo, leer `CLAUDE.md` y continuar desde la primera etapa sin tildar.
 - [x] **Etapa 16 — Logros.** Logros por rondas completadas, palabras aprendidas, racha, rondas perfectas, letras
       dominadas y variedad de práctica. Se evalúan al terminar cada ronda y se celebran en Resultados. Pantalla
       de logros con progreso hacia los bloqueados.
-- [ ] **Etapa 17 — Ficha de la tienda.** Actualizar descripción y capturas de `docs/APP_STORE.md` con las
+- [x] **Etapa 17 — Ficha de la tienda.** Actualizar descripción y capturas de `docs/APP_STORE.md` con las
       funciones nuevas.
 
 ## Verificación

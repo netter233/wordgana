@@ -9,6 +9,8 @@ WordGana no recolecta, envía ni comparte datos personales.
 - No usa publicidad, analíticas ni servicios de terceros.
 - Tu progreso (filas elegidas, modo, estadísticas y racha) se guarda solo en tu dispositivo.
   Si desinstalás la app, esos datos se borran.
+- El recordatorio diario, si lo activás, usa notificaciones locales que programa tu propio dispositivo.
+  No pasa por ningún servidor.
 
 Si esta política cambia, la versión actualizada se publica en esta misma página.
 
@@ -27,6 +29,8 @@ WordGana does not collect, transmit or share any personal data.
 - It uses no advertising, analytics or third-party services.
 - Your progress (selected rows, mode, statistics and streak) is stored only on your device.
   Deleting the app deletes that data.
+- The optional daily reminder uses local notifications scheduled by your own device.
+  It does not go through any server.
 
 If this policy changes, the updated version will be published on this page.
 
