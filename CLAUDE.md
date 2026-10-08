@@ -1,9 +1,10 @@
 # WordGana
 
-App web (PWA) para practicar hiragana y katakana de forma incremental: el usuario marca las filas del
-silabario que ya sabe y practica con palabras reales formadas solo por esas letras, en modo Leer (kana →
-romaji) o Escribir (romaji → kana con teclado japonés). Al completar todas las filas se desbloquean rondas
-de 5 oraciones simples; las rondas de palabras son de 10. Interfaz en español.
+App (PWA y app de iPhone con Capacitor) para practicar hiragana y katakana de forma incremental: el usuario
+marca las filas del silabario que ya sabe y practica con letras sueltas o palabras reales formadas solo por esas
+letras, en modo Leer (kana → romaji) o Escribir (romaji → kana con teclado japonés). Al completar todas las filas
+se desbloquean rondas de 5 oraciones simples; las de letras y palabras son de 10. Incluye audio, estadísticas,
+logros y recordatorio diario. Interfaz en español, inglés, francés y alemán.
 
 ## Cómo continuar el trabajo
 
@@ -15,6 +16,7 @@ de 5 oraciones simples; las rondas de palabras son de 10. Interfaz en español.
 ## Stack
 
 - Vite + React 18 + TypeScript. `vite-plugin-pwa` para manifest y service worker.
+- Capacitor 8 para la app de iOS (`ios/`), con `@capacitor/local-notifications` para el recordatorio.
 - CSS plano en `src/styles.css` con variables en `:root` y dark mode por `prefers-color-scheme`.
 - Vitest para tests de lógica (`src/lib/*.test.ts`).
 - Sin librerías de UI ni de estado. Sin backend. Persistencia en localStorage.
@@ -33,15 +35,23 @@ npm run preview        # sirve dist/ (para probar PWA/offline)
 ## Estructura
 
 ```
-src/data/kana.ts      filas de hiragana/katakana y tabla kana → romaji con variantes aceptadas
-src/data/words.ts     lista curada de palabras en hiragana { kana, es }
+src/data/kana.ts         filas de hiragana/katakana y tabla kana → romaji con variantes aceptadas
+src/data/words.ts        lista curada de palabras en hiragana { kana, es }
 src/data/katakanaWords.ts vocabulario curado que se escribe normalmente en katakana
-src/data/sentences.ts oraciones avanzadas con romaji explícito por las lecturas de partículas
-src/lib/kana.ts       tokenize, toRomaji, matchesRomaji, normalizeHiragana, isEligible, checkAnswer
-src/lib/session.ts    arma rondas sin repetidos y prioriza ítems que necesitan repaso; countMastered
-src/lib/storage.ts    localStorage (filas, modo, stats por contexto, racha), siempre con try/catch
-src/components/       TopBar, StatsStrip, RowPicker, ModeCards, Practice, Results
-src/App.tsx           estado global: pantalla, filas, modo, ronda
+src/data/sentences.ts    oraciones avanzadas con romaji explícito; tipo PracticeKind (kana | words | sentences)
+src/data/translations.ts significados en inglés, francés y alemán, indexados por el texto en español
+src/data/achievements.ts definición de logros (métrica, meta y título en los cuatro idiomas)
+src/lib/kana.ts          tokenize, toRomaji, matchesRomaji, normalizeHiragana, isEligible, checkAnswer
+src/lib/letters.ts       letras sueltas de las filas activas como ítems de práctica
+src/lib/session.ts       arma rondas sin repetidos y prioriza ítems que necesitan repaso; countMastered
+src/lib/storage.ts       localStorage (filas, modo, stats por ítem, racha, historial), siempre con try/catch
+src/lib/insights.ts      estadísticas derivadas: totales, aciertos por modo, letras y palabras difíciles
+src/lib/achievements.ts  métricas, evaluación y persistencia de logros
+src/lib/speech.ts        pronunciación con speechSynthesis (voz japonesa del sistema)
+src/lib/reminders.ts     recordatorio diario con @capacitor/local-notifications (solo app nativa)
+src/i18n.tsx             textos de la interfaz en es/en/fr/de
+src/components/          pantallas y piezas de UI (Practice, Results, StatsScreen, AchievementsScreen…)
+src/App.tsx              estado global: pantalla, filas, modo, ronda, stats, historial y logros
 ```
 
 ## Convenciones
