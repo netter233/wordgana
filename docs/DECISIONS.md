@@ -167,3 +167,14 @@ entre las letras distintas que la forman y exigen 3 respuestas mínimas.
 rondas no se pueden reconstruir desde las stats: para quien ya usaba la app, el contador de rondas empieza en
 cero con esta versión y la mejor racha arranca desde la racha actual. Un repaso de 1 o 2 errores sin fallar no
 cuenta como ronda perfecta para que el logro no sea trivial.
+
+## 2026-10-07 — Recordatorio diario con `@capacitor/local-notifications`
+
+**Decisión:** agregar la dependencia `@capacitor/local-notifications` (8.3, misma versión mayor que Capacitor)
+para un recordatorio diario opcional, solo en la app nativa; en la PWA la opción no aparece. En vez de una
+notificación repetitiva se programan avisos sueltos para los próximos 14 días, que se reprograman al abrir la
+app y al terminar cada ronda. El permiso se pide recién al activar el recordatorio.
+**Por qué:** una notificación repetitiva no puede saltear los días en que ya practicaste. Con avisos sueltos,
+el de hoy desaparece apenas terminás una ronda, el primero puede mencionar la racha real y, si dejás de abrir la
+app, los avisos se terminan solos a las dos semanas en vez de insistir para siempre. Pedir el permiso en
+contexto (al tocar el interruptor) es la práctica recomendada por Apple y evita un rechazo prematuro.

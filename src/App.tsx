@@ -3,6 +3,7 @@ import { ContentCards } from './components/ContentCards';
 import { AudioSettings } from './components/AudioSettings';
 import { LanguagePicker } from './components/LanguagePicker';
 import { ModeCards } from './components/ModeCards';
+import { ReminderSettings } from './components/ReminderSettings';
 import { Practice } from './components/Practice';
 import { Results } from './components/Results';
 import { RowPicker } from './components/RowPicker';
@@ -17,8 +18,10 @@ import { WORDS, type Word } from './data/words';
 import { isEligible, type PracticeMode } from './lib/kana';
 import { useI18n } from './i18n';
 import { letterItems } from './lib/letters';
+import { loadReminder, syncReminders, type ReminderTexts } from './lib/reminders';
 import { countMastered, pickRound } from './lib/session';
 import {
+  dayKey,
   loadLifetime,
   loadProgress,
   loadSettings,
@@ -45,7 +48,7 @@ interface RoundSummary {
 }
 
 export function App() {
-  const { messages } = useI18n();
+  const { language, messages } = useI18n();
   const initial = useMemo(loadSettings, []);
   const [screen, setScreen] = useState<Screen>('setup');
   const [activeScript, setActiveScript] = useState<KanaScript>(initial.activeScript);
@@ -84,6 +87,18 @@ export function App() {
       setPracticeKinds((previous) => ({ ...previous, [activeScript]: 'words' }));
     }
   }, [activeScript, allRowsSelected, practiceKinds]);
+
+  const practicedToday = progress.lastDay === dayKey(new Date());
+  const reminderTexts: ReminderTexts = {
+    title: 'WordGana',
+    first: progress.streak > 0 ? messages.notificationStreak(progress.streak) : messages.notificationGeneric,
+    later: messages.notificationGeneric,
+  };
+
+  useEffect(() => {
+    // Reprograma los avisos al abrir la app y cada vez que cambia si ya practicaste hoy.
+    void syncReminders(loadReminder(), practicedToday, reminderTexts);
+  }, [practicedToday, progress.streak, language]);
 
   const eligibleWords = useMemo(() => {
     const words = activeScript === 'hiragana' ? WORDS : KATAKANA_WORDS;
@@ -230,6 +245,7 @@ export function App() {
         <TopBar title={messages.settings} mark={mark} onBack={() => setScreen('setup')} />
         <LanguagePicker />
         <AudioSettings />
+        <ReminderSettings practicedToday={practicedToday} texts={reminderTexts} />
       </main>
     );
   }

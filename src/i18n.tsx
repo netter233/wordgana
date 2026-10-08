@@ -139,6 +139,13 @@ export interface Messages {
   missedOf: (missed: number, seen: number) => string;
   notEnoughData: string;
   noAnswersYet: string;
+  reminderTitle: string;
+  reminderDescription: string;
+  reminderToggle: string;
+  reminderTime: string;
+  reminderDenied: string;
+  notificationStreak: (days: number) => string;
+  notificationGeneric: string;
 }
 
 const MESSAGES: Record<AppLanguage, Messages> = {
@@ -197,6 +204,13 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     missedOf: (missed, seen) => `${missed} of ${seen} missed`,
     notEnoughData: 'Not enough answers yet. Keep practicing and you’ll see what to focus on here.',
     noAnswersYet: 'No answers yet',
+    reminderTitle: 'Daily reminder',
+    reminderDescription: 'A notification at the time you choose, only on days you haven’t practiced yet.',
+    reminderToggle: 'Remind me to practice',
+    reminderTime: 'Time',
+    reminderDenied: 'Notifications are turned off for WordGana. Turn them on in Settings → Notifications → WordGana.',
+    notificationStreak: (days) => `Your ${days}-day streak is waiting. One quick round?`,
+    notificationGeneric: 'Time for a quick round of kana. Just two minutes!',
   },
   es: {
     autoLanguage: (language) => `Automático (${language})`, languageLabel: 'Idioma',
@@ -252,6 +266,13 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     missedOf: (missed, seen) => `${missed} de ${seen} mal`,
     notEnoughData: 'Todavía no hay suficientes respuestas. Seguí practicando y acá vas a ver en qué conviene enfocarte.',
     noAnswersYet: 'Sin respuestas todavía',
+    reminderTitle: 'Recordatorio diario',
+    reminderDescription: 'Un aviso a la hora que elijas, solo los días que todavía no practicaste.',
+    reminderToggle: 'Recordarme practicar',
+    reminderTime: 'Hora',
+    reminderDenied: 'Las notificaciones de WordGana están desactivadas. Activalas en Ajustes → Notificaciones → WordGana.',
+    notificationStreak: (days) => `Tu racha de ${days} ${days === 1 ? 'día' : 'días'} te espera. ¿Una ronda rápida?`,
+    notificationGeneric: '¿Una ronda rápida de kana? Son solo dos minutos.',
   },
   fr: {
     autoLanguage: (language) => `Automatique (${language})`, languageLabel: 'Langue',
@@ -307,6 +328,13 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     missedOf: (missed, seen) => `${missed} sur ${seen} ratées`,
     notEnoughData: 'Pas encore assez de réponses. Continuez à pratiquer et vous verrez ici sur quoi vous concentrer.',
     noAnswersYet: 'Pas encore de réponses',
+    reminderTitle: 'Rappel quotidien',
+    reminderDescription: 'Une notification à l’heure choisie, uniquement les jours où vous n’avez pas encore pratiqué.',
+    reminderToggle: 'Me rappeler de pratiquer',
+    reminderTime: 'Heure',
+    reminderDenied: 'Les notifications de WordGana sont désactivées. Activez-les dans Réglages → Notifications → WordGana.',
+    notificationStreak: (days) => `Votre série de ${days} ${days === 1 ? 'jour' : 'jours'} vous attend. Une petite série ?`,
+    notificationGeneric: 'Une petite série de kana ? Deux minutes suffisent.',
   },
   de: {
     autoLanguage: (language) => `Automatisch (${language})`, languageLabel: 'Sprache',
@@ -362,6 +390,13 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     missedOf: (missed, seen) => `${missed} von ${seen} falsch`,
     notEnoughData: 'Noch nicht genug Antworten. Übe weiter, dann siehst du hier, worauf du dich konzentrieren solltest.',
     noAnswersYet: 'Noch keine Antworten',
+    reminderTitle: 'Tägliche Erinnerung',
+    reminderDescription: 'Eine Benachrichtigung zur gewählten Uhrzeit, nur an Tagen, an denen du noch nicht geübt hast.',
+    reminderToggle: 'Ans Üben erinnern',
+    reminderTime: 'Uhrzeit',
+    reminderDenied: 'Mitteilungen für WordGana sind deaktiviert. Aktiviere sie unter Einstellungen → Mitteilungen → WordGana.',
+    notificationStreak: (days) => `Deine Serie von ${days} ${days === 1 ? 'Tag' : 'Tagen'} wartet. Eine schnelle Runde?`,
+    notificationGeneric: 'Zeit für eine schnelle Kana-Runde. Nur zwei Minuten!',
   },
 };
 
