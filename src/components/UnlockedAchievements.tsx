@@ -19,7 +19,7 @@ export function UnlockedAchievements({ achievements, onViewAll }: UnlockedAchiev
           <li
             key={achievement.id}
             className="unlocked-item"
-            style={{ animationDelay: `${120 + index * 90}ms` }}
+            style={{ animationDelay: `${120 + index * 100}ms` }}
           >
             <AchievementBadge icon={achievement.icon} />
             <div className="achievement-text">

@@ -94,6 +94,8 @@ button:focus-visible, input:focus-visible, textarea:focus-visible {
 }
 .app--setup { padding-bottom: 0; }
 
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
 h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
 .ja { font-family: var(--font-ja); }
 
@@ -133,10 +135,12 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
   background: transparent;
   color: var(--muted);
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease, transform 0.08s ease;
+  transition: background-color 0.15s ease-out, color 0.15s ease-out, transform 0.1s ease-out;
 }
-.appbar-btn:hover { background: var(--surface-2); color: var(--text); }
-.appbar-btn:active { background: var(--accent-soft); color: var(--accent); transform: scale(0.94); }
+.appbar-btn:active { background: var(--accent-soft); color: var(--accent); transform: scale(0.96); }
+@media (hover: hover) {
+  .appbar-btn:hover { background: var(--surface-2); color: var(--text); }
+}
 .appbar-btn--trailing { margin-left: auto; }
 .appbar-icon { width: 22px; height: 22px; }
 .appbar-title { min-width: 0; margin: 0; font-size: 1.3rem; font-weight: 700; letter-spacing: -0.01em; }
@@ -182,7 +186,7 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
   border-radius: 999px;
   background: var(--border);
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease-out;
 }
 .switch::after {
   content: '';
@@ -194,7 +198,7 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
   border-radius: 50%;
   background: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease-out;
 }
 .switch:checked { background: var(--ok); }
 .switch:checked::after { transform: translateX(20px); }
@@ -202,7 +206,7 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
   min-height: 36px;
   padding: 4px 10px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 6px;
   background: var(--surface);
   color: var(--text);
   font: inherit;
@@ -252,6 +256,7 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
   cursor: pointer;
 }
 .script-switch-btn .ja { margin-right: 4px; font-size: 1.05rem; }
+.script-switch-btn { transition: background-color 0.15s ease-out, color 0.15s ease-out, box-shadow 0.15s ease-out; }
 .script-switch-btn--selected {
   background: var(--surface);
   color: var(--accent);
@@ -288,7 +293,7 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
   font-size: 1.05rem;
 }
 .stat-label { margin: 0; font-size: 0.72rem; font-weight: 600; color: var(--muted); }
-.stat-value { margin: 0; font-size: 1.05rem; font-weight: 700; white-space: nowrap; }
+.stat-value { margin: 0; font-size: 1.05rem; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
 
 .stat-tiles--spaced { margin-top: 12px; }
 .nav-list {
@@ -437,12 +442,12 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
   align-items: center;
   gap: 12px;
   padding: 10px 0;
-  animation: achievement-pop 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.25) both;
+  animation: achievement-pop 0.45s cubic-bezier(0.2, 0, 0, 1) both;
 }
 .unlocked-item + .unlocked-item { border-top: 1px solid color-mix(in srgb, var(--award-strong) 25%, transparent); }
 .unlocked-link { display: block; margin: 4px auto -8px; }
 @keyframes achievement-pop {
-  from { opacity: 0; transform: translateY(8px) scale(0.92); }
+  from { opacity: 0; transform: translateY(8px) scale(0.96); }
   to { opacity: 1; transform: none; }
 }
 
@@ -500,7 +505,7 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
   background: var(--surface-2);
   color: var(--text);
   cursor: pointer;
-  transition: transform 0.08s ease;
+  transition: transform 0.1s ease-out;
 }
 .chip:active { transform: scale(0.96); }
 .chip--on {
@@ -533,9 +538,9 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
   background: var(--surface-2);
   cursor: pointer;
   color: var(--text);
-  transition: transform 0.08s ease;
+  transition: transform 0.1s ease-out;
 }
-.mode-card:active { transform: scale(0.98); }
+.mode-card:active { transform: scale(0.96); }
 .mode-card--selected { border-color: var(--accent); background: var(--accent-soft); }
 .mode-card h3 { margin: 0 0 4px; font-size: 0.95rem; }
 .mode-card--selected h3 { color: var(--accent); }
@@ -561,6 +566,8 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
   color: var(--text);
   cursor: pointer;
 }
+.choice-card { transition: transform 0.1s ease-out, background-color 0.15s ease-out, border-color 0.15s ease-out; }
+.choice-card:active:not(:disabled) { transform: scale(0.96); }
 .choice-card--selected { border-color: var(--accent); background: var(--accent-soft); }
 .choice-grid--three { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .choice-grid--three .choice-card { padding: 12px 6px; text-align: center; }
@@ -606,9 +613,9 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
   letter-spacing: 0.06em;
   box-shadow: var(--shadow-accent);
   cursor: pointer;
-  transition: transform 0.08s ease;
+  transition: transform 0.1s ease-out;
 }
-.primary-btn:active:not(:disabled) { transform: scale(0.98); }
+.primary-btn:active:not(:disabled) { transform: scale(0.96); }
 .primary-btn:disabled { opacity: 0.4; box-shadow: none; cursor: not-allowed; }
 
 .secondary-btn {
@@ -623,9 +630,9 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.08s ease;
+  transition: transform 0.1s ease-out;
 }
-.secondary-btn:active { transform: scale(0.98); }
+.secondary-btn:active { transform: scale(0.96); }
 
 /* --- Práctica --- */
 .progress-row {
@@ -637,6 +644,7 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
   font-size: 0.82rem;
   font-weight: 600;
   color: var(--muted);
+  font-variant-numeric: tabular-nums;
 }
 .progress-track {
   height: 6px;
@@ -649,7 +657,7 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
   height: 100%;
   border-radius: 999px;
   background: var(--accent);
-  transition: width 0.25s ease;
+  transition: width 0.25s ease-out;
 }
 .prompt-word {
   font-size: 2.8rem;
@@ -707,6 +715,8 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
 }
 .feedback { display: flex; align-items: center; gap: 8px; }
 .feedback-text { flex: 1; min-width: 0; margin: 0; }
+/* Contrapeso del botón de audio para que el texto quede centrado en la tarjeta. */
+.feedback:has(.speak-btn)::before { content: ''; flex: none; width: 44px; }
 .speak-btn {
   flex: none;
   width: 44px;
@@ -719,11 +729,11 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
   background: color-mix(in srgb, currentColor 12%, transparent);
   color: inherit;
   cursor: pointer;
-  transition: transform 0.08s ease, background-color 0.15s ease;
+  transition: transform 0.1s ease-out, background-color 0.15s ease-out;
 }
-.speak-btn:active { transform: scale(0.92); background: color-mix(in srgb, currentColor 22%, transparent); }
+.speak-btn:active { transform: scale(0.96); background: color-mix(in srgb, currentColor 22%, transparent); }
 .speak-btn svg { width: 22px; height: 22px; }
-.speak-btn--small { width: 40px; height: 40px; color: var(--accent); }
+.speak-btn--small { color: var(--accent); }
 .speak-btn--small svg { width: 19px; height: 19px; }
 .feedback-emoji { font-size: 1.35em; vertical-align: -0.1em; }
 .answer-diff { display: block; margin-top: 8px; font-size: 0.82rem; font-weight: 500; }
@@ -733,7 +743,7 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
 
 /* --- Resultados --- */
 .score-card { text-align: center; padding: 24px 16px; }
-.score { font-size: 2.6rem; font-weight: 700; margin: 0; }
+.score { font-size: 2.6rem; font-weight: 700; margin: 0; font-variant-numeric: tabular-nums; }
 .score-sub { margin: 4px 0 0; color: var(--muted); font-size: 0.9rem; }
 .missed-list ul { list-style: none; margin: 0; padding: 0; }
 .missed-list li {
