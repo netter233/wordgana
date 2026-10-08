@@ -1,10 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Word } from '../data/words';
 import type { KanaScript } from '../data/kana';
 import type { PracticeKind } from '../data/sentences';
 import { checkAnswer, type PracticeMode } from '../lib/kana';
 import { alignAnswer } from '../lib/answerDiff';
 import { readingFor } from '../lib/study';
+import { speakJapanese, useJapaneseSpeech } from '../lib/speech';
+import { loadAutoSpeak } from '../lib/storage';
+import { SpeakButton } from './SpeakButton';
 import { localizedMeaning } from '../data/translations';
 import { useI18n } from '../i18n';
 
@@ -27,6 +30,8 @@ export function Practice({ words, mode, script, practiceKind, onAnswer, onFinish
   const wordInputRef = useRef<HTMLInputElement>(null);
   const sentenceInputRef = useRef<HTMLTextAreaElement>(null);
   const composingRef = useRef(false);
+  const canSpeak = useJapaneseSpeech();
+  const autoSpeak = useMemo(loadAutoSpeak, []);
 
   const word = words[index];
 
@@ -49,6 +54,7 @@ export function Practice({ words, mode, script, practiceKind, onAnswer, onFinish
   function gradeAnswer(ok: boolean) {
     setCorrect(ok);
     onAnswer(word, ok);
+    if (canSpeak && autoSpeak) speakJapanese(word.kana);
     if (ok) setCorrectCount((count) => count + 1);
     else setMissed((items) => [...items, word]);
   }
@@ -154,32 +160,30 @@ export function Practice({ words, mode, script, practiceKind, onAnswer, onFinish
       </form>
 
       {correct !== null && (
-        <p
-          className={correct ? 'feedback feedback--ok' : 'feedback feedback--bad'}
-          role="status"
-          aria-live="polite"
-          aria-atomic="true"
-        >
-          {correct ? messages.correct : messages.expected}
-          <span className="ja">{word.kana}</span> · {reading}
-          {meaning && ` · ${meaning}`}
-          {word.emoji && <span className="feedback-emoji"> {word.emoji}</span>}
-          {!correct && practiceKind === 'sentences' && (
-            <span className="answer-diff">
-              {messages.yourAnswer}
-              {compactValue.length === 0
-                ? messages.emptyAnswer
-                : answerDiff.map((part, characterIndex) => (
-                  <span
-                    key={characterIndex}
-                    className={part.correct ? undefined : 'answer-diff-error'}
-                  >
-                    {part.value}
-                  </span>
-                ))}
-            </span>
-          )}
-        </p>
+        <div className={correct ? 'feedback feedback--ok' : 'feedback feedback--bad'}>
+          <p className="feedback-text" role="status" aria-live="polite" aria-atomic="true">
+            {correct ? messages.correct : messages.expected}
+            <span className="ja">{word.kana}</span> · {reading}
+            {meaning && ` · ${meaning}`}
+            {word.emoji && <span className="feedback-emoji"> {word.emoji}</span>}
+            {!correct && practiceKind === 'sentences' && (
+              <span className="answer-diff">
+                {messages.yourAnswer}
+                {compactValue.length === 0
+                  ? messages.emptyAnswer
+                  : answerDiff.map((part, characterIndex) => (
+                    <span
+                      key={characterIndex}
+                      className={part.correct ? undefined : 'answer-diff-error'}
+                    >
+                      {part.value}
+                    </span>
+                  ))}
+              </span>
+            )}
+          </p>
+          {canSpeak && <SpeakButton text={word.kana} />}
+        </div>
       )}
     </section>
   );

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ContentCards } from './components/ContentCards';
+import { AudioSettings } from './components/AudioSettings';
 import { LanguagePicker } from './components/LanguagePicker';
 import { ModeCards } from './components/ModeCards';
 import { Practice } from './components/Practice';
@@ -201,6 +202,7 @@ export function App() {
       <main className="app">
         <TopBar title={messages.settings} mark={mark} onBack={() => setScreen('setup')} />
         <LanguagePicker />
+        <AudioSettings />
       </main>
     );
   }

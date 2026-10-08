@@ -2,6 +2,8 @@ import type { Word } from '../data/words';
 import { readingFor } from '../lib/study';
 import { localizedMeaning } from '../data/translations';
 import { useI18n } from '../i18n';
+import { useJapaneseSpeech } from '../lib/speech';
+import { SpeakButton } from './SpeakButton';
 
 interface ResultsProps {
   total: number;
@@ -21,6 +23,7 @@ export function Results({
   onChangeRows,
 }: ResultsProps) {
   const { language, messages } = useI18n();
+  const canSpeak = useJapaneseSpeech();
   return (
     <section>
       <div className="card score-card">
@@ -38,8 +41,11 @@ export function Results({
           <ul>
             {missed.map((w) => (
               <li key={w.kana}>
-                <span className="ja">{w.kana}</span> · {readingFor(w)}
-                {w.es && ` · ${localizedMeaning(w, language)}`}
+                <span className="missed-text">
+                  <span className="ja">{w.kana}</span> · {readingFor(w)}
+                  {w.es && ` · ${localizedMeaning(w, language)}`}
+                </span>
+                {canSpeak && <SpeakButton text={w.kana} small />}
               </li>
             ))}
           </ul>

@@ -146,3 +146,13 @@ feedback y el repaso muestran solo kana y romaji. El tipo por defecto sigue sien
 **Por qué:** reutiliza ronda, validación (`checkAnswer` acepta variantes también para una sola letra) y progreso
 por ítem sin código nuevo. Palabras sigue como default porque es la propuesta central de la app; Letras
 queda primera en el selector porque es el orden natural de aprendizaje de una fila nueva.
+
+## 2026-10-07 — Audio con la voz del sistema y solo después de responder
+
+**Decisión:** la pronunciación usa `speechSynthesis` con `lang = ja-JP`, sin archivos de audio ni red. El botón
+de escuchar aparece en el feedback y en la lista de repaso, nunca antes de responder. La reproducción
+automática es opcional y viene apagada. Si el navegador lista voces pero ninguna es japonesa, el audio se
+oculta y configuración explica cómo instalar una en iPhone.
+**Por qué:** escuchar antes de responder regala la respuesta en modo Leer. La voz del sistema funciona offline,
+no agrega peso a la app y suena natural en iOS (Kyoko/Otoya). Algunos WebView de iOS devuelven la lista de
+voces vacía aunque haya voces instaladas, así que una lista vacía no oculta el audio.

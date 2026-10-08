@@ -139,7 +139,7 @@ abrir el repo, leer `CLAUDE.md` y continuar desde la primera etapa sin tildar.
 - [x] **Etapa 12 — Letras sueltas.** Tercer tipo de práctica "Letras": rondas con los kana individuales de las
       filas activas, en Leer y Escribir, con el mismo progreso por ítem que las palabras. Pensado para el primer
       contacto con una fila nueva.
-- [ ] **Etapa 13 — Audio.** Pronunciación con la voz japonesa del sistema (`speechSynthesis`), sin red. Botón de
+- [x] **Etapa 13 — Audio.** Pronunciación con la voz japonesa del sistema (`speechSynthesis`), sin red. Botón de
       escuchar en el feedback y en la lista de repaso, nunca antes de responder. Opción en configuración para
       reproducir automáticamente al responder. Se oculta si el dispositivo no tiene voz japonesa.
 - [ ] **Etapa 14 — Estadísticas.** Pantalla accesible desde el home con totales históricos (rondas, respuestas,

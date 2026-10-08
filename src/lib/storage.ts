@@ -204,3 +204,22 @@ export function saveProgress(progress: Progress): void {
     // Sin persistencia esta sesión; la app sigue funcionando en memoria.
   }
 }
+
+const AUTO_SPEAK_KEY = 'wordgana:auto-speak:v1';
+
+/** Reproducir la pronunciación automáticamente al responder. Apagado por defecto. */
+export function loadAutoSpeak(): boolean {
+  try {
+    return localStorage.getItem(AUTO_SPEAK_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+export function saveAutoSpeak(value: boolean): void {
+  try {
+    localStorage.setItem(AUTO_SPEAK_KEY, value ? '1' : '0');
+  } catch {
+    // Sin persistencia esta sesión.
+  }
+}

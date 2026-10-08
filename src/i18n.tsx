@@ -119,6 +119,11 @@ export interface Messages {
   reviewMissed: (count: number) => string;
   anotherRound: string;
   backHome: string;
+  listen: string;
+  audioTitle: string;
+  audioDescription: string;
+  autoSpeak: string;
+  audioUnavailable: string;
 }
 
 const MESSAGES: Record<AppLanguage, Messages> = {
@@ -157,6 +162,11 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     perfectRound: 'Perfect round!', toReview: (count) => `${count} to review`, reviewTitle: 'Review',
     reviewMissed: (count) => count === 1 ? 'Review the missed item' : `Review the ${count} missed items`,
     anotherRound: 'Another round', backHome: 'Back to home',
+    listen: 'Listen to pronunciation',
+    audioTitle: 'Pronunciation',
+    audioDescription: 'Hear each answer with your device’s Japanese voice. Works offline.',
+    autoSpeak: 'Play after each answer',
+    audioUnavailable: 'Your device has no Japanese voice. On iPhone, add one in Settings → Accessibility → Spoken Content → Voices → Japanese.',
   },
   es: {
     autoLanguage: (language) => `Automático (${language})`, languageLabel: 'Idioma',
@@ -192,6 +202,11 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     perfectRound: '¡Ronda perfecta!', toReview: (count) => `${count} para repasar`, reviewTitle: 'Para repasar',
     reviewMissed: (count) => count === 1 ? 'Repasar la que costó' : `Repasar las ${count} que costaron`,
     anotherRound: 'Otra ronda', backHome: 'Volver al inicio',
+    listen: 'Escuchar pronunciación',
+    audioTitle: 'Pronunciación',
+    audioDescription: 'Escuchá cada respuesta con la voz japonesa de tu dispositivo. Funciona sin conexión.',
+    autoSpeak: 'Reproducir al responder',
+    audioUnavailable: 'Tu dispositivo no tiene una voz japonesa. En iPhone podés agregarla en Ajustes → Accesibilidad → Contenido leído → Voces → Japonés.',
   },
   fr: {
     autoLanguage: (language) => `Automatique (${language})`, languageLabel: 'Langue',
@@ -227,6 +242,11 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     perfectRound: 'Série parfaite !', toReview: (count) => `${count} à revoir`, reviewTitle: 'À revoir',
     reviewMissed: (count) => count === 1 ? "Revoir l'élément manqué" : `Revoir les ${count} éléments manqués`,
     anotherRound: 'Une autre série', backHome: "Retour à l'accueil",
+    listen: 'Écouter la prononciation',
+    audioTitle: 'Prononciation',
+    audioDescription: 'Écoutez chaque réponse avec la voix japonaise de votre appareil. Fonctionne hors ligne.',
+    autoSpeak: 'Lire après chaque réponse',
+    audioUnavailable: 'Votre appareil n’a pas de voix japonaise. Sur iPhone, ajoutez-en une dans Réglages → Accessibilité → Contenu énoncé → Voix → Japonais.',
   },
   de: {
     autoLanguage: (language) => `Automatisch (${language})`, languageLabel: 'Sprache',
@@ -262,6 +282,11 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     perfectRound: 'Perfekte Runde!', toReview: (count) => `${count} zum Wiederholen`, reviewTitle: 'Wiederholen',
     reviewMissed: (count) => count === 1 ? 'Fehler wiederholen' : `${count} Fehler wiederholen`,
     anotherRound: 'Noch eine Runde', backHome: 'Zurück zur Startseite',
+    listen: 'Aussprache anhören',
+    audioTitle: 'Aussprache',
+    audioDescription: 'Höre jede Antwort mit der japanischen Stimme deines Geräts. Funktioniert offline.',
+    autoSpeak: 'Nach jeder Antwort abspielen',
+    audioUnavailable: 'Dein Gerät hat keine japanische Stimme. Auf dem iPhone kannst du eine unter Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen → Japanisch hinzufügen.',
   },
 };
 
