@@ -152,6 +152,18 @@ abrir el repo, leer `CLAUDE.md` y continuar desde la primera etapa sin tildar.
       de logros con progreso hacia los bloqueados.
 - [x] **Etapa 17 — Ficha de la tienda.** Actualizar descripción y capturas de `docs/APP_STORE.md` con las
       funciones nuevas.
+- [x] **Etapa 18 — Tiempo de estudio automático.** Modelo `StudyEntry` en `src/lib/studyTime.ts` (registros por
+      día y categoría en localStorage). Cada respuesta suma el tiempo activo de la práctica (tope de 90 s por
+      pregunta, pausa en segundo plano) a la categoría `practice:script:kind`.
+- [ ] **Etapa 19 — Pantalla de tiempo de estudio y meta diaria.** Hoy, gráfico semanal/4 semanas, reparto por
+      categoría y totales. Meta diaria opcional en configuración, tile "Hoy" con progreso y mención en el
+      recordatorio.
+- [ ] **Etapa 20 — Cronómetro, carga manual y categorías.** Cronómetro que sobrevive a cerrar la app, formulario
+      compartido de carga, categorías fijas (escucha, lectura, clase…) y personalizadas archivables.
+- [ ] **Etapa 21 — Historial editable.** Registros agrupados por día; editar o borrar los manuales y de
+      cronómetro, borrar los automáticos.
+- [ ] **Etapa 22 — Logros por horas y cierre.** Logros de 1 a 1000 horas y de meta cumplida 7/30 días; README,
+      CLAUDE.md, ficha de la tienda y capturas.
 
 ## Verificación
 

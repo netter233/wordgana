@@ -7,6 +7,7 @@ import { alignAnswer } from '../lib/answerDiff';
 import { readingFor } from '../lib/study';
 import { speakJapanese, useJapaneseSpeech } from '../lib/speech';
 import { loadAutoSpeak } from '../lib/storage';
+import { activeDelta } from '../lib/studyTime';
 import { SpeakButton } from './SpeakButton';
 import { localizedMeaning } from '../data/translations';
 import { useI18n } from '../i18n';
@@ -17,10 +18,12 @@ interface PracticeProps {
   script: KanaScript;
   practiceKind: PracticeKind;
   onAnswer: (word: Word, correct: boolean) => void;
+  /** Segundos de práctica activa, informados de a poco para no perderlos si se cierra la ronda. */
+  onActiveTime?: (seconds: number) => void;
   onFinish: (summary: { correctCount: number; missed: Word[] }) => void;
 }
 
-export function Practice({ words, mode, script, practiceKind, onAnswer, onFinish }: PracticeProps) {
+export function Practice({ words, mode, script, practiceKind, onAnswer, onActiveTime, onFinish }: PracticeProps) {
   const { language, messages } = useI18n();
   const [index, setIndex] = useState(0);
   const [value, setValue] = useState('');
@@ -32,6 +35,30 @@ export function Practice({ words, mode, script, practiceKind, onAnswer, onFinish
   const composingRef = useRef(false);
   const canSpeak = useJapaneseSpeech();
   const autoSpeak = useMemo(loadAutoSpeak, []);
+  const lastEventRef = useRef(Date.now());
+  const onActiveTimeRef = useRef(onActiveTime);
+  onActiveTimeRef.current = onActiveTime;
+
+  /** Suma el tiempo desde el último evento (con tope por pregunta) y reinicia la referencia. */
+  function trackActiveTime() {
+    const now = Date.now();
+    const seconds = activeDelta(lastEventRef.current, now);
+    lastEventRef.current = now;
+    if (seconds > 0) onActiveTimeRef.current?.(seconds);
+  }
+
+  useEffect(() => {
+    // En segundo plano no se cuenta: se cierra el tramo al ocultarse y se reinicia al volver.
+    function handleVisibility() {
+      if (document.visibilityState === 'hidden') trackActiveTime();
+      else lastEventRef.current = Date.now();
+    }
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibility);
+      trackActiveTime();
+    };
+  }, []);
 
   const word = words[index];
 
@@ -52,6 +79,7 @@ export function Practice({ words, mode, script, practiceKind, onAnswer, onFinish
   const answerDiff = alignAnswer(compactValue, compactExpected);
 
   function gradeAnswer(ok: boolean) {
+    trackActiveTime();
     setCorrect(ok);
     onAnswer(word, ok);
     if (canSpeak && autoSpeak) speakJapanese(word.kana);
@@ -69,6 +97,7 @@ export function Practice({ words, mode, script, practiceKind, onAnswer, onFinish
       return;
     }
 
+    trackActiveTime();
     if (index + 1 >= words.length) {
       onFinish({ correctCount, missed });
       return;

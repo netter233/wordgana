@@ -191,3 +191,14 @@ Los títulos viven en `src/data/achievements.ts` en los cuatro idiomas; las desc
 silencio al abrir evita mostrar "10 / 10" bloqueado a quien ya tenía progreso de versiones anteriores. Mostrar
 el progreso y un "próximo logro" (el bloqueado más cercano a la meta) da un objetivo concreto.
 También: cada cambio de pantalla vuelve el scroll arriba (antes una pantalla nueva podía abrir por la mitad).
+
+## 2026-10-08 — Tiempo de estudio dentro de WordGana
+
+**Decisión:** el seguimiento de horas de japonés vive dentro de WordGana (no es otra app). El tiempo de
+práctica se mide solo: cada respuesta suma el tiempo desde el evento anterior con un tope de 90 s, y no se
+cuenta mientras la app está en segundo plano. Se guarda agrupado en un registro por día y categoría
+(`practice:script:kind`). Mientras corre el cronómetro manual, la práctica no suma tiempo automático.
+**Por qué:** dentro de WordGana se reutilizan racha, logros, recordatorio y publicación, y lo practicado en la app
+se registra sin esfuerzo. El tope por pregunta evita que dejar el celular con una pregunta abierta infle las
+horas. Agrupar por día mantiene el historial legible y el almacenamiento chico. Pausar el automático con el
+cronómetro evita contar dos veces cuando alguien cronometra una sesión que incluye WordGana.

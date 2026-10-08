@@ -27,6 +27,14 @@ import {
   saveUnlocked,
 } from './lib/achievements';
 import { letterItems } from './lib/letters';
+import {
+  addAutoTime,
+  loadStudyEntries,
+  loadTimer,
+  practiceCategoryId,
+  saveStudyEntries,
+  type StudyEntry,
+} from './lib/studyTime';
 import { loadReminder, syncReminders, type ReminderTexts } from './lib/reminders';
 import { countMastered, pickRound } from './lib/session';
 import {
@@ -67,6 +75,7 @@ export function App() {
   const [stats, setStats] = useState<StatsMap>(loadStats);
   const [progress, setProgress] = useState(loadProgress);
   const [lifetime, setLifetime] = useState(loadLifetime);
+  const [, setStudyEntries] = useState<StudyEntry[]>(loadStudyEntries);
   const [unlocked, setUnlocked] = useState(() => {
     // Al abrir, se desbloquea en silencio lo que ya se cumplía (por ejemplo, progreso de versiones
     // anteriores). Los logros nuevos se celebran al terminar una ronda.
@@ -184,7 +193,19 @@ export function App() {
     });
   }
 
+  /** Tiempo de práctica en WordGana. Con el cronómetro en marcha no se suma, para no contarlo dos veces. */
+  function addPracticeTime(seconds: number, rounds = 0) {
+    if (loadTimer()) return;
+    const categoryId = practiceCategoryId(activeScript, practiceKind);
+    setStudyEntries((previous) => {
+      const next = addAutoTime(previous, categoryId, seconds, new Date(), rounds);
+      saveStudyEntries(next);
+      return next;
+    });
+  }
+
   function handleFinish(roundSummary: RoundSummary) {
+    addPracticeTime(0, 1);
     const nextProgress = recordRound(progress);
     setProgress(nextProgress);
     saveProgress(nextProgress);
@@ -250,6 +271,7 @@ export function App() {
           script={activeScript}
           practiceKind={practiceKind}
           onAnswer={handleAnswer}
+          onActiveTime={(seconds) => addPracticeTime(seconds)}
           onFinish={handleFinish}
         />
       </main>
