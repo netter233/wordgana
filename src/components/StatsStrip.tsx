@@ -11,12 +11,14 @@ interface StatsStripProps {
   links: StatsLink[];
   streak: number;
   roundsToday: number;
+  /** Valor del tile "Hoy"; por defecto, las rondas del día. */
+  todayValue?: string;
   mastered: number;
   total: number;
   itemLabel: string;
 }
 
-export function StatsStrip({ links, streak, roundsToday, mastered, total, itemLabel }: StatsStripProps) {
+export function StatsStrip({ links, streak, roundsToday, todayValue, mastered, total, itemLabel }: StatsStripProps) {
   const { messages } = useI18n();
   const percent = total > 0 ? Math.round((mastered / total) * 100) : 0;
 
@@ -38,7 +40,7 @@ export function StatsStrip({ links, streak, roundsToday, mastered, total, itemLa
           </span>
           <div>
             <p className="stat-label">{messages.today}</p>
-            <p className="stat-value">{messages.rounds(roundsToday)}</p>
+            <p className="stat-value">{todayValue ?? messages.rounds(roundsToday)}</p>
           </div>
         </div>
       </div>

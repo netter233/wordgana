@@ -124,3 +124,100 @@ export function saveTimer(timer: RunningTimer | null): void {
     // Sin persistencia esta sesión.
   }
 }
+
+// --- Totales -------------------------------------------------------------------------------------
+
+function shiftDay(day: string, offset: number): string {
+  const [year, month, date] = day.split('-').map(Number);
+  return dayKey(new Date(year, month - 1, date + offset));
+}
+
+export function secondsOnDay(entries: readonly StudyEntry[], day: string): number {
+  return entries.reduce((sum, entry) => (entry.day === day ? sum + entry.seconds : sum), 0);
+}
+
+export function totalSeconds(entries: readonly StudyEntry[]): number {
+  return entries.reduce((sum, entry) => sum + entry.seconds, 0);
+}
+
+/** Totales de los últimos `days` días, del más viejo a hoy (incluye días en cero). */
+export function totalsByDay(
+  entries: readonly StudyEntry[],
+  days: number,
+  today = new Date(),
+): Array<{ day: string; seconds: number }> {
+  const todayKey = dayKey(today);
+  const byDay = new Map<string, number>();
+  for (const entry of entries) byDay.set(entry.day, (byDay.get(entry.day) ?? 0) + entry.seconds);
+  return Array.from({ length: days }, (_, index) => {
+    const day = shiftDay(todayKey, index - days + 1);
+    return { day, seconds: byDay.get(day) ?? 0 };
+  });
+}
+
+/** Totales por categoría desde `sinceDay` inclusive (o de todo el historial), de mayor a menor. */
+export function totalsByCategory(
+  entries: readonly StudyEntry[],
+  sinceDay: string | null = null,
+): Array<{ categoryId: string; seconds: number }> {
+  const totals = new Map<string, number>();
+  for (const entry of entries) {
+    if (sinceDay && entry.day < sinceDay) continue;
+    totals.set(entry.categoryId, (totals.get(entry.categoryId) ?? 0) + entry.seconds);
+  }
+  return [...totals.entries()]
+    .filter(([, seconds]) => seconds > 0)
+    .map(([categoryId, seconds]) => ({ categoryId, seconds }))
+    .sort((a, b) => b.seconds - a.seconds);
+}
+
+/** Primer día del rango de los últimos `days` días, incluido hoy. */
+export function rangeStart(days: number, today = new Date()): string {
+  return shiftDay(dayKey(today), -(days - 1));
+}
+
+/**
+ * Días seguidos con la meta cumplida. Hoy suma si ya se cumplió, pero no corta la racha si todavía no:
+ * el día no terminó.
+ */
+export function goalStreak(entries: readonly StudyEntry[], goalMinutes: number, today = new Date()): number {
+  if (goalMinutes <= 0) return 0;
+  const goal = goalMinutes * 60;
+  const todayKey = dayKey(today);
+  let day = secondsOnDay(entries, todayKey) >= goal ? todayKey : shiftDay(todayKey, -1);
+  let streak = 0;
+  while (secondsOnDay(entries, day) >= goal) {
+    streak += 1;
+    day = shiftDay(day, -1);
+  }
+  return streak;
+}
+
+/** Minutos enteros para mostrar; un rato de menos de un minuto cuenta como 1 para no mostrar "0 min". */
+export function displayMinutes(seconds: number): number {
+  if (seconds <= 0) return 0;
+  return Math.max(1, Math.round(seconds / 60));
+}
+
+// --- Meta diaria ---------------------------------------------------------------------------------
+
+export const GOAL_OPTIONS = [0, 10, 15, 20, 30, 45, 60, 90];
+
+const GOAL_KEY = 'wordgana:study-goal:v1';
+
+export function loadGoal(): number {
+  try {
+    const value = Number(localStorage.getItem(GOAL_KEY));
+    return GOAL_OPTIONS.includes(value) ? value : 0;
+  } catch {
+    return 0;
+  }
+}
+
+export function saveGoal(minutes: number): void {
+  try {
+    localStorage.setItem(GOAL_KEY, String(minutes));
+  } catch {
+    // Sin persistencia esta sesión.
+  }
+}

@@ -155,7 +155,7 @@ abrir el repo, leer `CLAUDE.md` y continuar desde la primera etapa sin tildar.
 - [x] **Etapa 18 — Tiempo de estudio automático.** Modelo `StudyEntry` en `src/lib/studyTime.ts` (registros por
       día y categoría en localStorage). Cada respuesta suma el tiempo activo de la práctica (tope de 90 s por
       pregunta, pausa en segundo plano) a la categoría `practice:script:kind`.
-- [ ] **Etapa 19 — Pantalla de tiempo de estudio y meta diaria.** Hoy, gráfico semanal/4 semanas, reparto por
+- [x] **Etapa 19 — Pantalla de tiempo de estudio y meta diaria.** Hoy, gráfico semanal/4 semanas, reparto por
       categoría y totales. Meta diaria opcional en configuración, tile "Hoy" con progreso y mención en el
       recordatorio.
 - [ ] **Etapa 20 — Cronómetro, carga manual y categorías.** Cronómetro que sobrevive a cerrar la app, formulario

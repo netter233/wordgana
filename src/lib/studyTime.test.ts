@@ -3,9 +3,17 @@ import {
   MAX_SECONDS_PER_ANSWER,
   activeDelta,
   addAutoTime,
+  displayMinutes,
+  goalStreak,
+  loadGoal,
   loadStudyEntries,
   practiceCategoryId,
+  rangeStart,
+  saveGoal,
   saveStudyEntries,
+  totalsByCategory,
+  totalsByDay,
+  type StudyEntry,
 } from './studyTime';
 
 const store = new Map<string, string>();
@@ -71,5 +79,74 @@ describe('persistencia', () => {
     expect(loadStudyEntries()).toEqual(entries);
     store.set('wordgana:study:v1', JSON.stringify([...entries, { id: 'x', day: 'ayer', seconds: 5 }]));
     expect(loadStudyEntries()).toEqual(entries);
+  });
+});
+
+const entry = (day: string, categoryId: string, minutes: number): StudyEntry => ({
+  id: `${day}:${categoryId}`, day, categoryId, seconds: minutes * 60, source: 'manual', createdAt: '',
+});
+
+describe('totales', () => {
+  const today = new Date(2026, 9, 8, 12);
+  const entries = [
+    entry('2026-10-08', 'listening', 20),
+    entry('2026-10-08', 'practice:hiragana:words', 10),
+    entry('2026-10-06', 'listening', 15),
+    entry('2026-09-01', 'reading', 60),
+  ];
+
+  it('totalsByDay devuelve todos los días del rango, del más viejo a hoy', () => {
+    expect(totalsByDay(entries, 3, today)).toEqual([
+      { day: '2026-10-06', seconds: 900 },
+      { day: '2026-10-07', seconds: 0 },
+      { day: '2026-10-08', seconds: 1800 },
+    ]);
+  });
+
+  it('totalsByDay cruza meses correctamente', () => {
+    expect(totalsByDay([], 3, new Date(2026, 10, 1)).map((d) => d.day)).toEqual(['2026-10-30', '2026-10-31', '2026-11-01']);
+  });
+
+  it('totalsByCategory ordena de mayor a menor y respeta el rango', () => {
+    expect(totalsByCategory(entries)).toEqual([
+      { categoryId: 'reading', seconds: 3600 },
+      { categoryId: 'listening', seconds: 2100 },
+      { categoryId: 'practice:hiragana:words', seconds: 600 },
+    ]);
+    expect(totalsByCategory(entries, rangeStart(7, today)).map((t) => t.categoryId)).toEqual(['listening', 'practice:hiragana:words']);
+  });
+});
+
+describe('goalStreak', () => {
+  const today = new Date(2026, 9, 8, 12);
+  const met = [entry('2026-10-06', 'a', 30), entry('2026-10-07', 'a', 20), entry('2026-10-07', 'b', 15)];
+
+  it('cuenta días seguidos con la meta cumplida sumando categorías', () => {
+    expect(goalStreak(met, 30, today)).toBe(2);
+  });
+
+  it('hoy suma si ya se cumplió y no corta la racha si todavía no', () => {
+    expect(goalStreak([...met, entry('2026-10-08', 'a', 30)], 30, today)).toBe(3);
+    expect(goalStreak([...met, entry('2026-10-08', 'a', 5)], 30, today)).toBe(2);
+  });
+
+  it('sin meta no hay racha', () => {
+    expect(goalStreak(met, 0, today)).toBe(0);
+  });
+});
+
+describe('displayMinutes y meta', () => {
+  it('redondea y muestra al menos 1 minuto si hubo práctica', () => {
+    expect(displayMinutes(0)).toBe(0);
+    expect(displayMinutes(20)).toBe(1);
+    expect(displayMinutes(150)).toBe(3);
+  });
+
+  it('la meta solo acepta opciones válidas', () => {
+    expect(loadGoal()).toBe(0);
+    saveGoal(30);
+    expect(loadGoal()).toBe(30);
+    store.set('wordgana:study-goal:v1', '37');
+    expect(loadGoal()).toBe(0);
   });
 });

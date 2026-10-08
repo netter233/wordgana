@@ -3,6 +3,7 @@ import { ContentCards } from './components/ContentCards';
 import { AchievementsScreen } from './components/AchievementsScreen';
 import { AudioSettings } from './components/AudioSettings';
 import { LanguagePicker } from './components/LanguagePicker';
+import { GoalSettings } from './components/GoalSettings';
 import { ModeCards } from './components/ModeCards';
 import { ReminderSettings } from './components/ReminderSettings';
 import { Practice } from './components/Practice';
@@ -11,6 +12,7 @@ import { RowPicker } from './components/RowPicker';
 import { ScriptSwitch } from './components/ScriptSwitch';
 import { StatsScreen } from './components/StatsScreen';
 import { StatsStrip } from './components/StatsStrip';
+import { StudyTimeScreen } from './components/StudyTimeScreen';
 import { TopBar } from './components/TopBar';
 import { KATAKANA_WORDS } from './data/katakanaWords';
 import { rowsForScript, type KanaScript } from './data/kana';
@@ -27,12 +29,16 @@ import {
   saveUnlocked,
 } from './lib/achievements';
 import { letterItems } from './lib/letters';
+import { formatDuration } from './lib/studyCategories';
 import {
   addAutoTime,
+  loadGoal,
   loadStudyEntries,
   loadTimer,
   practiceCategoryId,
+  saveGoal,
   saveStudyEntries,
+  secondsOnDay,
   type StudyEntry,
 } from './lib/studyTime';
 import { loadReminder, syncReminders, type ReminderTexts } from './lib/reminders';
@@ -57,7 +63,7 @@ const MIN_WORDS_TO_START = 3;
 const WORD_ROUND_SIZE = 10;
 const SENTENCE_ROUND_SIZE = 5;
 
-type Screen = 'setup' | 'practice' | 'results' | 'settings' | 'stats' | 'achievements';
+type Screen = 'setup' | 'practice' | 'results' | 'settings' | 'stats' | 'achievements' | 'study';
 
 interface RoundSummary {
   correctCount: number;
@@ -75,7 +81,8 @@ export function App() {
   const [stats, setStats] = useState<StatsMap>(loadStats);
   const [progress, setProgress] = useState(loadProgress);
   const [lifetime, setLifetime] = useState(loadLifetime);
-  const [, setStudyEntries] = useState<StudyEntry[]>(loadStudyEntries);
+  const [studyEntries, setStudyEntries] = useState<StudyEntry[]>(loadStudyEntries);
+  const [goalMinutes, setGoalMinutes] = useState(loadGoal);
   const [unlocked, setUnlocked] = useState(() => {
     // Al abrir, se desbloquea en silencio lo que ya se cumplía (por ejemplo, progreso de versiones
     // anteriores). Los logros nuevos se celebran al terminar una ronda.
@@ -120,7 +127,7 @@ export function App() {
   const reminderTexts: ReminderTexts = {
     title: 'WordGana',
     first: progress.streak > 0 ? messages.notificationStreak(progress.streak) : messages.notificationGeneric,
-    later: messages.notificationGeneric,
+    later: goalMinutes > 0 ? messages.notificationGoal(goalMinutes) : messages.notificationGeneric,
   };
 
   useEffect(() => {
@@ -131,7 +138,7 @@ export function App() {
   useEffect(() => {
     // Reprograma los avisos al abrir la app y cada vez que cambia si ya practicaste hoy.
     void syncReminders(loadReminder(), practicedToday, reminderTexts);
-  }, [practicedToday, progress.streak, language]);
+  }, [practicedToday, progress.streak, language, goalMinutes]);
 
   const eligibleWords = useMemo(() => {
     const words = activeScript === 'hiragana' ? WORDS : KATAKANA_WORDS;
@@ -252,6 +259,22 @@ export function App() {
   const achievements = achievementProgress(computeMetrics(lifetime, stats), unlocked);
   const unlockedCount = achievements.filter((entry) => entry.unlockedAt).length;
 
+  const todayStudySeconds = secondsOnDay(studyEntries, dayKey(new Date()));
+
+  function changeGoal(minutes: number) {
+    setGoalMinutes(minutes);
+    saveGoal(minutes);
+  }
+
+  if (screen === 'study') {
+    return (
+      <main className="app">
+        <TopBar title={messages.studyTimeTitle} mark={mark} onBack={() => setScreen('setup')} />
+        <StudyTimeScreen entries={studyEntries} goalMinutes={goalMinutes} customCategories={[]} />
+      </main>
+    );
+  }
+
   if (screen === 'achievements') {
     return (
       <main className="app">
@@ -315,6 +338,7 @@ export function App() {
       <main className="app">
         <TopBar title={messages.settings} mark={mark} onBack={() => setScreen('setup')} />
         <LanguagePicker />
+        <GoalSettings goalMinutes={goalMinutes} onChange={changeGoal} />
         <AudioSettings />
         <ReminderSettings practicedToday={practicedToday} texts={reminderTexts} />
       </main>
@@ -370,10 +394,19 @@ export function App() {
             detail: messages.achievementsCount(unlockedCount, achievements.length),
             onClick: () => openAchievements('setup'),
           },
+          {
+            icon: '⏱️',
+            label: messages.studyTimeTitle,
+            detail: formatDuration(todayStudySeconds, messages),
+            onClick: () => setScreen('study'),
+          },
           { icon: '📊', label: messages.statsTitle, onClick: () => setScreen('stats') },
         ]}
         streak={progress.streak}
         roundsToday={progress.roundsToday}
+        todayValue={goalMinutes > 0
+          ? messages.goalProgress(Math.floor(todayStudySeconds / 60), goalMinutes)
+          : undefined}
         mastered={countMastered(eligibleItems, stats, statKey)}
         total={eligibleItems.length}
         itemLabel={kindName}

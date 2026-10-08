@@ -166,6 +166,31 @@ export interface Messages {
   achBothModes: string;
   achBothScripts: string;
   achSentences: string;
+  studyTimeTitle: string;
+  durationHM: (hours: number, minutes: number) => string;
+  durationM: (minutes: number) => string;
+  goalProgress: (done: number, goal: number) => string;
+  goalReached: string;
+  goalRemaining: (minutes: number) => string;
+  noGoalHint: string;
+  goalStreakLabel: string;
+  lastDaysTitle: string;
+  range7: string;
+  range28: string;
+  rangeAll: string;
+  goalLine: (minutes: number) => string;
+  byCategoryTitle: string;
+  totalLabel: string;
+  thisWeekLabel: string;
+  dailyAverageLabel: string;
+  noStudyYet: string;
+  dailyGoalTitle: string;
+  dailyGoalDescription: string;
+  noGoal: string;
+  otherCategory: string;
+  studyCategoryNames: Record<'listening' | 'reading' | 'class' | 'conversation' | 'handwriting' | 'apps', string>;
+  notificationGoal: (minutes: number) => string;
+  dayDetail: (date: string, duration: string) => string;
 }
 
 const MESSAGES: Record<AppLanguage, Messages> = {
@@ -251,6 +276,31 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     achBothModes: 'Finish rounds in both Read and Write',
     achBothScripts: 'Practice both hiragana and katakana',
     achSentences: 'Finish a round of sentences',
+    studyTimeTitle: 'Study time',
+    durationHM: (hours, minutes) => minutes > 0 ? `${hours} h ${minutes} min` : `${hours} h`,
+    durationM: (minutes) => `${minutes} min`,
+    goalProgress: (done, goal) => `${done} / ${goal} min`,
+    goalReached: 'Daily goal reached!',
+    goalRemaining: (minutes) => `${minutes} min left to reach today’s goal`,
+    noGoalHint: 'Set a daily goal in Settings to track it here.',
+    goalStreakLabel: 'Goal streak',
+    lastDaysTitle: 'Day by day',
+    range7: '7 days',
+    range28: '4 weeks',
+    rangeAll: 'All time',
+    goalLine: (minutes) => `Goal ${minutes} min`,
+    byCategoryTitle: 'By category',
+    totalLabel: 'Total',
+    thisWeekLabel: 'Last 7 days',
+    dailyAverageLabel: 'Daily average',
+    noStudyYet: 'No time logged yet. Practice a round and it’s counted automatically.',
+    dailyGoalTitle: 'Daily goal',
+    dailyGoalDescription: 'How many minutes of Japanese you want to study each day, in WordGana or elsewhere.',
+    noGoal: 'No goal',
+    otherCategory: 'Other',
+    studyCategoryNames: { listening: 'Listening', reading: 'Reading', class: 'Class', conversation: 'Conversation', handwriting: 'Handwriting', apps: 'Other apps' },
+    notificationGoal: (minutes) => `Ready for today’s ${minutes} minutes of Japanese?`,
+    dayDetail: (date, duration) => `${date}: ${duration}`,
   },
   es: {
     autoLanguage: (language) => `Automático (${language})`, languageLabel: 'Idioma',
@@ -333,6 +383,31 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     achBothModes: 'Terminá rondas en Leer y en Escribir',
     achBothScripts: 'Practicá hiragana y katakana',
     achSentences: 'Terminá una ronda de oraciones',
+    studyTimeTitle: 'Tiempo de estudio',
+    durationHM: (hours, minutes) => minutes > 0 ? `${hours} h ${minutes} min` : `${hours} h`,
+    durationM: (minutes) => `${minutes} min`,
+    goalProgress: (done, goal) => `${done} / ${goal} min`,
+    goalReached: '¡Meta del día cumplida!',
+    goalRemaining: (minutes) => `Te faltan ${minutes} min para la meta de hoy`,
+    noGoalHint: 'Elegí una meta diaria en Configuración para seguirla acá.',
+    goalStreakLabel: 'Racha de metas',
+    lastDaysTitle: 'Día por día',
+    range7: '7 días',
+    range28: '4 semanas',
+    rangeAll: 'Todo',
+    goalLine: (minutes) => `Meta ${minutes} min`,
+    byCategoryTitle: 'Por categoría',
+    totalLabel: 'Total',
+    thisWeekLabel: 'Últimos 7 días',
+    dailyAverageLabel: 'Promedio diario',
+    noStudyYet: 'Todavía no hay tiempo registrado. Practicá una ronda y se cuenta solo.',
+    dailyGoalTitle: 'Meta diaria',
+    dailyGoalDescription: 'Cuántos minutos de japonés querés estudiar por día, en WordGana o fuera de la app.',
+    noGoal: 'Sin meta',
+    otherCategory: 'Otra',
+    studyCategoryNames: { listening: 'Escucha', reading: 'Lectura', class: 'Clase', conversation: 'Conversación', handwriting: 'Escritura a mano', apps: 'Otras apps' },
+    notificationGoal: (minutes) => `¿Hacemos los ${minutes} minutos de japonés de hoy?`,
+    dayDetail: (date, duration) => `${date}: ${duration}`,
   },
   fr: {
     autoLanguage: (language) => `Automatique (${language})`, languageLabel: 'Langue',
@@ -415,6 +490,31 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     achBothModes: 'Terminez des séries en Lire et en Écrire',
     achBothScripts: 'Pratiquez les hiragana et les katakana',
     achSentences: 'Terminez une série de phrases',
+    studyTimeTitle: 'Temps d’étude',
+    durationHM: (hours, minutes) => minutes > 0 ? `${hours} h ${minutes} min` : `${hours} h`,
+    durationM: (minutes) => `${minutes} min`,
+    goalProgress: (done, goal) => `${done} / ${goal} min`,
+    goalReached: 'Objectif du jour atteint !',
+    goalRemaining: (minutes) => `Encore ${minutes} min pour l’objectif du jour`,
+    noGoalHint: 'Choisissez un objectif quotidien dans les Réglages pour le suivre ici.',
+    goalStreakLabel: 'Série d’objectifs',
+    lastDaysTitle: 'Jour par jour',
+    range7: '7 jours',
+    range28: '4 semaines',
+    rangeAll: 'Tout',
+    goalLine: (minutes) => `Objectif ${minutes} min`,
+    byCategoryTitle: 'Par catégorie',
+    totalLabel: 'Total',
+    thisWeekLabel: '7 derniers jours',
+    dailyAverageLabel: 'Moyenne quotidienne',
+    noStudyYet: 'Aucun temps enregistré. Faites une série et il sera compté automatiquement.',
+    dailyGoalTitle: 'Objectif quotidien',
+    dailyGoalDescription: 'Combien de minutes de japonais vous voulez étudier par jour, dans WordGana ou ailleurs.',
+    noGoal: 'Sans objectif',
+    otherCategory: 'Autre',
+    studyCategoryNames: { listening: 'Écoute', reading: 'Lecture', class: 'Cours', conversation: 'Conversation', handwriting: 'Écriture à la main', apps: 'Autres applis' },
+    notificationGoal: (minutes) => `Prêt pour vos ${minutes} minutes de japonais du jour ?`,
+    dayDetail: (date, duration) => `${date} : ${duration}`,
   },
   de: {
     autoLanguage: (language) => `Automatisch (${language})`, languageLabel: 'Sprache',
@@ -497,6 +597,31 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     achBothModes: 'Beende Runden in Lesen und Schreiben',
     achBothScripts: 'Übe Hiragana und Katakana',
     achSentences: 'Beende eine Runde mit Sätzen',
+    studyTimeTitle: 'Lernzeit',
+    durationHM: (hours, minutes) => minutes > 0 ? `${hours} Std. ${minutes} Min.` : `${hours} Std.`,
+    durationM: (minutes) => `${minutes} Min.`,
+    goalProgress: (done, goal) => `${done} / ${goal} Min.`,
+    goalReached: 'Tagesziel erreicht!',
+    goalRemaining: (minutes) => `Noch ${minutes} Min. bis zum Tagesziel`,
+    noGoalHint: 'Lege in den Einstellungen ein Tagesziel fest, um es hier zu verfolgen.',
+    goalStreakLabel: 'Ziel-Serie',
+    lastDaysTitle: 'Tag für Tag',
+    range7: '7 Tage',
+    range28: '4 Wochen',
+    rangeAll: 'Gesamt',
+    goalLine: (minutes) => `Ziel ${minutes} Min.`,
+    byCategoryTitle: 'Nach Kategorie',
+    totalLabel: 'Gesamt',
+    thisWeekLabel: 'Letzte 7 Tage',
+    dailyAverageLabel: 'Tagesdurchschnitt',
+    noStudyYet: 'Noch keine Zeit erfasst. Übe eine Runde, dann wird sie automatisch gezählt.',
+    dailyGoalTitle: 'Tagesziel',
+    dailyGoalDescription: 'Wie viele Minuten Japanisch du pro Tag lernen möchtest, in WordGana oder anderswo.',
+    noGoal: 'Kein Ziel',
+    otherCategory: 'Sonstiges',
+    studyCategoryNames: { listening: 'Hören', reading: 'Lesen', class: 'Unterricht', conversation: 'Konversation', handwriting: 'Handschrift', apps: 'Andere Apps' },
+    notificationGoal: (minutes) => `Bereit für deine ${minutes} Minuten Japanisch heute?`,
+    dayDetail: (date, duration) => `${date}: ${duration}`,
   },
 };
 
