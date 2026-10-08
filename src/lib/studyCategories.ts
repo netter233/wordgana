@@ -77,3 +77,74 @@ export function formatDuration(seconds: number, messages: Messages): string {
   if (totalMinutes < 60) return messages.durationM(totalMinutes);
   return messages.durationHM(Math.floor(totalMinutes / 60), totalMinutes % 60);
 }
+
+// --- Categorías personalizadas -------------------------------------------------------------------
+
+const CUSTOM_KEY = 'wordgana:study-categories:v1';
+
+export const CATEGORY_ICONS = ['📺', '🎮', '🎵', '📝', '🗣️', '🧑‍🏫', '📚', '🎬', '🍜', '✈️', '🧠', '⭐'];
+
+export function loadCustomCategories(): CustomCategory[] {
+  try {
+    const raw = localStorage.getItem(CUSTOM_KEY);
+    if (!raw) return [];
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((value): value is CustomCategory => (
+      !!value && typeof value === 'object'
+      && typeof (value as CustomCategory).id === 'string'
+      && typeof (value as CustomCategory).name === 'string'
+      && typeof (value as CustomCategory).icon === 'string'
+    ));
+  } catch {
+    return [];
+  }
+}
+
+export function saveCustomCategories(categories: readonly CustomCategory[]): void {
+  try {
+    localStorage.setItem(CUSTOM_KEY, JSON.stringify(categories));
+  } catch {
+    // Sin persistencia esta sesión.
+  }
+}
+
+export function addCustomCategory(
+  categories: readonly CustomCategory[],
+  name: string,
+  icon: string,
+  id = `custom:${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`,
+): CustomCategory[] {
+  const trimmed = name.trim().slice(0, 40);
+  if (!trimmed) return [...categories];
+  return [...categories, { id, name: trimmed, icon }];
+}
+
+export function renameCustomCategory(categories: readonly CustomCategory[], id: string, name: string): CustomCategory[] {
+  const trimmed = name.trim().slice(0, 40);
+  if (!trimmed) return [...categories];
+  return categories.map((category) => (category.id === id ? { ...category, name: trimmed } : category));
+}
+
+/**
+ * Quita una categoría personalizada. Si tiene tiempo registrado se archiva (deja de ofrecerse para cargar,
+ * pero el historial y los totales la siguen mostrando); si no, se borra.
+ */
+export function removeCustomCategory(
+  categories: readonly CustomCategory[],
+  id: string,
+  usedIds: ReadonlySet<string>,
+): CustomCategory[] {
+  if (usedIds.has(id)) {
+    return categories.map((category) => (category.id === id ? { ...category, archived: true } : category));
+  }
+  return categories.filter((category) => category.id !== id);
+}
+
+/** Categorías para cargar tiempo a mano: las fijas y las personalizadas activas. */
+export function selectableCategories(messages: Messages, custom: readonly CustomCategory[]): CategoryInfo[] {
+  return [
+    ...BUILT_IN_CATEGORIES.map((category) => categoryInfo(category.id, messages, custom)),
+    ...custom.filter((category) => !category.archived).map((category) => categoryInfo(category.id, messages, custom)),
+  ];
+}

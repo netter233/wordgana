@@ -158,7 +158,7 @@ abrir el repo, leer `CLAUDE.md` y continuar desde la primera etapa sin tildar.
 - [x] **Etapa 19 — Pantalla de tiempo de estudio y meta diaria.** Hoy, gráfico semanal/4 semanas, reparto por
       categoría y totales. Meta diaria opcional en configuración, tile "Hoy" con progreso y mención en el
       recordatorio.
-- [ ] **Etapa 20 — Cronómetro, carga manual y categorías.** Cronómetro que sobrevive a cerrar la app, formulario
+- [x] **Etapa 20 — Cronómetro, carga manual y categorías.** Cronómetro que sobrevive a cerrar la app, formulario
       compartido de carga, categorías fijas (escucha, lectura, clase…) y personalizadas archivables.
 - [ ] **Etapa 21 — Historial editable.** Registros agrupados por día; editar o borrar los manuales y de
       cronómetro, borrar los automáticos.

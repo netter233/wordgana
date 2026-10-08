@@ -221,3 +221,81 @@ export function saveGoal(minutes: number): void {
     // Sin persistencia esta sesión.
   }
 }
+
+// --- Registros manuales y de cronómetro ----------------------------------------------------------
+
+export const MAX_ENTRY_MINUTES = 720;
+/** Pasado este tiempo, al detener el cronómetro se sugiere revisar la duración (¿te olvidaste de pararlo?). */
+export const LONG_TIMER_SECONDS = 4 * 60 * 60;
+
+function newId(): string {
+  try {
+    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') return crypto.randomUUID();
+  } catch {
+    // Sigue con el respaldo.
+  }
+  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
+export interface EntryInput {
+  categoryId: string;
+  day: string;
+  minutes: number;
+  note?: string;
+}
+
+export type EntryError = 'duration' | 'day' | 'category';
+
+/** Valida una carga: duración entre 1 y 720 min, día válido y no futuro, y una categoría elegida. */
+export function validateEntry(input: EntryInput, today = new Date()): EntryError | null {
+  if (!input.categoryId) return 'category';
+  if (!Number.isFinite(input.minutes) || input.minutes < 1 || input.minutes > MAX_ENTRY_MINUTES) return 'duration';
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(input.day) || input.day > dayKey(today)) return 'day';
+  return null;
+}
+
+export function addEntry(
+  entries: readonly StudyEntry[],
+  input: EntryInput,
+  source: Exclude<EntrySource, 'auto'>,
+  now = new Date(),
+): StudyEntry[] {
+  const note = input.note?.trim();
+  return [
+    ...entries,
+    {
+      id: newId(),
+      day: input.day,
+      categoryId: input.categoryId,
+      seconds: Math.round(input.minutes) * 60,
+      source,
+      ...(note ? { note } : {}),
+      createdAt: now.toISOString(),
+    },
+  ];
+}
+
+/** Edita un registro manual o de cronómetro. Los automáticos no se editan: reflejan lo practicado. */
+export function updateEntry(entries: readonly StudyEntry[], id: string, input: EntryInput): StudyEntry[] {
+  const note = input.note?.trim();
+  return entries.map((entry) => {
+    if (entry.id !== id || entry.source === 'auto') return entry;
+    const { note: _previous, ...rest } = entry;
+    return {
+      ...rest,
+      day: input.day,
+      categoryId: input.categoryId,
+      seconds: Math.round(input.minutes) * 60,
+      ...(note ? { note } : {}),
+    };
+  });
+}
+
+export function deleteEntry(entries: readonly StudyEntry[], id: string): StudyEntry[] {
+  return entries.filter((entry) => entry.id !== id);
+}
+
+/** Segundos transcurridos desde que arrancó el cronómetro. */
+export function timerElapsed(timer: RunningTimer, now = new Date()): number {
+  return Math.max(0, Math.floor((now.getTime() - Date.parse(timer.startedAt)) / 1000));
+}

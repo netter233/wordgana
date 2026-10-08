@@ -12,7 +12,8 @@ import { RowPicker } from './components/RowPicker';
 import { ScriptSwitch } from './components/ScriptSwitch';
 import { StatsScreen } from './components/StatsScreen';
 import { StatsStrip } from './components/StatsStrip';
-import { StudyTimeScreen } from './components/StudyTimeScreen';
+import { StudyArea, type StudyView } from './components/StudyArea';
+import { TimerBanner } from './components/TimerBanner';
 import { TopBar } from './components/TopBar';
 import { KATAKANA_WORDS } from './data/katakanaWords';
 import { rowsForScript, type KanaScript } from './data/kana';
@@ -29,7 +30,7 @@ import {
   saveUnlocked,
 } from './lib/achievements';
 import { letterItems } from './lib/letters';
-import { formatDuration } from './lib/studyCategories';
+import { formatDuration, loadCustomCategories, saveCustomCategories, type CustomCategory } from './lib/studyCategories';
 import {
   addAutoTime,
   loadGoal,
@@ -38,7 +39,9 @@ import {
   practiceCategoryId,
   saveGoal,
   saveStudyEntries,
+  saveTimer,
   secondsOnDay,
+  type RunningTimer,
   type StudyEntry,
 } from './lib/studyTime';
 import { loadReminder, syncReminders, type ReminderTexts } from './lib/reminders';
@@ -83,6 +86,9 @@ export function App() {
   const [lifetime, setLifetime] = useState(loadLifetime);
   const [studyEntries, setStudyEntries] = useState<StudyEntry[]>(loadStudyEntries);
   const [goalMinutes, setGoalMinutes] = useState(loadGoal);
+  const [customCategories, setCustomCategories] = useState<CustomCategory[]>(loadCustomCategories);
+  const [timer, setTimer] = useState<RunningTimer | null>(loadTimer);
+  const [studyView, setStudyView] = useState<StudyView>('overview');
   const [unlocked, setUnlocked] = useState(() => {
     // Al abrir, se desbloquea en silencio lo que ya se cumplía (por ejemplo, progreso de versiones
     // anteriores). Los logros nuevos se celebran al terminar una ronda.
@@ -202,7 +208,7 @@ export function App() {
 
   /** Tiempo de práctica en WordGana. Con el cronómetro en marcha no se suma, para no contarlo dos veces. */
   function addPracticeTime(seconds: number, rounds = 0) {
-    if (loadTimer()) return;
+    if (timer) return;
     const categoryId = practiceCategoryId(activeScript, practiceKind);
     setStudyEntries((previous) => {
       const next = addAutoTime(previous, categoryId, seconds, new Date(), rounds);
@@ -266,12 +272,40 @@ export function App() {
     saveGoal(minutes);
   }
 
+  function changeStudyEntries(next: StudyEntry[]) {
+    setStudyEntries(next);
+    saveStudyEntries(next);
+  }
+
+  function changeCustomCategories(next: CustomCategory[]) {
+    setCustomCategories(next);
+    saveCustomCategories(next);
+  }
+
+  function changeTimer(next: RunningTimer | null) {
+    setTimer(next);
+    saveTimer(next);
+  }
+
+  function openStudy(view: StudyView) {
+    setStudyView(view);
+    setScreen('study');
+  }
+
   if (screen === 'study') {
     return (
-      <main className="app">
-        <TopBar title={messages.studyTimeTitle} mark={mark} onBack={() => setScreen('setup')} />
-        <StudyTimeScreen entries={studyEntries} goalMinutes={goalMinutes} customCategories={[]} />
-      </main>
+      <StudyArea
+        initialView={studyView}
+        entries={studyEntries}
+        onEntriesChange={changeStudyEntries}
+        goalMinutes={goalMinutes}
+        customCategories={customCategories}
+        onCustomCategoriesChange={changeCustomCategories}
+        timer={timer}
+        onTimerChange={changeTimer}
+        mark={mark}
+        onExit={() => setScreen('setup')}
+      />
     );
   }
 
@@ -349,6 +383,9 @@ export function App() {
     <main className="app app--setup">
       <TopBar title="WordGana" mark={mark} onSettings={() => setScreen('settings')} />
       <p className="tagline">{messages.tagline}</p>
+      {timer && (
+        <TimerBanner timer={timer} customCategories={customCategories} onStop={() => openStudy('timer-stop')} />
+      )}
 
       <ScriptSwitch value={activeScript} onChange={setActiveScript} />
 
@@ -398,7 +435,7 @@ export function App() {
             icon: '⏱️',
             label: messages.studyTimeTitle,
             detail: formatDuration(todayStudySeconds, messages),
-            onClick: () => setScreen('study'),
+            onClick: () => openStudy('overview'),
           },
           { icon: '📊', label: messages.statsTitle, onClick: () => setScreen('stats') },
         ]}

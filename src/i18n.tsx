@@ -191,9 +191,48 @@ export interface Messages {
   studyCategoryNames: Record<'listening' | 'reading' | 'class' | 'conversation' | 'handwriting' | 'apps', string>;
   notificationGoal: (minutes: number) => string;
   dayDetail: (date: string, duration: string) => string;
+  startTimer: string;
+  addTime: string;
+  stopTimer: string;
+  timerRunning: string;
+  chooseCategory: string;
+  startTimerAction: string;
+  categoryLabel: string;
+  newCategory: string;
+  categoryName: string;
+  categoryNamePlaceholder: string;
+  categoryIcon: string;
+  createCategory: string;
+  cancel: string;
+  durationLabel: string;
+  minutesUnit: string;
+  dayLabel: string;
+  yesterday: string;
+  otherDay: string;
+  noteLabel: string;
+  notePlaceholder: string;
+  save: string;
+  addTimeTitle: string;
+  editEntryTitle: string;
+  stopTimerTitle: string;
+  discardTimer: string;
+  longTimerWarning: string;
+  invalidDuration: string;
+  invalidDay: string;
+  invalidCategory: string;
+  timerPausesAuto: string;
+  categoriesTitle: string;
+  yourCategories: string;
+  noCustomCategories: string;
+  rename: string;
+  removeCategory: string;
+  archivedNote: string;
+  builtInCategoriesTitle: string;
+  timerShort: string;
+  confirmRemoveCategory: (name: string) => string;
 }
 
-const MESSAGES: Record<AppLanguage, Messages> = {
+export const MESSAGES: Record<AppLanguage, Messages> = {
   en: {
     autoLanguage: (language) => `Automatic (${language})`, languageLabel: 'Language',
     languageDescription: "Use your device's language or choose one for WordGana.", settings: 'Settings', openSettings: 'Open settings',
@@ -301,6 +340,45 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     studyCategoryNames: { listening: 'Listening', reading: 'Reading', class: 'Class', conversation: 'Conversation', handwriting: 'Handwriting', apps: 'Other apps' },
     notificationGoal: (minutes) => `Ready for today’s ${minutes} minutes of Japanese?`,
     dayDetail: (date, duration) => `${date}: ${duration}`,
+    startTimer: 'Start timer',
+    addTime: 'Add time',
+    stopTimer: 'Stop',
+    timerRunning: 'Timer running',
+    chooseCategory: 'What are you studying?',
+    startTimerAction: 'Start',
+    categoryLabel: 'Category',
+    newCategory: 'New category',
+    categoryName: 'Name',
+    categoryNamePlaceholder: 'For example: Anime',
+    categoryIcon: 'Icon',
+    createCategory: 'Create',
+    cancel: 'Cancel',
+    durationLabel: 'Duration',
+    minutesUnit: 'minutes',
+    dayLabel: 'Day',
+    yesterday: 'Yesterday',
+    otherDay: 'Other day',
+    noteLabel: 'Note (optional)',
+    notePlaceholder: 'For example: Genki chapter 3',
+    save: 'Save',
+    addTimeTitle: 'Add time',
+    editEntryTitle: 'Edit entry',
+    stopTimerTitle: 'Save session',
+    discardTimer: 'Discard timer',
+    longTimerWarning: 'The timer ran for more than 4 hours. Check the duration before saving.',
+    invalidDuration: 'Enter between 1 and 720 minutes.',
+    invalidDay: 'Choose today or a past day.',
+    invalidCategory: 'Choose a category.',
+    timerPausesAuto: 'While the timer runs, practice in WordGana isn’t counted separately.',
+    categoriesTitle: 'Categories',
+    yourCategories: 'Your categories',
+    noCustomCategories: 'You haven’t created any categories yet.',
+    rename: 'Rename',
+    removeCategory: 'Remove',
+    archivedNote: 'Categories with logged time are archived: they’re no longer offered for new entries but stay in your history.',
+    builtInCategoriesTitle: 'Included',
+    timerShort: 'Timer',
+    confirmRemoveCategory: (name) => `Remove “${name}”? It won’t be offered for new entries.`,
   },
   es: {
     autoLanguage: (language) => `Automático (${language})`, languageLabel: 'Idioma',
@@ -408,6 +486,45 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     studyCategoryNames: { listening: 'Escucha', reading: 'Lectura', class: 'Clase', conversation: 'Conversación', handwriting: 'Escritura a mano', apps: 'Otras apps' },
     notificationGoal: (minutes) => `¿Hacemos los ${minutes} minutos de japonés de hoy?`,
     dayDetail: (date, duration) => `${date}: ${duration}`,
+    startTimer: 'Iniciar cronómetro',
+    addTime: 'Agregar tiempo',
+    stopTimer: 'Detener',
+    timerRunning: 'Cronómetro en marcha',
+    chooseCategory: '¿Qué vas a estudiar?',
+    startTimerAction: 'Empezar',
+    categoryLabel: 'Categoría',
+    newCategory: 'Nueva categoría',
+    categoryName: 'Nombre',
+    categoryNamePlaceholder: 'Por ejemplo: Anime',
+    categoryIcon: 'Ícono',
+    createCategory: 'Crear',
+    cancel: 'Cancelar',
+    durationLabel: 'Duración',
+    minutesUnit: 'minutos',
+    dayLabel: 'Día',
+    yesterday: 'Ayer',
+    otherDay: 'Otro día',
+    noteLabel: 'Nota (opcional)',
+    notePlaceholder: 'Por ejemplo: capítulo 3 de Genki',
+    save: 'Guardar',
+    addTimeTitle: 'Agregar tiempo',
+    editEntryTitle: 'Editar registro',
+    stopTimerTitle: 'Guardar sesión',
+    discardTimer: 'Descartar cronómetro',
+    longTimerWarning: 'El cronómetro estuvo andando más de 4 horas. Revisá la duración antes de guardar.',
+    invalidDuration: 'Ingresá entre 1 y 720 minutos.',
+    invalidDay: 'Elegí hoy o un día anterior.',
+    invalidCategory: 'Elegí una categoría.',
+    timerPausesAuto: 'Mientras corre el cronómetro, practicar en WordGana no suma tiempo aparte.',
+    categoriesTitle: 'Categorías',
+    yourCategories: 'Tus categorías',
+    noCustomCategories: 'Todavía no creaste categorías.',
+    rename: 'Renombrar',
+    removeCategory: 'Quitar',
+    archivedNote: 'Si una categoría ya tiene tiempo registrado, se archiva: no se ofrece para cargar más, pero sigue en el historial.',
+    builtInCategoriesTitle: 'Incluidas',
+    timerShort: 'Cronómetro',
+    confirmRemoveCategory: (name) => `¿Quitar “${name}”? No se va a ofrecer para cargar tiempo.`,
   },
   fr: {
     autoLanguage: (language) => `Automatique (${language})`, languageLabel: 'Langue',
@@ -515,6 +632,45 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     studyCategoryNames: { listening: 'Écoute', reading: 'Lecture', class: 'Cours', conversation: 'Conversation', handwriting: 'Écriture à la main', apps: 'Autres applis' },
     notificationGoal: (minutes) => `Prêt pour vos ${minutes} minutes de japonais du jour ?`,
     dayDetail: (date, duration) => `${date} : ${duration}`,
+    startTimer: 'Lancer le chrono',
+    addTime: 'Ajouter du temps',
+    stopTimer: 'Arrêter',
+    timerRunning: 'Chrono en cours',
+    chooseCategory: 'Qu’allez-vous étudier ?',
+    startTimerAction: 'Commencer',
+    categoryLabel: 'Catégorie',
+    newCategory: 'Nouvelle catégorie',
+    categoryName: 'Nom',
+    categoryNamePlaceholder: 'Par exemple : Anime',
+    categoryIcon: 'Icône',
+    createCategory: 'Créer',
+    cancel: 'Annuler',
+    durationLabel: 'Durée',
+    minutesUnit: 'minutes',
+    dayLabel: 'Jour',
+    yesterday: 'Hier',
+    otherDay: 'Autre jour',
+    noteLabel: 'Note (facultatif)',
+    notePlaceholder: 'Par exemple : chapitre 3 de Genki',
+    save: 'Enregistrer',
+    addTimeTitle: 'Ajouter du temps',
+    editEntryTitle: 'Modifier l’entrée',
+    stopTimerTitle: 'Enregistrer la session',
+    discardTimer: 'Abandonner le chrono',
+    longTimerWarning: 'Le chrono a tourné plus de 4 heures. Vérifiez la durée avant d’enregistrer.',
+    invalidDuration: 'Saisissez entre 1 et 720 minutes.',
+    invalidDay: 'Choisissez aujourd’hui ou un jour passé.',
+    invalidCategory: 'Choisissez une catégorie.',
+    timerPausesAuto: 'Pendant le chrono, la pratique dans WordGana n’est pas comptée en plus.',
+    categoriesTitle: 'Catégories',
+    yourCategories: 'Vos catégories',
+    noCustomCategories: 'Vous n’avez pas encore créé de catégorie.',
+    rename: 'Renommer',
+    removeCategory: 'Retirer',
+    archivedNote: 'Une catégorie avec du temps enregistré est archivée : elle n’est plus proposée mais reste dans l’historique.',
+    builtInCategoriesTitle: 'Incluses',
+    timerShort: 'Chrono',
+    confirmRemoveCategory: (name) => `Retirer « ${name} » ? Elle ne sera plus proposée.`,
   },
   de: {
     autoLanguage: (language) => `Automatisch (${language})`, languageLabel: 'Sprache',
@@ -622,6 +778,45 @@ const MESSAGES: Record<AppLanguage, Messages> = {
     studyCategoryNames: { listening: 'Hören', reading: 'Lesen', class: 'Unterricht', conversation: 'Konversation', handwriting: 'Handschrift', apps: 'Andere Apps' },
     notificationGoal: (minutes) => `Bereit für deine ${minutes} Minuten Japanisch heute?`,
     dayDetail: (date, duration) => `${date}: ${duration}`,
+    startTimer: 'Timer starten',
+    addTime: 'Zeit hinzufügen',
+    stopTimer: 'Stoppen',
+    timerRunning: 'Timer läuft',
+    chooseCategory: 'Was lernst du?',
+    startTimerAction: 'Los geht’s',
+    categoryLabel: 'Kategorie',
+    newCategory: 'Neue Kategorie',
+    categoryName: 'Name',
+    categoryNamePlaceholder: 'Zum Beispiel: Anime',
+    categoryIcon: 'Symbol',
+    createCategory: 'Erstellen',
+    cancel: 'Abbrechen',
+    durationLabel: 'Dauer',
+    minutesUnit: 'Minuten',
+    dayLabel: 'Tag',
+    yesterday: 'Gestern',
+    otherDay: 'Anderer Tag',
+    noteLabel: 'Notiz (optional)',
+    notePlaceholder: 'Zum Beispiel: Genki Kapitel 3',
+    save: 'Speichern',
+    addTimeTitle: 'Zeit hinzufügen',
+    editEntryTitle: 'Eintrag bearbeiten',
+    stopTimerTitle: 'Sitzung speichern',
+    discardTimer: 'Timer verwerfen',
+    longTimerWarning: 'Der Timer lief über 4 Stunden. Prüfe die Dauer vor dem Speichern.',
+    invalidDuration: 'Gib 1 bis 720 Minuten ein.',
+    invalidDay: 'Wähle heute oder einen vergangenen Tag.',
+    invalidCategory: 'Wähle eine Kategorie.',
+    timerPausesAuto: 'Während der Timer läuft, wird Üben in WordGana nicht zusätzlich gezählt.',
+    categoriesTitle: 'Kategorien',
+    yourCategories: 'Deine Kategorien',
+    noCustomCategories: 'Du hast noch keine Kategorien erstellt.',
+    rename: 'Umbenennen',
+    removeCategory: 'Entfernen',
+    archivedNote: 'Kategorien mit erfasster Zeit werden archiviert: Sie werden nicht mehr angeboten, bleiben aber im Verlauf.',
+    builtInCategoriesTitle: 'Enthalten',
+    timerShort: 'Timer',
+    confirmRemoveCategory: (name) => `„${name}“ entfernen? Sie wird nicht mehr angeboten.`,
   },
 };
 

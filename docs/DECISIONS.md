@@ -202,3 +202,15 @@ cuenta mientras la app está en segundo plano. Se guarda agrupado en un registro
 se registra sin esfuerzo. El tope por pregunta evita que dejar el celular con una pregunta abierta infle las
 horas. Agrupar por día mantiene el historial legible y el almacenamiento chico. Pausar el automático con el
 cronómetro evita contar dos veces cuando alguien cronometra una sesión que incluye WordGana.
+
+## 2026-10-08 — Cronómetro, carga manual y categorías de estudio
+
+**Decisión:** el cronómetro guarda solo la categoría y la hora de inicio; el tiempo se calcula al mostrarlo, así
+sigue contando aunque se cierre la app. Al detenerlo se abre el mismo formulario que la carga manual, ya
+completado, y si pasaron más de 4 horas se sugiere revisar la duración. Las cargas aceptan de 1 a 720 minutos y
+días hasta hoy. Las categorías de práctica de WordGana no se ofrecen para cargar a mano (son automáticas); hay
+seis fijas (escucha, lectura, clase, conversación, escritura a mano, otras apps) y las personalizadas que se
+crean desde el formulario o desde Categorías. Quitar una personalizada con tiempo registrado la archiva.
+**Por qué:** guardar el inicio evita depender de procesos en segundo plano en iOS. Un único formulario mantiene
+consistente la carga. Archivar en vez de borrar evita que el historial y los totales muestren registros
+huérfanos.

@@ -3,6 +3,8 @@ import {
   MAX_SECONDS_PER_ANSWER,
   activeDelta,
   addAutoTime,
+  addEntry,
+  deleteEntry,
   displayMinutes,
   goalStreak,
   loadGoal,
@@ -12,7 +14,10 @@ import {
   saveGoal,
   saveStudyEntries,
   totalsByCategory,
+  timerElapsed,
   totalsByDay,
+  updateEntry,
+  validateEntry,
   type StudyEntry,
 } from './studyTime';
 
@@ -148,5 +153,37 @@ describe('displayMinutes y meta', () => {
     expect(loadGoal()).toBe(30);
     store.set('wordgana:study-goal:v1', '37');
     expect(loadGoal()).toBe(0);
+  });
+});
+
+describe('registros manuales', () => {
+  const today = new Date(2026, 9, 8, 12);
+  const input = { categoryId: 'listening', day: '2026-10-08', minutes: 30, note: '  podcast  ' };
+
+  it('valida duración, día y categoría', () => {
+    expect(validateEntry(input, today)).toBeNull();
+    expect(validateEntry({ ...input, minutes: 0 }, today)).toBe('duration');
+    expect(validateEntry({ ...input, minutes: 721 }, today)).toBe('duration');
+    expect(validateEntry({ ...input, day: '2026-10-09' }, today)).toBe('day');
+    expect(validateEntry({ ...input, day: 'ayer' }, today)).toBe('day');
+    expect(validateEntry({ ...input, categoryId: '' }, today)).toBe('category');
+  });
+
+  it('agrega, edita y borra registros', () => {
+    const [created] = addEntry([], input, 'manual', today);
+    expect(created).toMatchObject({ categoryId: 'listening', seconds: 1800, source: 'manual', note: 'podcast' });
+    const [edited] = updateEntry([created], created.id, { ...input, minutes: 45, note: '' });
+    expect(edited.seconds).toBe(2700);
+    expect(edited.note).toBeUndefined();
+    expect(deleteEntry([created], created.id)).toEqual([]);
+  });
+
+  it('no edita registros automáticos', () => {
+    const auto = addAutoTime([], 'practice:hiragana:words', 60, today);
+    expect(updateEntry(auto, auto[0].id, input)).toEqual(auto);
+  });
+
+  it('calcula el tiempo del cronómetro', () => {
+    expect(timerElapsed({ categoryId: 'reading', startedAt: new Date(2026, 9, 8, 11, 30).toISOString() }, today)).toBe(1800);
   });
 });
