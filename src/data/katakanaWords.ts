@@ -147,4 +147,11 @@ export const KATAKANA_WORDS: Word[] = [
   { kana: 'ジョギング', es: 'trote (correr)', emoji: '🏃' },
   { kana: 'パジャマ', es: 'pijama' },
   { kana: 'ジャズ', es: 'jazz', emoji: '🎷' },
+
+  // Etiquetas y mostradores que puede encontrar un turista.
+  { kana: 'チキン', es: 'pollo' },
+  { kana: 'コロッケ', es: 'croqueta' },
+  { kana: 'レシート', es: 'recibo' },
+  { kana: 'レギュラー', es: 'regular / clásico' },
+  { kana: 'レッド', es: 'rojo (red)' },
 ];

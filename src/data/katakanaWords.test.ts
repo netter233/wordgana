@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { KATAKANA_WORDS } from './katakanaWords';
 import { KATAKANA_ROWS } from './kana';
-import { HIRAGANA_SENTENCES, KATAKANA_SENTENCES } from './sentences';
-import { isEligible, tokenize, tryTokenize } from '../lib/kana';
+import { HIRAGANA_SENTENCES, KATAKANA_SENTENCES, sentencesForScript } from './sentences';
+import { checkAnswer, isEligible, tokenize, tryTokenize } from '../lib/kana';
+import { readingFor } from '../lib/study';
 
 describe('KATAKANA_WORDS', () => {
   it('tiene vocabulario suficiente para rondas variadas', () => {
@@ -49,5 +50,30 @@ describe('oraciones avanzadas', () => {
   it('las oraciones de katakana mezclan katakana e hiragana', () => {
     expect(KATAKANA_SENTENCES.every((sentence) => /[ァ-ヶ]/.test(sentence.kana))).toBe(true);
     expect(KATAKANA_SENTENCES.every((sentence) => /[ぁ-ゖ]/.test(sentence.kana))).toBe(true);
+  });
+
+  it('usa solo kana y puntuación, sin duplicados en cada silabario', () => {
+    for (const script of ['hiragana', 'katakana'] as const) {
+      const sentences = sentencesForScript(script);
+      expect(sentences.filter((sentence) => !/^[ぁ-ゖァ-ヶー\s。]+$/u.test(sentence.kana))).toEqual([]);
+      expect(new Set(sentences.map((sentence) => sentence.kana)).size).toBe(sentences.length);
+      if (script === 'hiragana') {
+        expect(sentences.filter((sentence) => /[ァ-ヶ]/.test(sentence.kana))).toEqual([]);
+      }
+    }
+  });
+
+  it.each([
+    ['hiragana', 'これは いくらですか。', 'kore wa ikura desu ka'],
+    ['hiragana', 'おみずを ください。', 'omizu o kudasai'],
+    ['katakana', 'この バスは くうこうへ いきますか。', 'kono basu wa kuukou e ikimasu ka'],
+    ['katakana', 'からあげクン レギュラーを ひとつ ください。', 'karaagekun regyuraa o hitotsu kudasai'],
+    ['katakana', 'ファミチキを ひとつ ください。', 'famichiki o hitotsu kudasai'],
+  ] as const)('permite leer y escribir la frase de viaje %s: %s', (script, kana, romaji) => {
+    const sentence = sentencesForScript(script).find((item) => item.kana === kana)!;
+    expect(sentence).toBeDefined();
+    expect(readingFor(sentence)).toBe(romaji);
+    expect(checkAnswer(romaji, sentence.kana, 'read', script, sentence.romaji)).toBe(true);
+    expect(checkAnswer(kana.replace(/[\s。]/g, ''), sentence.kana, 'write', script, sentence.romaji)).toBe(true);
   });
 });

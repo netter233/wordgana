@@ -22,6 +22,27 @@ conexión y sin cuentas. Interfaz en español, inglés, francés y alemán.
 - **Racha y recordatorio diario:** el recordatorio (solo en la app nativa) avisa a la hora elegida y solo los
   días que todavía no practicaste.
 
+### Japonés para un viaje
+
+Oraciones incluye 32 frases para compras y konbini, restaurantes y cafeterías, transporte, hoteles y paseos.
+Elegí **Oraciones** después de marcar todas las filas del silabario: las frases se mezclan con las anteriores
+en rondas de 5, tanto en Leer como en Escribir, con significado en los cuatro idiomas.
+
+| Situación | Ejemplo en kana | Significado |
+| --- | --- | --- |
+| Mostrador de Lawson | からあげクン レギュラーを ひとつ ください。 | Un Karaage-kun clásico, por favor. |
+| Mostrador de FamilyMart | ファミチキを ひとつ ください。 | Un Famichiki, por favor. |
+| Caja | カードで はらえますか。 | ¿Puedo pagar con tarjeta? |
+| Restaurante | おかいけいを おねがいします。 | La cuenta, por favor. |
+| Transporte | この バスは くうこうへ いきますか。 | ¿Este colectivo va al aeropuerto? |
+| Hotel | チェックインを おねがいします。 | Quisiera hacer el check-in. |
+
+Las frases se escriben sin kanji para practicar kana; en carteles reales algunas palabras pueden aparecer
+en kanji. Los nombres de productos mantienen su escritura: **からあげクン レギュラー** y
+**からあげクン レッド**, de [Lawson](https://www.lawson.co.jp/recommend/original/fry/), mezclan hiragana y
+katakana; **ファミチキ**, de [FamilyMart](https://www.family.co.jp/goods/friedfoods/0253116.html), usa katakana.
+En Palabras de katakana también se pueden practicar チキン, コロッケ, レシート, レギュラー y レッド.
+
 Todo se guarda en el dispositivo (localStorage). No hay backend, analíticas ni publicidad.
 
 ## Desarrollo
