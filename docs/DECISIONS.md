@@ -286,3 +286,12 @@ bajan de línea.
 escalar deja la app igual que antes con el tamaño estándar; usar `font: -apple-system-body` directo en `html` la
 agrandaba un 6 %. El tope de 200 % es lo que piden las guías; más grande, la tarjeta de práctica no entra.
 Se verificó con WebKit en 320, 375 y 393 px de ancho, al 100 % y al 200 %, en los seis idiomas, sin desbordes.
+
+## 2026-10-09 — Un nombre distinto por idioma en la tienda y ficha en español con tuteo
+
+**Decisión:** cada idioma de la ficha lleva su propia variante del nombre (por ejemplo, `WordGana: Hiragana y
+Katakana` en México y `WordGana – Hiragana y Katakana` en España), en lugar del mismo nombre en todas. La ficha en
+español usa tuteo. La interfaz de la app sigue en español rioplatense.
+**Por qué:** App Store Connect rechazó el mismo nombre en un segundo idioma con "ya se usa para otra app", y
+cambiar uno solo movía el error al otro. Con una variante por idioma, además, cada nombre queda en su idioma
+(«y», «e», «et»). Las fichas de español se publican en México y España, donde el voseo suena extraño.

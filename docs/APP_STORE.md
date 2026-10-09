@@ -21,8 +21,8 @@ Antes de empezar, la app ya tiene que instalar y funcionar desde Xcode, como se 
 1. Entrá a https://appstoreconnect.apple.com → **Apps** → **+** → **Nueva app**.
 2. Completá los campos:
    - **Plataforma:** iOS
-   - **Nombre:** `WordGana: Hiragana & Katakana`. Es el mismo en todos los idiomas y debe ser único en toda la
-     App Store. Si ya está tomado, probá otra variante.
+   - **Nombre:** `WordGana: Hiragana & Katakana`. Debe ser único en toda la App Store; cada idioma de la
+     ficha lleva una variante propia (ver **Idiomas de la ficha**).
    - **Idioma principal:** English (U.S.). Lo ven quienes tienen el iPhone en un idioma sin ficha propia.
    - **ID del paquete:** `com.brunokupferberg.wordgana`
    - **SKU:** `wordgana`
@@ -62,18 +62,21 @@ excluir los países de la UE en **Disponibilidad**.
 
 ### Idiomas de la ficha
 
-El nombre es el mismo en todos los idiomas: `WordGana: Hiragana & Katakana`. El idioma principal es inglés:
-quien tenga el iPhone en un idioma sin ficha (japonés, italiano, portugués…) ve la ficha en inglés.
+App Store Connect no acepta el mismo nombre en dos idiomas de la ficha: cada uno lleva una variante propia,
+de 30 caracteres como máximo, que figura al principio de su sección. El idioma principal es inglés: quien tenga
+el iPhone en un idioma sin ficha (japonés, coreano, chino…) ve la ficha en inglés.
 
 En la página de la versión, usá el selector de idioma de arriba a la derecha → **Agregar idioma** y sumá:
 **Spanish (Mexico)**, **Spanish (Spain)**, **Portuguese (Brazil)**, **French (France)**, **German** e
-**Italian**. En cada uno pegá el nombre y los
-textos de abajo. Las dos fichas de español llevan los mismos textos.
+**Italian**. En cada uno pegá el nombre y los textos de abajo. El nombre y el subtítulo se cargan en
+**Información de la app**; el resto, en la página de la versión.
 
 No repitas en las palabras clave las que ya están en el nombre (WordGana, hiragana, katakana): Apple ya las
 indexa en todos los idiomas.
 
 ### English (U.S.), idioma principal
+
+**Nombre:** `WordGana: Hiragana & Katakana`
 
 **Subtitle** (máximo 30 caracteres):
 ```
@@ -135,24 +138,28 @@ japanese,romaji,learn,alphabet,vocabulary,writing,reading,beginner,jlpt,nihongo,
 
 ### Spanish (Mexico) y Spanish (Spain)
 
+Las dos fichas llevan los mismos textos, en tuteo (no voseo), salvo el nombre.
+
+**Nombre:** Spanish (Mexico): `WordGana: Hiragana y Katakana` · Spanish (Spain): `WordGana – Hiragana y Katakana`
+
 **Subtítulo:**
 ```
-Practicá kana con palabras
+Practica kana con palabras
 ```
 
 **Texto promocional:**
 ```
-Aprendé hiragana y katakana fila por fila con palabras reales, y usalos con frases de viaje para el konbini, el tren y el hotel.
+Aprende hiragana y katakana fila por fila con palabras reales, y úsalos con frases de viaje para el konbini, el tren y el hotel.
 ```
 
 **Descripción:**
 ```
 WordGana te ayuda a aprender hiragana y katakana de forma progresiva, con palabras japonesas reales.
 
-Marcá las filas del silabario que ya conocés y WordGana arma rondas solo con lo que ya podés leer. A medida que sumás filas, aparecen palabras nuevas.
+Marca las filas del silabario que ya conoces y WordGana arma rondas solo con lo que ya puedes leer. A medida que sumas filas, aparecen palabras nuevas.
 
 DE LA LETRA A LA ORACIÓN
-• Letras: practicá los kana sueltos de cada fila nueva.
+• Letras: practica los kana sueltos de cada fila nueva.
 • Palabras: cerca de 450 en hiragana y casi 150 en katakana, cada una con su significado.
 • Oraciones: al completar todas las filas se desbloquean oraciones simples.
 
@@ -161,19 +168,19 @@ JAPONÉS PARA TU VIAJE
 • Escritas en kana, para que las leas con lo que ya aprendiste.
 
 DOS MODOS DE PRÁCTICA
-• Leer: ves el kana y escribís cómo se lee en romaji.
-• Escribir: ves el romaji y escribís en kana con el teclado japonés.
+• Leer: ves el kana y escribes cómo se lee en romaji.
+• Escribir: ves el romaji y escribes en kana con el teclado japonés.
 
 PENSADA PARA APRENDER
 • Rondas cortas de 10.
 • Prioriza lo que más te cuesta.
-• Escuchá la pronunciación con la voz japonesa de tu dispositivo.
+• Escucha la pronunciación con la voz japonesa de tu dispositivo.
 • Acepta variantes de romaji como shi/si o tsu/tu.
 • Estadísticas con las letras y palabras que más te cuestan.
 
 TIEMPO DE ESTUDIO
-• El tiempo que practicás en la app se registra solo.
-• Sumá lo que estudiás fuera de la app con cronómetro o a mano: clases, lectura, escucha y tus propias categorías.
+• El tiempo que practicas en la app se registra solo.
+• Suma lo que estudias fuera de la app con cronómetro o a mano: clases, lectura, escucha y tus propias categorías.
 • Meta diaria, gráfico por día y reparto por categoría.
 
 MOTIVACIÓN PARA SEGUIR
@@ -194,6 +201,8 @@ japonés,kana,romaji,aprender,silabario,vocabulario,japón,idioma,escritura,lect
 ```
 
 ### French (France)
+
+**Nombre:** `WordGana: Hiragana et Katakana`
 
 **Sous-titre :**
 ```
@@ -255,6 +264,8 @@ japonais,kana,romaji,apprendre,alphabet,vocabulaire,japon,écriture,lecture,déb
 
 ### German
 
+**Nombre:** `WordGana: Hiragana + Katakana`
+
 **Untertitel:**
 ```
 Kana lernen mit echten Wörtern
@@ -315,6 +326,8 @@ japanisch,kana,romaji,lernen,alphabet,vokabeln,japan,schreiben,lesen,anfänger,r
 
 ### Portuguese (Brazil)
 
+**Nombre:** `WordGana: Hiragana e Katakana`
+
 **Subtítulo:**
 ```
 Aprenda kana com palavras
@@ -374,6 +387,8 @@ japonês,kana,romaji,aprender,alfabeto,vocabulário,japão,escrita,leitura,inici
 ```
 
 ### Italian
+
+**Nombre:** `WordGana – Hiragana e Katakana`
 
 **Sottotitolo:**
 ```
