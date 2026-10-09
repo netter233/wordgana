@@ -166,6 +166,14 @@ abrir el repo, leer `CLAUDE.md` y continuar desde la primera etapa sin tildar.
       CLAUDE.md, ficha de la tienda y capturas.
 - [x] **Etapa 23 — Portugués de Brasil e italiano.** Interfaz, significados de todo el contenido, títulos de
       logros, idiomas declarados en iOS y fichas de la tienda en los dos idiomas nuevos, antes de la versión 1.0.
+- [ ] **Etapa 24 — Donaciones (versión 1.1).** Opción "Apoyá WordGana" en Configuración, sin desbloquear nada.
+      En la app de iOS, propinas como compras consumibles de Apple (tres montos fijos, por ejemplo USD 0,99, 2,99
+      y 4,99) con un plugin de Capacitor para StoreKit, anotado en `docs/DECISIONS.md`. En la PWA, un link
+      externo (Cafecito o similar), porque fuera de la tienda de EE. UU. Apple rechaza links de pago en la app
+      (regla 3.1.1). Antes de programar: firmar el acuerdo de apps pagas en App Store Connect (datos fiscales y
+      bancarios), inscribirse en el Small Business Program (15 %), crear los productos y revisar el estado de
+      comerciante en la UE, la etiqueta de privacidad y `docs/PRIVACY.md`. Textos en los seis idiomas y
+      agradecimiento después de donar.
 
 ## Verificación
 
