@@ -37,9 +37,22 @@ Antes de empezar, la app ya tiene que instalar y funcionar desde Xcode, como se 
 | Categoría secundaria | Referencia (opcional) |
 | Precio | Gratis |
 | Clasificación por edad | Respondé **No** a todo. El resultado es 4+ |
-| URL de la política de privacidad | https://github.com/netter233/wordgana/blob/main/docs/PRIVACY.md |
-| URL de soporte | https://github.com/netter233/wordgana/issues |
+| URL de la política de privacidad | ver abajo |
+| URL de soporte | ver abajo; va en cada idioma de la versión |
 | Copyright | 2026 Bruno Kupferberg |
+
+Copiá las URLs desde estos bloques: si se pega un espacio al final, App Store Connect no deja guardar y no
+dice por qué.
+
+URL de la política de privacidad:
+```
+https://github.com/netter233/wordgana/blob/main/docs/PRIVACY.md
+```
+
+URL de soporte:
+```
+https://github.com/netter233/wordgana/issues
+```
 
 La URL de la política de privacidad funciona solo después de hacer push de `docs/PRIVACY.md` a GitHub.
 
