@@ -234,3 +234,13 @@ leyenda y, al tocar un día, el detalle por categoría en texto.
 **Por qué:** con un solo color, un día con varias categorías se veía como un bloque uniforme. Más de ocho colores
 ya no se distinguen bien (tampoco con daltonismo), así que lo menos frecuente se agrupa. Tres colores tienen
 contraste menor a 3:1 sobre blanco; la leyenda y el detalle en texto cubren esa lectura, como exige la paleta.
+
+## 2026-10-09 — Portugués de Brasil e italiano antes de la 1.0
+
+**Decisión:** la app sale con seis idiomas: español, inglés, portugués de Brasil, francés, alemán e italiano. Los
+significados nuevos viven en `src/data/translationsPtIt.ts`, con la misma clave en español que `translations.ts`,
+y el test de traducciones exige los cinco idiomas para cada palabra y oración. Cualquier `pt-*` usa portugués de
+Brasil. En la tienda, inglés es el idioma principal y el nombre es el mismo en todas las fichas.
+**Por qué:** Brasil tiene una comunidad grande que estudia japonés e Italia suma un mercado europeo más; hacerlo
+antes de la primera versión evita publicar una actualización solo de idiomas. Un archivo aparte evita reescribir
+las 650 entradas existentes y deja claro qué falta si se agrega contenido.

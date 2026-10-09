@@ -1,6 +1,6 @@
 import { LANGUAGE_NAMES, type AppLanguage, type LanguagePreference, useI18n } from '../i18n';
 
-const LANGUAGES: AppLanguage[] = ['en', 'es', 'fr', 'de'];
+const LANGUAGES: AppLanguage[] = ['en', 'es', 'pt', 'fr', 'it', 'de'];
 
 export function LanguagePicker() {
   const { language, preference, setPreference, messages } = useI18n();

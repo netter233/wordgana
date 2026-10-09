@@ -2,7 +2,7 @@
 
 App para practicar hiragana y katakana de forma incremental: marcás las filas del silabario que ya sabés y
 practicás solo con material formado por esas letras. Funciona como PWA y como app de iPhone (Capacitor), sin
-conexión y sin cuentas. Interfaz en español, inglés, francés y alemán.
+conexión y sin cuentas. Interfaz en español, inglés, portugués de Brasil, francés, alemán e italiano.
 
 ## Qué tiene
 
@@ -26,7 +26,7 @@ conexión y sin cuentas. Interfaz en español, inglés, francés y alemán.
 
 Oraciones incluye 32 frases para compras y konbini, restaurantes y cafeterías, transporte, hoteles y paseos.
 Elegí **Oraciones** después de marcar todas las filas del silabario: las frases se mezclan con las anteriores
-en rondas de 5, tanto en Leer como en Escribir, con significado en los cuatro idiomas.
+en rondas de 5, tanto en Leer como en Escribir, con significado en los seis idiomas.
 
 | Situación | Ejemplo en kana | Significado |
 | --- | --- | --- |

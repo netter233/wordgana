@@ -7,11 +7,14 @@ describe('resolveLanguage', () => {
     expect(resolveLanguage(['fr-CA'])).toBe('fr');
     expect(resolveLanguage(['de-DE'])).toBe('de');
     expect(resolveLanguage(['en-US'])).toBe('en');
+    expect(resolveLanguage(['pt-BR'])).toBe('pt');
+    expect(resolveLanguage(['pt-PT'])).toBe('pt');
+    expect(resolveLanguage(['it-IT'])).toBe('it');
   });
 
   it('uses the first supported preference and falls back to English', () => {
-    expect(resolveLanguage(['pt-BR', 'fr-FR', 'en-US'])).toBe('fr');
-    expect(resolveLanguage(['ja-JP', 'pt-BR'])).toBe('en');
+    expect(resolveLanguage(['ja-JP', 'it-IT', 'fr-FR'])).toBe('it');
+    expect(resolveLanguage(['ja-JP', 'ko-KR'])).toBe('en');
     expect(resolveLanguage([])).toBe('en');
   });
 });

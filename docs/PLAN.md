@@ -164,6 +164,8 @@ abrir el repo, leer `CLAUDE.md` y continuar desde la primera etapa sin tildar.
       cronómetro, borrar los automáticos.
 - [x] **Etapa 22 — Logros por horas y cierre.** Logros de 1 a 1000 horas y de meta cumplida 7/30 días; README,
       CLAUDE.md, ficha de la tienda y capturas.
+- [x] **Etapa 23 — Portugués de Brasil e italiano.** Interfaz, significados de todo el contenido, títulos de
+      logros, idiomas declarados en iOS y fichas de la tienda en los dos idiomas nuevos, antes de la versión 1.0.
 
 ## Verificación
 

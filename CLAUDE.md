@@ -4,7 +4,8 @@ App (PWA y app de iPhone con Capacitor) para practicar hiragana y katakana de fo
 marca las filas del silabario que ya sabe y practica con letras sueltas o palabras reales formadas solo por esas
 letras, en modo Leer (kana → romaji) o Escribir (romaji → kana con teclado japonés). Al completar todas las filas
 se desbloquean rondas de 5 oraciones simples; las de letras y palabras son de 10. Incluye audio, estadísticas,
-logros, tiempo de estudio y recordatorio diario. Interfaz en español, inglés, francés y alemán.
+logros, tiempo de estudio y recordatorio diario. Interfaz en español, inglés, portugués de Brasil, francés,
+alemán e italiano.
 
 ## Cómo continuar el trabajo
 
@@ -40,6 +41,7 @@ src/data/words.ts        lista curada de palabras en hiragana { kana, es }
 src/data/katakanaWords.ts vocabulario curado que se escribe normalmente en katakana
 src/data/sentences.ts    oraciones avanzadas con romaji explícito; tipo PracticeKind (kana | words | sentences)
 src/data/translations.ts significados en inglés, francés y alemán, indexados por el texto en español
+src/data/translationsPtIt.ts significados en portugués (Brasil) e italiano, con la misma clave
 src/data/achievements.ts definición de logros (métrica, meta y título en los cuatro idiomas)
 src/lib/kana.ts          tokenize, toRomaji, matchesRomaji, normalizeHiragana, isEligible, checkAnswer
 src/lib/letters.ts       letras sueltas de las filas activas como ítems de práctica
@@ -51,7 +53,7 @@ src/lib/speech.ts        pronunciación con speechSynthesis (voz japonesa del si
 src/lib/reminders.ts     recordatorio diario con @capacitor/local-notifications (solo app nativa)
 src/lib/studyTime.ts     tiempo de estudio: registros por día, cronómetro, meta, totales y racha de metas
 src/lib/studyCategories.ts categorías de estudio (práctica, fijas y personalizadas) y formato de duraciones
-src/i18n.tsx             textos de la interfaz en es/en/fr/de
+src/i18n.tsx             textos de la interfaz en es/en/pt/fr/de/it
 src/components/          pantallas y piezas de UI (Practice, Results, StatsScreen, AchievementsScreen,
                          StudyArea con tiempo de estudio, cronómetro, carga e historial…)
 src/App.tsx              estado global: pantalla, filas, modo, ronda, stats, historial y logros

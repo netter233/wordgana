@@ -7,7 +7,7 @@ import { WORDS } from './words';
 const ALL_CONTENT = [...WORDS, ...KATAKANA_WORDS, ...HIRAGANA_SENTENCES, ...KATAKANA_SENTENCES];
 
 describe('content translations', () => {
-  it('has English, French, and German for every word and sentence', () => {
+  it('has English, French, German, Portuguese, and Italian for every word and sentence', () => {
     const missing = ALL_CONTENT.filter((word) => !hasCompleteTranslation(word)).map((word) => `${word.kana}: ${word.es}`);
     expect(missing).toEqual([]);
   });

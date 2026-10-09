@@ -66,7 +66,8 @@ El nombre es el mismo en todos los idiomas: `WordGana: Hiragana & Katakana`. El 
 quien tenga el iPhone en un idioma sin ficha (japonés, italiano, portugués…) ve la ficha en inglés.
 
 En la página de la versión, usá el selector de idioma de arriba a la derecha → **Agregar idioma** y sumá:
-**Spanish (Mexico)**, **Spanish (Spain)**, **French (France)** y **German**. En cada uno pegá el nombre y los
+**Spanish (Mexico)**, **Spanish (Spain)**, **Portuguese (Brazil)**, **French (France)**, **German** e
+**Italian**. En cada uno pegá el nombre y los
 textos de abajo. Las dos fichas de español llevan los mismos textos.
 
 No repitas en las palabras clave las que ya están en el nombre (WordGana, hiragana, katakana): Apple ya las
@@ -124,7 +125,7 @@ NO DISTRACTIONS
 • No accounts, no ads, no data collection.
 • Your progress is saved on your device.
 
-Available in English, Spanish, French and German.
+Available in English, Spanish, Portuguese, French, German and Italian.
 ```
 
 **Keywords** (máximo 100 caracteres, separadas por coma y sin espacios):
@@ -184,7 +185,7 @@ SIN DISTRACCIONES
 • Sin cuentas, sin publicidad y sin recolección de datos.
 • Tu progreso queda guardado en tu dispositivo.
 
-Disponible en español, inglés, francés y alemán.
+Disponible en español, inglés, portugués, francés, alemán e italiano.
 ```
 
 **Palabras clave:**
@@ -244,7 +245,7 @@ SANS DISTRACTION
 • Sans compte, sans publicité et sans collecte de données.
 • Votre progression reste sur votre appareil.
 
-Disponible en français, anglais, espagnol et allemand.
+Disponible en français, anglais, espagnol, portugais, allemand et italien.
 ```
 
 **Mots-clés :**
@@ -304,12 +305,132 @@ OHNE ABLENKUNG
 • Kein Konto, keine Werbung, keine Datenerfassung.
 • Dein Fortschritt bleibt auf deinem Gerät.
 
-Verfügbar auf Deutsch, Englisch, Spanisch und Französisch.
+Verfügbar auf Deutsch, Englisch, Spanisch, Portugiesisch, Französisch und Italienisch.
 ```
 
 **Schlüsselwörter:**
 ```
 japanisch,kana,romaji,lernen,alphabet,vokabeln,japan,schreiben,lesen,anfänger,reise,sätze
+```
+
+### Portuguese (Brazil)
+
+**Subtítulo:**
+```
+Aprenda kana com palavras
+```
+
+**Texto promocional:**
+```
+Aprenda hiragana e katakana linha por linha com palavras reais e use tudo com frases de viagem para o konbini, o trem e o hotel.
+```
+
+**Descrição:**
+```
+O WordGana ajuda você a aprender hiragana e katakana passo a passo, com palavras japonesas reais.
+
+Marque as linhas de kana que você já conhece e o WordGana monta rodadas só com o que você já consegue ler. A cada nova linha, aparecem palavras novas.
+
+DA LETRA À FRASE
+• Letras: pratique os kana de cada nova linha.
+• Palavras: cerca de 450 em hiragana e quase 150 em katakana, cada uma com seu significado.
+• Frases: ao completar todas as linhas, frases simples são desbloqueadas.
+
+JAPONÊS PARA A SUA VIAGEM
+• Frases úteis para o konbini, restaurantes, transporte e hotéis, como "Posso pagar com cartão?" ou "A conta, por favor".
+• Escritas em kana, para você ler com o que já aprendeu.
+
+DOIS MODOS DE PRÁTICA
+• Ler: você vê o kana e escreve a leitura em romaji.
+• Escrever: você vê o romaji e escreve em kana com o teclado japonês.
+
+FEITO PARA APRENDER
+• Rodadas curtas de 10.
+• O que você erra volta com mais frequência.
+• Ouça a pronúncia com a voz japonesa do seu dispositivo.
+• Aceita variantes de romaji como shi/si ou tsu/tu.
+• Estatísticas mostram as letras e palavras mais difíceis para você.
+
+TEMPO DE ESTUDO
+• O tempo que você pratica no app é registrado automaticamente.
+• Some o que você estuda fora do app com cronômetro ou à mão: aulas, leitura, escuta e suas próprias categorias.
+• Meta diária, gráfico dia a dia e divisão por categoria.
+
+MOTIVAÇÃO PARA CONTINUAR
+• Sequência de dias e lembrete diário opcional, só nos dias em que você ainda não praticou.
+• 30 conquistas para desbloquear: rodadas, sequência, horas de estudo, vocabulário e mais.
+
+SEM DISTRAÇÕES
+• Funciona sem internet.
+• Sem conta, sem anúncios e sem coleta de dados.
+• Seu progresso fica salvo no seu dispositivo.
+
+Disponível em português, inglês, espanhol, francês, alemão e italiano.
+```
+
+**Palavras-chave:**
+```
+japonês,kana,romaji,aprender,alfabeto,vocabulário,japão,escrita,leitura,iniciante,viagem,frases
+```
+
+### Italian
+
+**Sottotitolo:**
+```
+Impara i kana con parole vere
+```
+
+**Testo promozionale:**
+```
+Impara hiragana e katakana riga per riga con parole vere e usali con frasi di viaggio per il konbini, il treno e l'albergo.
+```
+
+**Descrizione:**
+```
+WordGana ti aiuta a imparare hiragana e katakana passo dopo passo, con vere parole giapponesi.
+
+Seleziona le righe di kana che conosci già e WordGana crea serie solo con ciò che sai leggere. A ogni nuova riga si sbloccano nuove parole.
+
+DAL CARATTERE ALLA FRASE
+• Caratteri: esercitati con i kana di ogni nuova riga.
+• Parole: quasi 450 in hiragana e quasi 150 in katakana, ognuna con il suo significato.
+• Frasi: completa tutte le righe per sbloccare frasi semplici.
+
+GIAPPONESE PER IL TUO VIAGGIO
+• Frasi utili per il konbini, il ristorante, i trasporti e l'albergo, come "Posso pagare con la carta?" o "Il conto, per favore".
+• Scritte in kana, per leggerle con quello che hai imparato.
+
+DUE MODALITÀ DI PRATICA
+• Leggere: vedi i kana e scrivi la lettura in romaji.
+• Scrivere: vedi il romaji e scrivi in kana con la tastiera giapponese.
+
+PENSATA PER IMPARARE
+• Serie brevi da 10.
+• Ciò che sbagli torna più spesso.
+• Ascolta la pronuncia con la voce giapponese del tuo dispositivo.
+• Accetta varianti di romaji come shi/si o tsu/tu.
+• Le statistiche mostrano i caratteri e le parole più difficili per te.
+
+TEMPO DI STUDIO
+• Il tempo di pratica nell'app viene registrato automaticamente.
+• Aggiungi ciò che studi altrove con il cronometro o a mano: lezioni, lettura, ascolto e categorie personalizzate.
+• Obiettivo giornaliero, grafico giorno per giorno e ripartizione per categoria.
+
+RESTA MOTIVATO
+• Serie di giorni e promemoria giornaliero facoltativo, solo nei giorni in cui non hai ancora praticato.
+• 30 traguardi da sbloccare: serie, costanza, ore di studio, vocabolario e altro.
+
+SENZA DISTRAZIONI
+• Funziona offline.
+• Nessun account, nessuna pubblicità e nessuna raccolta di dati.
+• I tuoi progressi restano sul tuo dispositivo.
+
+Disponibile in italiano, inglese, spagnolo, francese, tedesco e portoghese.
+```
+
+**Parole chiave:**
+```
+giapponese,kana,romaji,imparare,alfabeto,vocabolario,giappone,scrittura,lettura,principiante,viaggio
 ```
 
 ## 5. Capturas de pantalla
@@ -325,7 +446,7 @@ Cargá entre 3 y 10 capturas por dispositivo.
 
 Las capturas ya están en `docs/app-store-screenshots/`, en español (`es`) e inglés (`en`), con una
 carpeta para iPhone y otra para iPad. Ya tienen el tamaño correcto. Subí las de `en` en English (U.S.) y las
-de `es` en las dos fichas de español. Francés y alemán pueden quedar sin capturas propias: en ese caso Apple
+de `es` en las dos fichas de español. Portugués, francés, alemán e italiano pueden quedar sin capturas propias: en ese caso Apple
 muestra las del idioma principal. Subilas en este orden: inicio, leer, correcto (con el botón de audio), escribir, resultados (con un
 logro desbloqueado), logros, estadísticas y tiempo de estudio.
 

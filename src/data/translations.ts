@@ -1,5 +1,6 @@
 import type { AppLanguage } from '../i18n';
 import type { Word } from './words';
+import { PT_IT } from './translationsPtIt';
 
 type Translation = [english: string, french: string, german: string];
 
@@ -440,13 +441,18 @@ const T: Record<string, Translation> = {
   'jazz': ['jazz', 'jazz', 'Jazz'],
 };
 
-const LANGUAGE_INDEX: Record<Exclude<AppLanguage, 'es'>, number> = { en: 0, fr: 1, de: 2 };
+const LANGUAGE_INDEX: Record<'en' | 'fr' | 'de', number> = { en: 0, fr: 1, de: 2 };
 
 export function localizedMeaning(word: Word, language: AppLanguage): string {
   if (language === 'es') return word.es;
+  if (language === 'pt') return PT_IT[word.es]?.[0] ?? word.es;
+  if (language === 'it') return PT_IT[word.es]?.[1] ?? word.es;
   return T[word.es]?.[LANGUAGE_INDEX[language]] ?? word.es;
 }
 
 export function hasCompleteTranslation(word: Word): boolean {
-  return Boolean(T[word.es]?.every((translation) => translation.length > 0));
+  return Boolean(
+    T[word.es]?.every((translation) => translation.length > 0)
+      && PT_IT[word.es]?.every((translation) => translation.length > 0),
+  );
 }
