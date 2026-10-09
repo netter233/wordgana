@@ -44,7 +44,7 @@ export function ContentCards({ value, unlocked, missingRows, script, onChange }:
           disabled={!unlocked}
           onClick={() => onChange('sentences')}
         >
-          <span className="choice-icon" aria-hidden="true">{unlocked ? '文' : '🔒'}</span>
+          <span className="choice-icon" aria-hidden="true">{unlocked ? '文' : <LockIcon />}</span>
           <strong>{messages.sentences}</strong>
           <span>{messages.advancedRounds(5)}</span>
         </button>
@@ -57,5 +57,15 @@ export function ContentCards({ value, unlocked, missingRows, script, onChange }:
             : messages.rowsMissing(missingRows)}
       </p>
     </section>
+  );
+}
+
+/** Candado de línea, con el mismo trazo que los demás iconos de la interfaz. */
+function LockIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="5" y="11" width="14" height="10" rx="2" />
+      <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+    </svg>
   );
 }

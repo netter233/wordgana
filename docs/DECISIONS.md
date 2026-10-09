@@ -271,3 +271,18 @@ genera las capas, el `icon.json` y los PNG planos con la misma geometría (PWA y
 una あ sobre color. Las HIG piden capas para que iOS 26 aplique el vidrio y arme las variantes oscura,
 transparente y teñida (`app-icons.md › Layer design`), y sugieren formas superpuestas con distinta opacidad para
 dar profundidad. La あ no es translúcida para que se lea nítida en tamaños chicos.
+
+## 2026-10-09 — Tamaño de texto del sistema y ajustes de la revisión de diseño (build 4)
+
+**Decisión:** la base de `rem` sigue al tamaño de texto de iOS (`src/lib/textSize.ts`): mide el estilo
+`-apple-system-body` de WebKit (17 px con el tamaño estándar) y escala la raíz en proporción, entre 80 % y 200 %.
+Solo aplica con pantalla táctil, porque en macOS ese estilo mide 13 px y achicaría la PWA. Además: botones
+principales sin mayúsculas, texto mínimo de 12 px en el gráfico, selectores y campo de hora de 44 px, borde de
+campos de texto con 3:1 de contraste (`--field-border`), "Editar" en color de texto y candado de línea en lugar
+del emoji. Con texto grande, las tarjetas de Inicio pasan a una columna y los selectores de Tiempo de estudio
+bajan de línea.
+**Por qué:** salen de la revisión con las guías de Apple (`accessibility.md › Support larger text sizes`,
+`writing.md` sobre mayúsculas consistentes, `branding.md` sobre usar el color de marca con moderación). Medir y
+escalar deja la app igual que antes con el tamaño estándar; usar `font: -apple-system-body` directo en `html` la
+agrandaba un 6 %. El tope de 200 % es lo que piden las guías; más grande, la tarjeta de práctica no entra.
+Se verificó con WebKit en 320, 375 y 393 px de ancho, al 100 % y al 200 %, en los seis idiomas, sin desbordes.

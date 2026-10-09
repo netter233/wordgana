@@ -75,7 +75,7 @@ export function StudyTimeScreen({ entries, goalMinutes, customCategories, header
       </div>
 
       <div className="card">
-        <div className="section-head">
+        <div className="section-head section-head--wrap">
           <h2>{messages.lastDaysTitle}</h2>
           <Segmented
             value={chartRange}
@@ -87,7 +87,7 @@ export function StudyTimeScreen({ entries, goalMinutes, customCategories, header
       </div>
 
       <div className="card">
-        <div className="section-head">
+        <div className="section-head section-head--wrap">
           <h2>{messages.byCategoryTitle}</h2>
           <Segmented
             value={categoryRange}
