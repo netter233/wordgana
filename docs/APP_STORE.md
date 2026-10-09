@@ -21,8 +21,9 @@ Antes de empezar, la app ya tiene que instalar y funcionar desde Xcode, como se 
 1. Entrá a https://appstoreconnect.apple.com → **Apps** → **+** → **Nueva app**.
 2. Completá los campos:
    - **Plataforma:** iOS
-   - **Nombre:** `WordGana: hiragana y katakana`. Debe ser único en toda la App Store. Si ya está tomado, probá otra variante.
-   - **Idioma principal:** Español (México). Es la variante de español que se usa para Latinoamérica.
+   - **Nombre:** `WordGana: Hiragana & Katakana`. Es el mismo en todos los idiomas y debe ser único en toda la
+     App Store. Si ya está tomado, probá otra variante.
+   - **Idioma principal:** English (U.S.). Lo ven quienes tienen el iPhone en un idioma sin ficha propia.
    - **ID del paquete:** `com.brunokupferberg.wordgana`
    - **SKU:** `wordgana`
 
@@ -59,90 +60,44 @@ Digitales (DSA). Para una app gratuita sin fines comerciales podés declarar que
 Si declarás que sí, tu dirección y tu teléfono quedan públicos en la ficha. Si no querés responder, podés
 excluir los países de la UE en **Disponibilidad**.
 
-### Textos en español
+### Idiomas de la ficha
 
-**Subtítulo** (máximo 30 caracteres):
+El nombre es el mismo en todos los idiomas: `WordGana: Hiragana & Katakana`. El idioma principal es inglés:
+quien tenga el iPhone en un idioma sin ficha (japonés, italiano, portugués…) ve la ficha en inglés.
+
+En la página de la versión, usá el selector de idioma de arriba a la derecha → **Agregar idioma** y sumá:
+**Spanish (Mexico)**, **Spanish (Spain)**, **French (France)** y **German**. En cada uno pegá el nombre y los
+textos de abajo. Las dos fichas de español llevan los mismos textos.
+
+No repitas en las palabras clave las que ya están en el nombre (WordGana, hiragana, katakana): Apple ya las
+indexa en todos los idiomas.
+
+### English (U.S.), idioma principal
+
+**Subtitle** (máximo 30 caracteres):
 ```
-Practicá kana con palabras
-```
-
-**Texto promocional** (máximo 170 caracteres):
-```
-Aprendé hiragana y katakana fila por fila, practicando solo con palabras reales que ya podés leer.
-```
-
-**Descripción:**
-```
-WordGana te ayuda a aprender hiragana y katakana de forma progresiva, con palabras japonesas reales.
-
-Marcá las filas del silabario que ya conocés y WordGana arma rondas usando solo palabras formadas con esas letras. A medida que sumás filas, aparecen palabras nuevas.
-
-DE LA LETRA A LA ORACIÓN
-• Letras: practicá los kana sueltos de cada fila nueva.
-• Palabras: cerca de 450 en hiragana y más de 140 en katakana, cada una con su significado.
-• Oraciones: al completar todas las filas se desbloquean rondas de oraciones simples.
-
-DOS MODOS DE PRÁCTICA
-• Leer: ves el kana y escribís cómo se lee en romaji.
-• Escribir: ves el romaji y escribís en kana con el teclado japonés.
-
-PENSADA PARA APRENDER
-• Rondas cortas de 10.
-• Prioriza lo que más te cuesta.
-• Escuchá la pronunciación con la voz japonesa de tu dispositivo.
-• Acepta variantes de romaji como shi/si o tsu/tu.
-• Estadísticas con las letras y palabras que más te cuestan.
-
-TIEMPO DE ESTUDIO
-• El tiempo que practicás en la app se registra solo.
-• Sumá lo que estudiás fuera de la app con cronómetro o a mano: clases, lectura, escucha y tus propias categorías.
-• Meta diaria, gráfico por día y reparto por categoría.
-
-MOTIVACIÓN PARA SEGUIR
-• Racha de días y recordatorio diario opcional, solo los días que todavía no practicaste.
-• 30 logros para desbloquear: rondas, racha, horas de estudio, vocabulario y más.
-
-SIN DISTRACCIONES
-• Funciona sin conexión.
-• Sin cuentas, sin publicidad y sin recolección de datos.
-• Tu progreso queda guardado en tu dispositivo.
-
-Disponible en español, inglés, francés y alemán.
+Learn kana with real words
 ```
 
-**Palabras clave** (máximo 100 caracteres, separadas por coma y sin espacios):
+**Promotional text** (máximo 170 caracteres):
 ```
-japonés,kana,romaji,aprender,silabario,vocabulario,japón,idioma,escritura,lectura,principiante
-```
-
-No repitas en las palabras clave las que ya están en el nombre (hiragana, katakana): Apple ya las indexa.
-
-### Textos en inglés (opcional, recomendado)
-
-Agregá la localización **English (U.S.)** con estos textos:
-
-**Nombre:** `WordGana: Learn Kana`
-
-**Subtítulo:**
-```
-Hiragana & katakana practice
+Learn hiragana and katakana row by row with real words, then put them to use with travel phrases for the konbini, trains and hotels.
 ```
 
-**Texto promocional:**
-```
-Learn hiragana and katakana row by row, practicing only with real words you can already read.
-```
-
-**Descripción:**
+**Description:**
 ```
 WordGana helps you learn hiragana and katakana step by step, using real Japanese words.
 
-Check off the kana rows you already know, and WordGana builds rounds using only words made from those characters. As you add rows, new words unlock.
+Check off the kana rows you already know, and WordGana builds rounds using only what you can read. As you add rows, new words unlock.
 
 FROM CHARACTERS TO SENTENCES
 • Characters: practice the individual kana of each new row.
-• Words: nearly 450 in hiragana and over 140 in katakana, each with its meaning.
-• Sentences: complete every row to unlock rounds of simple sentences.
+• Words: nearly 450 in hiragana and almost 150 in katakana, each with its meaning.
+• Sentences: complete every row to unlock simple sentences.
+
+JAPANESE FOR YOUR TRIP
+• Useful phrases for the konbini, restaurants, transport and hotels, like "Can I pay by card?" or "The check, please."
+• Written in kana, so you can read them with what you've learned.
 
 TWO PRACTICE MODES
 • Read: see the kana and type its reading in romaji.
@@ -172,9 +127,189 @@ NO DISTRACTIONS
 Available in English, Spanish, French and German.
 ```
 
+**Keywords** (máximo 100 caracteres, separadas por coma y sin espacios):
+```
+japanese,romaji,learn,alphabet,vocabulary,writing,reading,beginner,jlpt,nihongo,travel,phrases
+```
+
+### Spanish (Mexico) y Spanish (Spain)
+
+**Subtítulo:**
+```
+Practicá kana con palabras
+```
+
+**Texto promocional:**
+```
+Aprendé hiragana y katakana fila por fila con palabras reales, y usalos con frases de viaje para el konbini, el tren y el hotel.
+```
+
+**Descripción:**
+```
+WordGana te ayuda a aprender hiragana y katakana de forma progresiva, con palabras japonesas reales.
+
+Marcá las filas del silabario que ya conocés y WordGana arma rondas solo con lo que ya podés leer. A medida que sumás filas, aparecen palabras nuevas.
+
+DE LA LETRA A LA ORACIÓN
+• Letras: practicá los kana sueltos de cada fila nueva.
+• Palabras: cerca de 450 en hiragana y casi 150 en katakana, cada una con su significado.
+• Oraciones: al completar todas las filas se desbloquean oraciones simples.
+
+JAPONÉS PARA TU VIAJE
+• Frases útiles para el konbini, restaurantes, transporte y hoteles, como "¿Puedo pagar con tarjeta?" o "La cuenta, por favor".
+• Escritas en kana, para que las leas con lo que ya aprendiste.
+
+DOS MODOS DE PRÁCTICA
+• Leer: ves el kana y escribís cómo se lee en romaji.
+• Escribir: ves el romaji y escribís en kana con el teclado japonés.
+
+PENSADA PARA APRENDER
+• Rondas cortas de 10.
+• Prioriza lo que más te cuesta.
+• Escuchá la pronunciación con la voz japonesa de tu dispositivo.
+• Acepta variantes de romaji como shi/si o tsu/tu.
+• Estadísticas con las letras y palabras que más te cuestan.
+
+TIEMPO DE ESTUDIO
+• El tiempo que practicás en la app se registra solo.
+• Sumá lo que estudiás fuera de la app con cronómetro o a mano: clases, lectura, escucha y tus propias categorías.
+• Meta diaria, gráfico por día y reparto por categoría.
+
+MOTIVACIÓN PARA SEGUIR
+• Racha de días y recordatorio diario opcional, solo los días que todavía no practicaste.
+• 30 logros para desbloquear: rondas, racha, horas de estudio, vocabulario y más.
+
+SIN DISTRACCIONES
+• Funciona sin conexión.
+• Sin cuentas, sin publicidad y sin recolección de datos.
+• Tu progreso queda guardado en tu dispositivo.
+
+Disponible en español, inglés, francés y alemán.
+```
+
 **Palabras clave:**
 ```
-japanese,hiragana,katakana,romaji,learn,alphabet,vocabulary,writing,reading,beginner,jlpt,nihongo
+japonés,kana,romaji,aprender,silabario,vocabulario,japón,idioma,escritura,lectura,viaje,frases
+```
+
+### French (France)
+
+**Sous-titre :**
+```
+Apprenez les kana en mots
+```
+
+**Texte promotionnel :**
+```
+Apprenez les hiragana et katakana ligne par ligne avec de vrais mots, puis utilisez-les avec des phrases de voyage : konbini, train, hôtel.
+```
+
+**Description :**
+```
+WordGana vous aide à apprendre les hiragana et les katakana pas à pas, avec de vrais mots japonais.
+
+Cochez les lignes de kana que vous connaissez déjà : WordGana crée des séries uniquement avec ce que vous savez lire. À chaque nouvelle ligne, de nouveaux mots se débloquent.
+
+DU CARACTÈRE À LA PHRASE
+• Caractères : entraînez-vous sur les kana de chaque nouvelle ligne.
+• Mots : près de 450 en hiragana et presque 150 en katakana, chacun avec sa traduction.
+• Phrases : terminez toutes les lignes pour débloquer des phrases simples.
+
+LE JAPONAIS POUR VOTRE VOYAGE
+• Des phrases utiles pour le konbini, le restaurant, les transports et l'hôtel, comme « Puis-je payer par carte ? » ou « L'addition, s'il vous plaît ».
+• Écrites en kana, pour les lire avec ce que vous avez appris.
+
+DEUX MODES D'ENTRAÎNEMENT
+• Lire : vous voyez les kana et tapez leur lecture en romaji.
+• Écrire : vous voyez le romaji et tapez les kana avec le clavier japonais.
+
+PENSÉ POUR APPRENDRE
+• Des séries courtes de 10.
+• Ce que vous ratez revient plus souvent.
+• Écoutez la prononciation avec la voix japonaise de votre appareil.
+• Accepte les variantes de romaji comme shi/si ou tsu/tu.
+• Des statistiques montrent les caractères et les mots les plus difficiles pour vous.
+
+TEMPS D'ÉTUDE
+• Le temps passé à pratiquer dans l'app est enregistré automatiquement.
+• Ajoutez ce que vous étudiez ailleurs avec un chrono ou à la main : cours, lecture, écoute et vos propres catégories.
+• Objectif quotidien, graphique jour par jour et répartition par catégorie.
+
+RESTEZ MOTIVÉ
+• Série de jours et rappel quotidien facultatif, uniquement les jours où vous n'avez pas encore pratiqué.
+• 30 succès à débloquer : séries, régularité, heures d'étude, vocabulaire et plus.
+
+SANS DISTRACTION
+• Fonctionne hors ligne.
+• Sans compte, sans publicité et sans collecte de données.
+• Votre progression reste sur votre appareil.
+
+Disponible en français, anglais, espagnol et allemand.
+```
+
+**Mots-clés :**
+```
+japonais,kana,romaji,apprendre,alphabet,vocabulaire,japon,écriture,lecture,débutant,voyage,phrases
+```
+
+### German
+
+**Untertitel:**
+```
+Kana lernen mit echten Wörtern
+```
+
+**Werbetext:**
+```
+Lerne Hiragana und Katakana Reihe für Reihe mit echten Wörtern und nutze sie mit Reisesätzen für Konbini, Zug und Hotel.
+```
+
+**Beschreibung:**
+```
+WordGana hilft dir, Hiragana und Katakana Schritt für Schritt zu lernen – mit echten japanischen Wörtern.
+
+Hake die Kana-Reihen ab, die du schon kennst, und WordGana stellt Runden nur aus dem zusammen, was du lesen kannst. Mit jeder neuen Reihe kommen neue Wörter dazu.
+
+VOM ZEICHEN ZUM SATZ
+• Zeichen: Übe die einzelnen Kana jeder neuen Reihe.
+• Wörter: fast 450 in Hiragana und fast 150 in Katakana, jeweils mit Bedeutung.
+• Sätze: Wenn du alle Reihen abgeschlossen hast, werden einfache Sätze freigeschaltet.
+
+JAPANISCH FÜR DEINE REISE
+• Nützliche Sätze für Konbini, Restaurant, Verkehrsmittel und Hotel, zum Beispiel „Kann ich mit Karte zahlen?“ oder „Die Rechnung, bitte“.
+• In Kana geschrieben, damit du sie mit dem Gelernten lesen kannst.
+
+ZWEI ÜBUNGSMODI
+• Lesen: Du siehst Kana und tippst die Lesung in Romaji.
+• Schreiben: Du siehst Romaji und tippst Kana mit der japanischen Tastatur.
+
+ZUM LERNEN GEMACHT
+• Kurze Runden mit 10 Aufgaben.
+• Was du falsch machst, kommt öfter wieder.
+• Hör dir die Aussprache mit der japanischen Stimme deines Geräts an.
+• Akzeptiert Romaji-Varianten wie shi/si und tsu/tu.
+• Statistiken zeigen, welche Zeichen und Wörter dir am schwersten fallen.
+
+LERNZEIT
+• Die Übungszeit in der App wird automatisch erfasst.
+• Füge hinzu, was du anderswo lernst, mit Timer oder von Hand: Unterricht, Lesen, Hören und eigene Kategorien.
+• Tagesziel, Tagesdiagramm und Aufteilung nach Kategorie.
+
+BLEIB MOTIVIERT
+• Tägliche Serie und optionale Erinnerung, nur an Tagen, an denen du noch nicht geübt hast.
+• 30 Erfolge zum Freischalten: Runden, Serien, Lernstunden, Wortschatz und mehr.
+
+OHNE ABLENKUNG
+• Funktioniert offline.
+• Kein Konto, keine Werbung, keine Datenerfassung.
+• Dein Fortschritt bleibt auf deinem Gerät.
+
+Verfügbar auf Deutsch, Englisch, Spanisch und Französisch.
+```
+
+**Schlüsselwörter:**
+```
+japanisch,kana,romaji,lernen,alphabet,vokabeln,japan,schreiben,lesen,anfänger,reise,sätze
 ```
 
 ## 5. Capturas de pantalla
@@ -189,8 +324,9 @@ Se cargan por tamaño de pantalla. Si subís el tamaño más grande, Apple lo re
 Cargá entre 3 y 10 capturas por dispositivo.
 
 Las capturas ya están en `docs/app-store-screenshots/`, en español (`es`) e inglés (`en`), con una
-carpeta para iPhone y otra para iPad. Ya tienen el tamaño correcto. Subí las de cada carpeta en su
-localización y en este orden: inicio, leer, correcto (con el botón de audio), escribir, resultados (con un
+carpeta para iPhone y otra para iPad. Ya tienen el tamaño correcto. Subí las de `en` en English (U.S.) y las
+de `es` en las dos fichas de español. Francés y alemán pueden quedar sin capturas propias: en ese caso Apple
+muestra las del idioma principal. Subilas en este orden: inicio, leer, correcto (con el botón de audio), escribir, resultados (con un
 logro desbloqueado), logros, estadísticas y tiempo de estudio.
 
 Son de la app real con progreso de ejemplo, renderizadas con WebKit, el mismo motor que usa la app en iOS.
