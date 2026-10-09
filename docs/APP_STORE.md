@@ -454,13 +454,15 @@ Se cargan por tamaño de pantalla. Si subís el tamaño más grande, Apple lo re
 
 | Dispositivo | Tamaño en píxeles | Obligatorio |
 | --- | --- | --- |
-| iPhone 6,9" (por ejemplo, iPhone 17 Pro Max) | 1320 × 2868 | Sí |
+| iPhone con Dynamic Island (pantalla mediana, 6,1" o 6,3") | 1206 × 2622 | Sí: es la casilla que pide App Store Connect desde fines de 2026 |
+| iPhone 6,9" (por ejemplo, iPhone 17 Pro Max) | 1320 × 2868 | No, si cargás la mediana |
 | iPad 13" (por ejemplo, iPad Pro 13") | 2064 × 2752 | Sí, porque la app también es para iPad |
 
 Cargá entre 3 y 10 capturas por dispositivo.
 
 Las capturas ya están en `docs/app-store-screenshots/`, en español (`es`) e inglés (`en`), con una
-carpeta para iPhone y otra para iPad. Ya tienen el tamaño correcto. Subí las de `en` en English (U.S.) y las
+carpeta para iPhone de 6,9" (`iphone`), otra para la pantalla mediana (`iphone-mediano`, escaladas desde las de
+6,9") y otra para iPad. Ya tienen el tamaño correcto. Subí las de `en` en English (U.S.) y las
 de `es` en las dos fichas de español. Portugués, francés, alemán e italiano pueden quedar sin capturas propias: en ese caso Apple
 muestra las del idioma principal. Subilas en este orden: inicio, leer, correcto (con el botón de audio), escribir, resultados (con un
 logro desbloqueado), logros, estadísticas y tiempo de estudio.
