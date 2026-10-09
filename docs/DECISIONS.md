@@ -253,3 +253,11 @@ más experiencia», ちゃわん «tazón para arroz») junto con sus claves de 
 salen de i18n en lugar de estar en japonés. El detalle está en `docs/TRANSLATION_AUDIT.md`.
 **Por qué:** `AGENTS.md` fija el inglés como idioma fuente de respaldo y alguien que eligió italiano lo entiende
 mejor que el español. Las estadísticas se indexan por kana, así que cambiar la glosa no borra el progreso.
+
+## 2026-10-09 — Icono con あ generado con AppKit
+
+**Decisión:** los PNG del icono (iOS y PWA) se generan con `scripts/make-icons.swift`, que dibuja la あ blanca de
+`public/icon.svg` sobre el naranja, sin canal alfa. Reemplaza a `make-icons.mjs`, que dibujaba un círculo blanco.
+**Por qué:** el script anterior escribía PNG a mano y no podía dibujar texto, así que la build 1 salió con un
+icono provisorio. AppKit viene con macOS y Xcode, así que no suma dependencias. La build 1 ya estaba en App
+Store Connect, por eso esta va como build 2.
