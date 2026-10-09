@@ -28,7 +28,7 @@ const zero: AchievementMetrics = {
 };
 
 describe('ACHIEVEMENTS', () => {
-  it('tiene ids únicos y títulos en los cuatro idiomas', () => {
+  it('tiene ids únicos y títulos en los seis idiomas', () => {
     expect(new Set(ACHIEVEMENTS.map((a) => a.id)).size).toBe(ACHIEVEMENTS.length);
     for (const achievement of ACHIEVEMENTS) {
       expect(Object.values(achievement.title).every((title) => title.trim().length > 0)).toBe(true);

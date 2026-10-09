@@ -244,3 +244,12 @@ Brasil. En la tienda, inglés es el idioma principal y el nombre es el mismo en 
 **Por qué:** Brasil tiene una comunidad grande que estudia japonés e Italia suma un mercado europeo más; hacerlo
 antes de la primera versión evita publicar una actualización solo de idiomas. Un archivo aparte evita reescribir
 las 650 entradas existentes y deja claro qué falta si se agrega contenido.
+
+## 2026-10-09 — Revisión de traducciones y fallback al inglés
+
+**Decisión:** si a una palabra le falta el significado en un idioma, se muestra el inglés; el español queda solo
+cuando tampoco hay inglés. Se precisaron tres glosas en español (きまる «quedar decidido», せんぱい «compañero con
+más experiencia», ちゃわん «tazón para arroz») junto con sus claves de traducción. Los placeholders de respuesta
+salen de i18n en lugar de estar en japonés. El detalle está en `docs/TRANSLATION_AUDIT.md`.
+**Por qué:** `AGENTS.md` fija el inglés como idioma fuente de respaldo y alguien que eligió italiano lo entiende
+mejor que el español. Las estadísticas se indexan por kana, así que cambiar la glosa no borra el progreso.
