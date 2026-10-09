@@ -261,3 +261,13 @@ mejor que el español. Las estadísticas se indexan por kana, así que cambiar l
 **Por qué:** el script anterior escribía PNG a mano y no podía dibujar texto, así que la build 1 salió con un
 icono provisorio. AppKit viene con macOS y Xcode, así que no suma dependencias. La build 1 ya estaba en App
 Store Connect, por eso esta va como build 2.
+
+## 2026-10-09 — Icono en capas: あ y ア, build 3
+
+**Decisión:** el icono pasa a ser un documento de Icon Composer (`ios/App/App/AppIcon.icon`) con dos capas
+vectoriales: una あ blanca adelante y una ア translúcida atrás, sobre el mismo naranja. `scripts/make-icons.swift`
+genera las capas, el `icon.json` y los PNG planos con la misma geometría (PWA y asset catalog). Va como build 3.
+**Por qué:** la app enseña los dos silabarios y el icono anterior mostraba uno solo; muchas apps de kana usan
+una あ sobre color. Las HIG piden capas para que iOS 26 aplique el vidrio y arme las variantes oscura,
+transparente y teñida (`app-icons.md › Layer design`), y sugieren formas superpuestas con distinta opacidad para
+dar profundidad. La あ no es translúcida para que se lea nítida en tamaños chicos.

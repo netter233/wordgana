@@ -1,0 +1,46 @@
+{
+  "fill" : {
+    "solid" : "srgb:0.76078,0.25490,0.04706,1.00000"
+  },
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "image-name" : "hiragana-a.svg",
+          "name" : "hiragana-a",
+          "opacity" : 1.0
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : false,
+        "value" : 0.4
+      }
+    },
+    {
+      "layers" : [
+        {
+          "image-name" : "katakana-a.svg",
+          "name" : "katakana-a",
+          "opacity" : 0.4
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.4
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "squares" : [
+      "iOS"
+    ]
+  }
+}
