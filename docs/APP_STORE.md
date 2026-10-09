@@ -259,7 +259,7 @@ Disponible en français, anglais, espagnol, portugais, allemand et italien.
 
 **Mots-clés :**
 ```
-japonais,kana,romaji,apprendre,alphabet,vocabulaire,japon,écriture,lecture,débutant,voyage,phrases
+japonais,kana,romaji,apprendre,alphabet,vocabulaire,japon,écriture,débutant,voyage,phrases
 ```
 
 ### German
@@ -445,7 +445,7 @@ Disponibile in italiano, inglese, spagnolo, francese, tedesco e portoghese.
 
 **Parole chiave:**
 ```
-giapponese,kana,romaji,imparare,alfabeto,vocabolario,giappone,scrittura,lettura,principiante,viaggio
+giapponese,kana,romaji,imparare,alfabeto,vocabolario,giappone,scrittura,principiante,viaggio
 ```
 
 ## 5. Capturas de pantalla
