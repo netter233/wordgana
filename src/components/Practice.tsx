@@ -165,7 +165,7 @@ export function Practice({ words, mode, script, practiceKind, onAnswer, onActive
             ref={sentenceInputRef}
             className="answer-input answer-input--sentence"
             rows={2}
-            placeholder={mode === 'write' ? 'かなで…' : 'romaji…'}
+            placeholder={mode === 'write' ? messages.answerKana : messages.answerRomaji}
           />
         ) : (
           <input
@@ -173,9 +173,7 @@ export function Practice({ words, mode, script, practiceKind, onAnswer, onActive
             ref={wordInputRef}
             className="answer-input"
             type="text"
-            placeholder={mode === 'write'
-              ? script === 'hiragana' ? 'ひらがなで…' : 'カタカナで…'
-              : 'romaji…'}
+            placeholder={mode === 'write' ? messages.answerKana : messages.answerRomaji}
           />
         )}
         <button type="submit" className="primary-btn" disabled={correct === null && !value.trim()}>

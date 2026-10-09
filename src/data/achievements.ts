@@ -1,6 +1,6 @@
 /**
  * Definición de logros. El progreso de cada uno se mide con una métrica (`metric`) y una meta (`target`);
- * se desbloquea cuando la métrica alcanza la meta. Los títulos viven acá en los cuatro idiomas; las
+ * se desbloquea cuando la métrica alcanza la meta. Los títulos viven acá en los seis idiomas; las
  * descripciones se arman en i18n a partir de la métrica y la meta.
  */
 import type { AppLanguage } from '../i18n';

@@ -3,7 +3,7 @@ import { LANGUAGE_NAMES, type AppLanguage, type LanguagePreference, useI18n } fr
 const LANGUAGES: AppLanguage[] = ['en', 'es', 'pt', 'fr', 'it', 'de'];
 
 export function LanguagePicker() {
-  const { language, preference, setPreference, messages } = useI18n();
+  const { deviceLanguage, preference, setPreference, messages } = useI18n();
 
   return (
     <section className="card settings-card">
@@ -20,7 +20,7 @@ export function LanguagePicker() {
         value={preference}
         onChange={(event) => setPreference(event.target.value as LanguagePreference)}
       >
-        <option value="auto">{messages.autoLanguage(LANGUAGE_NAMES[language])}</option>
+        <option value="auto">{messages.autoLanguage(LANGUAGE_NAMES[deviceLanguage])}</option>
         {LANGUAGES.map((code) => (
           <option key={code} value={code}>{LANGUAGE_NAMES[code]}</option>
         ))}

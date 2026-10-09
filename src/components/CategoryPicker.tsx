@@ -82,10 +82,11 @@ export function CategoryCreator({ onCreate, onCancel }: CategoryCreatorProps) {
               type="button"
               role="radio"
               aria-checked={option === icon}
+              aria-label={messages.categoryIconNames[option]}
               className={option === icon ? 'icon-option icon-option--selected' : 'icon-option'}
               onClick={() => setIcon(option)}
             >
-              {option}
+              <span aria-hidden="true">{option}</span>
             </button>
           ))}
         </div>

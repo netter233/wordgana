@@ -37,7 +37,7 @@ const T: Record<string, Translation> = {
   'Quisiera hacer el check-in.': ['I’d like to check in.', 'Je voudrais m’enregistrer à l’hôtel.', 'Ich möchte einchecken.'],
   '¿A qué hora es el check-out?': ['What time is check-out?', 'À quelle heure faut-il libérer la chambre ?', 'Um wie viel Uhr ist der Check-out?'],
   '¿Dónde está el baño?': ['Where is the restroom?', 'Où sont les toilettes ?', 'Wo ist die Toilette?'],
-  '¿Dónde están los lockers?': ['Where are the coin lockers?', 'Où sont les consignes à pièces ?', 'Wo sind die Münzschließfächer?'],
+  '¿Dónde están los lockers?': ['Where are the coin lockers?', 'Où sont les consignes automatiques ?', 'Wo sind die Münzschließfächer?'],
   'Dos entradas, por favor.': ['Two admission tickets, please.', 'Deux billets d’entrée, s’il vous plaît.', 'Zwei Eintrittskarten, bitte.'],
   'pollo': ['chicken', 'poulet', 'Hähnchen'],
   'croqueta': ['croquette', 'croquette', 'Krokette'],
@@ -201,7 +201,7 @@ const T: Record<string, Translation> = {
   'olvidar': ['to forget', 'oublier', 'vergessen'], 'recordar / memorizar': ['to remember / memorize', 'se souvenir / mémoriser', 'sich erinnern / auswendig lernen'],
   'pensar / considerar': ['to think / consider', 'penser / considérer', 'denken / überlegen'],
   'transmitir / comunicar': ['to convey / communicate', 'transmettre / communiquer', 'übermitteln / mitteilen'],
-  'decidirse': ['to be decided', 'être décidé', 'entschieden werden'], 'elegir': ['to choose', 'choisir', 'wählen'],
+  'quedar decidido': ['to be decided', 'être décidé', 'entschieden werden'], 'elegir': ['to choose', 'choisir', 'wählen'],
   'buscar': ['to look for', 'chercher', 'suchen'], 'encontrar': ['to find', 'trouver', 'finden'],
   'estudiar': ['to study', 'étudier', 'lernen'], 'viajar': ['to travel', 'voyager', 'reisen'],
   'limpiar': ['to clean', 'nettoyer', 'putzen'], 'volver / regresar': ['to return', 'revenir / retourner', 'zurückkehren'],
@@ -221,7 +221,7 @@ const T: Record<string, Translation> = {
   'angosto / estrecho': ['narrow', 'étroit', 'eng'], 'lindo / limpio': ['pretty / clean', 'joli / propre', 'schön / sauber'],
   'silencioso / tranquilo': ['quiet / calm', 'silencieux / calme', 'ruhig / still'],
   'con energía / sano': ['energetic / healthy', 'en forme / en bonne santé', 'fit / gesund'],
-  'que gusta': ['liked / favorite', 'aimé / préféré', 'beliebt / gern'], 'que no gusta': ['disliked', "que l'on n'aime pas", 'nicht gemocht'],
+  'que gusta': ['liked', 'que l’on aime', 'gern gemocht'], 'que no gusta': ['disliked', "que l'on n'aime pas", 'nicht gemocht'],
   'famoso': ['famous', 'célèbre', 'berühmt'], 'difícil / duro (situación)': ['tough / difficult (situation)', 'dur / difficile (situation)', 'hart / schwierig (Situation)'],
   'está bien / no hay problema': ['all right / no problem', "ça va / pas de problème", 'in Ordnung / kein Problem'],
   'desocupado / con tiempo libre': ['free / not busy', 'libre / pas occupé', 'frei / nicht beschäftigt'],
@@ -337,7 +337,7 @@ const T: Record<string, Translation> = {
   'calentito / agradable': ['nice and warm', 'bien au chaud', 'mollig warm'],
   'un minuto': ['one minute', 'une minute', 'eine Minute'],
   'fracaso / error': ['failure / mistake', 'échec / erreur', 'Misserfolg / Fehler'],
-  'compañero mayor (senpai)': ['senior (senpai)', 'aîné (senpai)', 'Älterer (Senpai)'],
+  'compañero con más experiencia (senpai)': ['senior colleague (senpai)', 'camarade plus expérimenté (senpai)', 'erfahrenerer Kollege (Senpai)'],
   'con fluidez (al hablar)': ['fluently (speaking)', 'couramment (parler)', 'fließend (sprechen)'],
   'justo / a la medida': ['exactly / a perfect fit', 'pile / parfaitement ajusté', 'genau / passt perfekt'],
   'presentación (exposición)': ['presentation (talk)', 'présentation (exposé)', 'Präsentation (Vortrag)'],
@@ -370,7 +370,7 @@ const T: Record<string, Translation> = {
   'posada japonesa (ryokan)': ['Japanese inn (ryokan)', 'auberge japonaise (ryokan)', 'japanisches Gasthaus (Ryokan)'],
   'estudiar en el exterior': ['studying abroad', 'études à l\'étranger', 'Auslandsstudium'],
   'segundo (de tiempo)': ['second (time)', 'seconde', 'Sekunde'],
-  'tazón de arroz': ['rice bowl', 'bol à riz', 'Reisschale'],
+  'tazón para arroz': ['rice bowl', 'bol à riz', 'Reisschale'],
   'un poco': ['a little', 'un peu', 'ein bisschen'],
   'atención / cuidado': ['attention / caution', 'attention', 'Achtung / Vorsicht'],
   'ahorros': ['savings', 'économies', 'Ersparnisse'],
@@ -445,14 +445,15 @@ const LANGUAGE_INDEX: Record<'en' | 'fr' | 'de', number> = { en: 0, fr: 1, de: 2
 
 export function localizedMeaning(word: Word, language: AppLanguage): string {
   if (language === 'es') return word.es;
-  if (language === 'pt') return PT_IT[word.es]?.[0] ?? word.es;
-  if (language === 'it') return PT_IT[word.es]?.[1] ?? word.es;
-  return T[word.es]?.[LANGUAGE_INDEX[language]] ?? word.es;
+  const english = T[word.es]?.[0]?.trim() || word.es;
+  if (language === 'pt') return PT_IT[word.es]?.[0]?.trim() || english;
+  if (language === 'it') return PT_IT[word.es]?.[1]?.trim() || english;
+  return T[word.es]?.[LANGUAGE_INDEX[language]]?.trim() || english;
 }
 
 export function hasCompleteTranslation(word: Word): boolean {
   return Boolean(
-    T[word.es]?.every((translation) => translation.length > 0)
-      && PT_IT[word.es]?.every((translation) => translation.length > 0),
+    T[word.es]?.length === 3 && T[word.es].every((translation) => translation.trim().length > 0)
+      && PT_IT[word.es]?.length === 2 && PT_IT[word.es].every((translation) => translation.trim().length > 0),
   );
 }

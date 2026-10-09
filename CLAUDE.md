@@ -42,7 +42,7 @@ src/data/katakanaWords.ts vocabulario curado que se escribe normalmente en katak
 src/data/sentences.ts    oraciones avanzadas con romaji explícito; tipo PracticeKind (kana | words | sentences)
 src/data/translations.ts significados en inglés, francés y alemán, indexados por el texto en español
 src/data/translationsPtIt.ts significados en portugués (Brasil) e italiano, con la misma clave
-src/data/achievements.ts definición de logros (métrica, meta y título en los cuatro idiomas)
+src/data/achievements.ts definición de logros (métrica, meta y título en los seis idiomas)
 src/lib/kana.ts          tokenize, toRomaji, matchesRomaji, normalizeHiragana, isEligible, checkAnswer
 src/lib/letters.ts       letras sueltas de las filas activas como ítems de práctica
 src/lib/session.ts       arma rondas sin repetidos y prioriza ítems que necesitan repaso; countMastered

@@ -29,7 +29,7 @@ Apply these standards to every user-facing change in this repository. Treat them
 ## Required validation
 
 - Run `npm test`, `npm run build`, and `npm run ios:sync` for user-facing changes.
-- Check light and dark appearance, keyboard focus, touch target sizes, screen-reader names, narrow layouts, and all four supported languages.
+- Check light and dark appearance, keyboard focus, touch target sizes, screen-reader names, narrow layouts, and all six supported languages.
 - Add a focused automated test when a durable invariant can regress, such as localization coverage or persisted settings. Avoid tests that only duplicate implementation details.
 
 ## Primary references

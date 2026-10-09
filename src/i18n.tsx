@@ -5,18 +5,24 @@ export type AppLanguage = 'en' | 'es' | 'fr' | 'de' | 'pt' | 'it';
 export type LanguagePreference = 'auto' | AppLanguage;
 
 const LANGUAGE_KEY = 'wordgana:language:v1';
-const SUPPORTED_LANGUAGES: AppLanguage[] = ['en', 'es', 'fr', 'de', 'pt', 'it'];
+export const SUPPORTED_LANGUAGES: readonly AppLanguage[] = ['en', 'es', 'fr', 'de', 'pt', 'it'];
 
 function capitalize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-const EN_ITEMS: Record<PracticeKind, string> = { kana: 'characters', words: 'words', sentences: 'sentences' };
-const ES_ITEMS: Record<PracticeKind, string> = { kana: 'letras', words: 'palabras', sentences: 'oraciones' };
-const FR_ITEMS: Record<PracticeKind, string> = { kana: 'caractères', words: 'mots', sentences: 'phrases' };
-const DE_ITEMS: Record<PracticeKind, string> = { kana: 'Zeichen', words: 'Wörter', sentences: 'Sätze' };
-const PT_ITEMS: Record<PracticeKind, string> = { kana: 'letras', words: 'palavras', sentences: 'frases' };
-const IT_ITEMS: Record<PracticeKind, string> = { kana: 'caratteri', words: 'parole', sentences: 'frasi' };
+const ITEM_NAMES: Record<AppLanguage, Record<PracticeKind, [singular: string, plural: string]>> = {
+  en: { kana: ['character', 'characters'], words: ['word', 'words'], sentences: ['sentence', 'sentences'] },
+  es: { kana: ['letra', 'letras'], words: ['palabra', 'palabras'], sentences: ['oración', 'oraciones'] },
+  fr: { kana: ['caractère', 'caractères'], words: ['mot', 'mots'], sentences: ['phrase', 'phrases'] },
+  de: { kana: ['Zeichen', 'Zeichen'], words: ['Wort', 'Wörter'], sentences: ['Satz', 'Sätze'] },
+  pt: { kana: ['letra', 'letras'], words: ['palavra', 'palavras'], sentences: ['frase', 'frases'] },
+  it: { kana: ['carattere', 'caratteri'], words: ['parola', 'parole'], sentences: ['frase', 'frasi'] },
+};
+
+function itemName(language: AppLanguage, kind: PracticeKind, count: number): string {
+  return ITEM_NAMES[language][kind][count === 1 ? 0 : 1];
+}
 
 export const LANGUAGE_NAMES: Record<AppLanguage, string> = {
   en: 'English',
@@ -206,6 +212,7 @@ export interface Messages {
   categoryName: string;
   categoryNamePlaceholder: string;
   categoryIcon: string;
+  categoryIconNames: Record<string, string>;
   createCategory: string;
   cancel: string;
   durationLabel: string;
@@ -256,7 +263,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     tagline: 'Practice Japanese with real words, one row at a time.', closeHome: 'Close and return home', back: 'Back',
     scriptSelector: 'Writing system to practice', result: 'Results', letters: 'Characters', words: 'Words', sentences: 'Sentences',
     rowsTitle: (script) => `1. ${capitalize(script)} rows`,
-    rowsSummary: (selected, total, words) => `${selected} of ${total} selected · ${words} words`,
+    rowsSummary: (selected, total, words) => `${selected} of ${total} selected · ${words} ${itemName('en', 'words', words)}`,
     done: 'Done', edit: 'Edit', selectAll: 'Select all', clearAll: 'Clear all', basicRows: 'Basic',
     dakutenRows: 'With dakuten (゛゜)', combinationsRows: 'Combinations (ゃゅょ)', specialRows: 'Special',
     doublesConsonants: 'doubles consonants', lengthensVowel: 'lengthens the vowel',
@@ -276,8 +283,8 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     mastered: (item) => `${item} mastered`, emptyContent: 'Select rows to get practice content.',
     masteryHint: (percent) => `${percent}% mastered · each item needs two correct answers in a row.`,
     chooseMoreRows: 'Select more rows',
-    practiceItems: (count, kind) => `Practice ${count} ${EN_ITEMS[kind]}`,
-    minimumHint: (count, kind) => `Select more rows: at least ${count} available ${EN_ITEMS[kind]} are required.`,
+    practiceItems: (count, kind) => `Practice ${count} ${itemName('en', kind, count)}`,
+    minimumHint: (count, kind) => `Select more rows: at least ${count} ${itemName('en', kind, count)} must be available.`,
     answerRomaji: 'Your answer in romaji', answerKana: 'Your answer in kana', instructionRomaji: 'type in romaji',
     instructionSentenceKana: 'type the sentence in kana', instructionScript: (script) => `type in ${script}`,
     check: 'Check', viewResults: 'View results', next: 'Next', dontRemember: 'Skip',
@@ -289,7 +296,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     audioTitle: 'Pronunciation',
     audioDescription: 'Hear each answer with your device’s Japanese voice. Works offline.',
     autoSpeak: 'Play after each answer',
-    audioUnavailable: 'Your device has no Japanese voice. On iPhone, add one in Settings → Accessibility → Spoken Content → Voices → Japanese.',
+    audioUnavailable: 'Your device has no Japanese voice available. Check the language and speech settings on your device.',
     statsTitle: 'Statistics',
     totalsTitle: 'All time',
     roundsLabel: 'Rounds',
@@ -317,7 +324,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     achievementsUnlocked: (count) => count === 1 ? 'Achievement unlocked!' : `${count} achievements unlocked!`,
     viewAchievements: 'See all achievements',
     nextAchievement: 'Up next',
-    allAchievementsDone: 'You unlocked every achievement. お疲れさま!',
+    allAchievementsDone: 'You unlocked every achievement. Well done!',
     unlockedOn: (date) => `Unlocked ${date}`,
     categoryRounds: 'Rounds',
     categoryStreak: 'Streak',
@@ -368,6 +375,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     categoryName: 'Name',
     categoryNamePlaceholder: 'For example: Anime',
     categoryIcon: 'Icon',
+    categoryIconNames: { '📺': 'Television', '🎮': 'Video games', '🎵': 'Music', '📝': 'Notes', '🗣️': 'Speaking', '🧑\u200d🏫': 'Teaching', '📚': 'Books', '🎬': 'Movies', '🍜': 'Food', '✈️': 'Travel', '🧠': 'Memory', '⭐': 'Star' },
     createCategory: 'Create',
     cancel: 'Cancel',
     durationLabel: 'Duration',
@@ -416,7 +424,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     tagline: 'Practicá japonés con palabras reales, fila por fila.', closeHome: 'Cerrar y volver al inicio', back: 'Volver',
     scriptSelector: 'Silabario para practicar', result: 'Resultado', letters: 'Letras', words: 'Palabras', sentences: 'Oraciones',
     rowsTitle: (script) => `1. Filas de ${script}`,
-    rowsSummary: (selected, total, words) => `${selected} de ${total} seleccionadas · ${words} palabras`,
+    rowsSummary: (selected, total, words) => `${selected} de ${total} ${selected === 1 ? 'seleccionada' : 'seleccionadas'} · ${words} ${itemName('es', 'words', words)}`,
     done: 'Listo', edit: 'Editar', selectAll: 'Seleccionar todas', clearAll: 'Quitar todas', basicRows: 'Básicas',
     dakutenRows: 'Con dakuten (゛゜)', combinationsRows: 'Combinaciones (ゃゅょ)', specialRows: 'Especial',
     doublesConsonants: 'duplica consonantes', lengthensVowel: 'alarga la vocal',
@@ -435,8 +443,8 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     rounds: (count) => `${count} ${count === 1 ? 'ronda' : 'rondas'}`,
     mastered: (item) => `${item} afianzadas`, emptyContent: 'Activá filas para tener contenido con el que practicar.',
     masteryHint: (percent) => `${percent}% afianzado · hacen falta dos aciertos seguidos por ítem.`,
-    chooseMoreRows: 'Elegí más filas', practiceItems: (count, kind) => `Practicar ${count} ${ES_ITEMS[kind]}`,
-    minimumHint: (count, kind) => `Activá más filas: hacen falta al menos ${count} ${ES_ITEMS[kind]} disponibles.`,
+    chooseMoreRows: 'Elegí más filas', practiceItems: (count, kind) => `Practicar ${count} ${itemName('es', kind, count)}`,
+    minimumHint: (count, kind) => `Activá más filas: ${count === 1 ? 'hace falta' : 'hacen falta'} al menos ${count} ${itemName('es', kind, count)} ${count === 1 ? 'disponible' : 'disponibles'}.`,
     answerRomaji: 'Tu respuesta en romaji', answerKana: 'Tu respuesta en kana', instructionRomaji: 'escribí en romaji',
     instructionSentenceKana: 'escribí la oración en kana', instructionScript: (script) => `escribí en ${script}`,
     check: 'Comprobar', viewResults: 'Ver resultados', next: 'Siguiente', dontRemember: 'Omitir',
@@ -448,7 +456,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     audioTitle: 'Pronunciación',
     audioDescription: 'Escuchá cada respuesta con la voz japonesa de tu dispositivo. Funciona sin conexión.',
     autoSpeak: 'Reproducir al responder',
-    audioUnavailable: 'Tu dispositivo no tiene una voz japonesa. En iPhone podés agregarla en Ajustes → Accesibilidad → Contenido leído → Voces → Japonés.',
+    audioUnavailable: 'Tu dispositivo no tiene una voz japonesa disponible. Revisá la configuración de idioma y voz de tu dispositivo.',
     statsTitle: 'Estadísticas',
     totalsTitle: 'Desde que empezaste',
     roundsLabel: 'Rondas',
@@ -476,7 +484,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     achievementsUnlocked: (count) => count === 1 ? '¡Logro desbloqueado!' : `¡${count} logros desbloqueados!`,
     viewAchievements: 'Ver todos los logros',
     nextAchievement: 'Tu próximo logro',
-    allAchievementsDone: 'Desbloqueaste todos los logros. ¡お疲れさま!',
+    allAchievementsDone: 'Desbloqueaste todos los logros. ¡Buen trabajo!',
     unlockedOn: (date) => `Desbloqueado el ${date}`,
     categoryRounds: 'Rondas',
     categoryStreak: 'Racha',
@@ -527,6 +535,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     categoryName: 'Nombre',
     categoryNamePlaceholder: 'Por ejemplo: Anime',
     categoryIcon: 'Ícono',
+    categoryIconNames: { '📺': 'Televisión', '🎮': 'Videojuegos', '🎵': 'Música', '📝': 'Notas', '🗣️': 'Hablar', '🧑\u200d🏫': 'Enseñanza', '📚': 'Libros', '🎬': 'Películas', '🍜': 'Comida', '✈️': 'Viajes', '🧠': 'Memoria', '⭐': 'Estrella' },
     createCategory: 'Crear',
     cancel: 'Cancelar',
     durationLabel: 'Duración',
@@ -575,7 +584,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     tagline: 'Pratiquez le japonais avec de vrais mots, ligne par ligne.', closeHome: "Fermer et revenir à l'accueil", back: 'Retour',
     scriptSelector: "Système d'écriture à pratiquer", result: 'Résultats', letters: 'Caractères', words: 'Mots', sentences: 'Phrases',
     rowsTitle: (script) => `1. Lignes de ${script}`,
-    rowsSummary: (selected, total, words) => `${selected} sur ${total} sélectionnées · ${words} mots`,
+    rowsSummary: (selected, total, words) => `${selected} sur ${total} ${selected === 1 ? 'sélectionnée' : 'sélectionnées'} · ${words} ${itemName('fr', 'words', words)}`,
     done: 'Terminé', edit: 'Modifier', selectAll: 'Tout sélectionner', clearAll: 'Tout désélectionner', basicRows: 'Bases',
     dakutenRows: 'Avec dakuten (゛゜)', combinationsRows: 'Combinaisons (ゃゅょ)', specialRows: 'Spécial',
     doublesConsonants: 'double les consonnes', lengthensVowel: 'allonge la voyelle',
@@ -594,8 +603,8 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     rounds: (count) => `${count} ${count === 1 ? 'série' : 'séries'}`,
     mastered: (item) => `Maîtrise : ${item}`, emptyContent: 'Sélectionnez des lignes pour obtenir du contenu à pratiquer.',
     masteryHint: (percent) => `${percent} % maîtrisé · chaque élément nécessite deux bonnes réponses consécutives.`,
-    chooseMoreRows: 'Sélectionnez plus de lignes', practiceItems: (count, kind) => `Pratiquer ${count} ${FR_ITEMS[kind]}`,
-    minimumHint: (count, kind) => `Sélectionnez plus de lignes : il faut au moins ${count} ${FR_ITEMS[kind]} disponibles.`,
+    chooseMoreRows: 'Sélectionnez plus de lignes', practiceItems: (count, kind) => `Pratiquer ${count} ${itemName('fr', kind, count)}`,
+    minimumHint: (count, kind) => `Sélectionnez plus de lignes : il faut au moins ${count} ${itemName('fr', kind, count)} ${count === 1 ? 'disponible' : 'disponibles'}.`,
     answerRomaji: 'Votre réponse en romaji', answerKana: 'Votre réponse en kana', instructionRomaji: 'écrivez en romaji',
     instructionSentenceKana: 'écrivez la phrase en kana', instructionScript: (script) => `écrivez en ${script}`,
     check: 'Vérifier', viewResults: 'Voir les résultats', next: 'Suivant', dontRemember: 'Passer',
@@ -607,7 +616,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     audioTitle: 'Prononciation',
     audioDescription: 'Écoutez chaque réponse avec la voix japonaise de votre appareil. Fonctionne hors ligne.',
     autoSpeak: 'Lire après chaque réponse',
-    audioUnavailable: 'Votre appareil n’a pas de voix japonaise. Sur iPhone, ajoutez-en une dans Réglages → Accessibilité → Contenu énoncé → Voix → Japonais.',
+    audioUnavailable: 'Aucune voix japonaise n’est disponible sur votre appareil. Vérifiez les réglages de langue et de synthèse vocale de votre appareil.',
     statsTitle: 'Statistiques',
     totalsTitle: "Depuis le début",
     roundsLabel: 'Séries',
@@ -635,7 +644,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     achievementsUnlocked: (count) => count === 1 ? 'Succès débloqué !' : `${count} succès débloqués !`,
     viewAchievements: 'Voir tous les succès',
     nextAchievement: 'Prochain succès',
-    allAchievementsDone: 'Vous avez débloqué tous les succès. お疲れさま !',
+    allAchievementsDone: 'Vous avez débloqué tous les succès. Bravo !',
     unlockedOn: (date) => `Débloqué le ${date}`,
     categoryRounds: 'Séries',
     categoryStreak: 'Régularité',
@@ -686,6 +695,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     categoryName: 'Nom',
     categoryNamePlaceholder: 'Par exemple : Anime',
     categoryIcon: 'Icône',
+    categoryIconNames: { '📺': 'Télévision', '🎮': 'Jeux vidéo', '🎵': 'Musique', '📝': 'Notes', '🗣️': 'Expression orale', '🧑\u200d🏫': 'Enseignement', '📚': 'Livres', '🎬': 'Films', '🍜': 'Nourriture', '✈️': 'Voyages', '🧠': 'Mémoire', '⭐': 'Étoile' },
     createCategory: 'Créer',
     cancel: 'Annuler',
     durationLabel: 'Durée',
@@ -693,7 +703,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     dayLabel: 'Jour',
     yesterday: 'Hier',
     otherDay: 'Autre jour',
-    noteLabel: 'Note (facultatif)',
+    noteLabel: 'Note (facultative)',
     notePlaceholder: 'Par exemple : chapitre 3 de Genki',
     save: 'Enregistrer',
     addTimeTitle: 'Ajouter du temps',
@@ -734,7 +744,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     tagline: 'Übe Japanisch mit echten Wörtern, Reihe für Reihe.', closeHome: 'Schließen und zur Startseite', back: 'Zurück',
     scriptSelector: 'Zu übendes Schriftsystem', result: 'Ergebnis', letters: 'Zeichen', words: 'Wörter', sentences: 'Sätze',
     rowsTitle: (script) => `1. ${capitalize(script)}-Reihen`,
-    rowsSummary: (selected, total, words) => `${selected} von ${total} ausgewählt · ${words} Wörter`,
+    rowsSummary: (selected, total, words) => `${selected} von ${total} ausgewählt · ${words} ${itemName('de', 'words', words)}`,
     done: 'Fertig', edit: 'Bearbeiten', selectAll: 'Alle auswählen', clearAll: 'Alle abwählen', basicRows: 'Grundzeichen',
     dakutenRows: 'Mit Dakuten (゛゜)', combinationsRows: 'Kombinationen (ゃゅょ)', specialRows: 'Sonderzeichen',
     doublesConsonants: 'verdoppelt Konsonanten', lengthensVowel: 'verlängert den Vokal',
@@ -745,18 +755,18 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     katakanaSentenceNote: 'Die Sätze kombinieren Katakana und Hiragana, wie in natürlichem Japanisch.',
     practiceStyleTitle: '3. Wie möchtest du üben?', read: 'Lesen', write: 'Schreiben',
     readSentenceDescription: 'Sieh einen Satz und tippe ihn in Romaji',
-    readScriptDescription: (script) => `Sieh ${script} und tippe es in Romaji`,
+    readScriptDescription: (script) => `Lies ${capitalize(script)} und schreibe es in Romaji`,
     writeSentenceDescription: 'Sieh Romaji und tippe den Satz in Kana',
-    writeScriptDescription: (script) => `Sieh Romaji und tippe es in ${script} (japanische Tastatur erforderlich)`,
+    writeScriptDescription: (script) => `Lies Romaji und schreibe es in ${capitalize(script)} (japanische Tastatur erforderlich)`,
     exampleHint: 'Wähle eine Reihe aus, um hier ein echtes Beispiel zu sehen.', streak: 'Serie', today: 'Heute',
     days: (count) => `${count} ${count === 1 ? 'Tag' : 'Tage'}`,
     rounds: (count) => `${count} ${count === 1 ? 'Runde' : 'Runden'}`,
     mastered: (item) => `Gefestigt: ${item}`, emptyContent: 'Wähle Reihen aus, um Übungsinhalte zu erhalten.',
     masteryHint: (percent) => `${percent} % gefestigt · jedes Element braucht zwei richtige Antworten in Folge.`,
-    chooseMoreRows: 'Mehr Reihen auswählen', practiceItems: (count, kind) => `${count} ${DE_ITEMS[kind]} üben`,
-    minimumHint: (count, kind) => `Wähle mehr Reihen aus: Mindestens ${count} verfügbare ${DE_ITEMS[kind]} sind erforderlich.`,
+    chooseMoreRows: 'Mehr Reihen auswählen', practiceItems: (count, kind) => `${count} ${itemName('de', kind, count)} üben`,
+    minimumHint: (count, kind) => `Wähle mehr Reihen aus: Mindestens ${count} ${itemName('de', kind, count)} ${count === 1 ? 'muss verfügbar sein' : 'müssen verfügbar sein'}.`,
     answerRomaji: 'Deine Antwort in Romaji', answerKana: 'Deine Antwort in Kana', instructionRomaji: 'in Romaji schreiben',
-    instructionSentenceKana: 'den Satz in Kana schreiben', instructionScript: (script) => `in ${script} schreiben`,
+    instructionSentenceKana: 'den Satz in Kana schreiben', instructionScript: (script) => `in ${capitalize(script)} schreiben`,
     check: 'Prüfen', viewResults: 'Ergebnisse ansehen', next: 'Weiter', dontRemember: 'Überspringen',
     correct: 'Richtig! ', expected: 'Antwort: ', yourAnswer: 'Deine Antwort: ', emptyAnswer: '(leer)',
     perfectRound: 'Perfekte Runde!', toReview: (count) => `${count} zum Wiederholen`, reviewTitle: 'Wiederholen',
@@ -766,7 +776,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     audioTitle: 'Aussprache',
     audioDescription: 'Höre jede Antwort mit der japanischen Stimme deines Geräts. Funktioniert offline.',
     autoSpeak: 'Nach jeder Antwort abspielen',
-    audioUnavailable: 'Dein Gerät hat keine japanische Stimme. Auf dem iPhone kannst du eine unter Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen → Japanisch hinzufügen.',
+    audioUnavailable: 'Auf deinem Gerät ist keine japanische Stimme verfügbar. Prüfe die Sprach- und Sprachausgabeeinstellungen deines Geräts.',
     statsTitle: 'Statistik',
     totalsTitle: 'Seit Beginn',
     roundsLabel: 'Runden',
@@ -794,7 +804,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     achievementsUnlocked: (count) => count === 1 ? 'Erfolg freigeschaltet!' : `${count} Erfolge freigeschaltet!`,
     viewAchievements: 'Alle Erfolge ansehen',
     nextAchievement: 'Als Nächstes',
-    allAchievementsDone: 'Du hast alle Erfolge freigeschaltet. お疲れさま!',
+    allAchievementsDone: 'Du hast alle Erfolge freigeschaltet. Gut gemacht!',
     unlockedOn: (date) => `Freigeschaltet am ${date}`,
     categoryRounds: 'Runden',
     categoryStreak: 'Serie',
@@ -845,6 +855,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     categoryName: 'Name',
     categoryNamePlaceholder: 'Zum Beispiel: Anime',
     categoryIcon: 'Symbol',
+    categoryIconNames: { '📺': 'Fernsehen', '🎮': 'Videospiele', '🎵': 'Musik', '📝': 'Notizen', '🗣️': 'Sprechen', '🧑\u200d🏫': 'Unterrichten', '📚': 'Bücher', '🎬': 'Filme', '🍜': 'Essen', '✈️': 'Reisen', '🧠': 'Gedächtnis', '⭐': 'Stern' },
     createCategory: 'Erstellen',
     cancel: 'Abbrechen',
     durationLabel: 'Dauer',
@@ -893,8 +904,8 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     tagline: 'Pratique japonês com palavras reais, uma linha por vez.', closeHome: 'Fechar e voltar ao início', back: 'Voltar',
     scriptSelector: 'Silabário para praticar', result: 'Resultado', letters: 'Letras', words: 'Palavras', sentences: 'Frases',
     rowsTitle: (script) => `1. Linhas de ${script}`,
-    rowsSummary: (selected, total, words) => `${selected} de ${total} selecionadas · ${words} palavras`,
-    done: 'Pronto', edit: 'Editar', selectAll: 'Selecionar todas', clearAll: 'Limpar todas', basicRows: 'Básicas',
+    rowsSummary: (selected, total, words) => `${selected} de ${total} ${selected === 1 ? 'selecionada' : 'selecionadas'} · ${words} ${itemName('pt', 'words', words)}`,
+    done: 'Pronto', edit: 'Editar', selectAll: 'Selecionar todas', clearAll: 'Desmarcar todas', basicRows: 'Básicas',
     dakutenRows: 'Com dakuten (゛゜)', combinationsRows: 'Combinações (ゃゅょ)', specialRows: 'Especial',
     doublesConsonants: 'dobra a consoante', lengthensVowel: 'alonga a vogal',
     contentTitle: '2. O que você quer praticar?', roundsOf: (count) => `Rodadas de ${count}`,
@@ -913,11 +924,11 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     mastered: (item) => `${item} dominadas`, emptyContent: 'Ative linhas para ter conteúdo para praticar.',
     masteryHint: (percent) => `${percent}% dominado · cada item precisa de dois acertos seguidos.`,
     chooseMoreRows: 'Escolha mais linhas',
-    practiceItems: (count, kind) => `Praticar ${count} ${PT_ITEMS[kind]}`,
-    minimumHint: (count, kind) => `Ative mais linhas: são necessárias pelo menos ${count} ${PT_ITEMS[kind]} disponíveis.`,
+    practiceItems: (count, kind) => `Praticar ${count} ${itemName('pt', kind, count)}`,
+    minimumHint: (count, kind) => `Ative mais linhas: ${count === 1 ? 'é necessária' : 'são necessárias'} pelo menos ${count} ${itemName('pt', kind, count)} ${count === 1 ? 'disponível' : 'disponíveis'}.`,
     answerRomaji: 'Sua resposta em romaji', answerKana: 'Sua resposta em kana', instructionRomaji: 'escreva em romaji',
     instructionSentenceKana: 'escreva a frase em kana', instructionScript: (script) => `escreva em ${script}`,
-    check: 'Verificar', viewResults: 'Ver resultados', next: 'Próxima', dontRemember: 'Pular',
+    check: 'Verificar', viewResults: 'Ver resultados', next: 'Próximo', dontRemember: 'Pular',
     correct: 'Certo! ', expected: 'Era: ', yourAnswer: 'Sua resposta: ', emptyAnswer: '(vazia)',
     perfectRound: 'Rodada perfeita!', toReview: (count) => `${count} para revisar`, reviewTitle: 'Para revisar',
     reviewMissed: (count) => count === 1 ? 'Revisar o erro' : `Revisar os ${count} erros`,
@@ -926,7 +937,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     audioTitle: 'Pronúncia',
     audioDescription: 'Ouça cada resposta com a voz japonesa do seu dispositivo. Funciona sem internet.',
     autoSpeak: 'Tocar ao responder',
-    audioUnavailable: 'Seu dispositivo não tem uma voz japonesa. No iPhone, adicione uma em Ajustes → Acessibilidade → Conteúdo Falado → Vozes → Japonês.',
+    audioUnavailable: 'Seu dispositivo não tem uma voz japonesa disponível. Confira as configurações de idioma e voz do seu dispositivo.',
     statsTitle: 'Estatísticas',
     totalsTitle: 'Desde o começo',
     roundsLabel: 'Rodadas',
@@ -954,7 +965,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     achievementsUnlocked: (count) => count === 1 ? 'Conquista desbloqueada!' : `${count} conquistas desbloqueadas!`,
     viewAchievements: 'Ver todas as conquistas',
     nextAchievement: 'Sua próxima conquista',
-    allAchievementsDone: 'Você desbloqueou todas as conquistas. お疲れさま!',
+    allAchievementsDone: 'Você desbloqueou todas as conquistas. Muito bem!',
     unlockedOn: (date) => `Desbloqueada em ${date}`,
     categoryRounds: 'Rodadas',
     categoryStreak: 'Sequência',
@@ -1005,6 +1016,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     categoryName: 'Nome',
     categoryNamePlaceholder: 'Por exemplo: Anime',
     categoryIcon: 'Ícone',
+    categoryIconNames: { '📺': 'Televisão', '🎮': 'Videogames', '🎵': 'Música', '📝': 'Notas', '🗣️': 'Fala', '🧑\u200d🏫': 'Ensino', '📚': 'Livros', '🎬': 'Filmes', '🍜': 'Comida', '✈️': 'Viagens', '🧠': 'Memória', '⭐': 'Estrela' },
     createCategory: 'Criar',
     cancel: 'Cancelar',
     durationLabel: 'Duração',
@@ -1053,7 +1065,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     tagline: 'Pratica il giapponese con parole vere, una riga alla volta.', closeHome: 'Chiudi e torna all’inizio', back: 'Indietro',
     scriptSelector: 'Sillabario da praticare', result: 'Risultato', letters: 'Caratteri', words: 'Parole', sentences: 'Frasi',
     rowsTitle: (script) => `1. Righe di ${script}`,
-    rowsSummary: (selected, total, words) => `${selected} di ${total} selezionate · ${words} parole`,
+    rowsSummary: (selected, total, words) => `${selected} di ${total} ${selected === 1 ? 'selezionata' : 'selezionate'} · ${words} ${itemName('it', 'words', words)}`,
     done: 'Fatto', edit: 'Modifica', selectAll: 'Seleziona tutte', clearAll: 'Deseleziona tutte', basicRows: 'Base',
     dakutenRows: 'Con dakuten (゛゜)', combinationsRows: 'Combinazioni (ゃゅょ)', specialRows: 'Speciale',
     doublesConsonants: 'raddoppia la consonante', lengthensVowel: 'allunga la vocale',
@@ -1064,17 +1076,17 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     katakanaSentenceNote: 'Le frasi combinano katakana e hiragana, come si scrive normalmente in giapponese.',
     practiceStyleTitle: '3. Come vuoi praticare?', read: 'Leggere', write: 'Scrivere',
     readSentenceDescription: 'Vedi una frase e la scrivi in romaji',
-    readScriptDescription: (script) => `Vedi gli ${script} e scrivi in romaji`,
+    readScriptDescription: (script) => `Vedi i caratteri ${script} e scrivi in romaji`,
     writeSentenceDescription: 'Vedi il romaji e scrivi la frase in kana',
     writeScriptDescription: (script) => `Vedi il romaji e scrivi in ${script} (serve la tastiera giapponese)`,
     exampleHint: 'Attiva una riga per vedere qui un esempio reale.', streak: 'Serie di giorni', today: 'Oggi',
     days: (count) => `${count} ${count === 1 ? 'giorno' : 'giorni'}`,
-    rounds: (count) => `${count} ${count === 1 ? 'serie' : 'serie'}`,
-    mastered: (item) => `${item} consolidate`, emptyContent: 'Attiva delle righe per avere contenuti da praticare.',
+    rounds: (count) => `${count} serie`,
+    mastered: (item) => `Padronanza: ${item}`, emptyContent: 'Attiva delle righe per avere contenuti da praticare.',
     masteryHint: (percent) => `${percent}% consolidato · ogni elemento richiede due risposte giuste di fila.`,
     chooseMoreRows: 'Scegli altre righe',
-    practiceItems: (count, kind) => `Pratica ${count} ${IT_ITEMS[kind]}`,
-    minimumHint: (count, kind) => `Attiva altre righe: servono almeno ${count} ${IT_ITEMS[kind]} disponibili.`,
+    practiceItems: (count, kind) => `Pratica ${count} ${itemName('it', kind, count)}`,
+    minimumHint: (count, kind) => `Attiva altre righe: ${count === 1 ? 'serve' : 'servono'} almeno ${count} ${itemName('it', kind, count)} ${count === 1 ? 'disponibile' : 'disponibili'}.`,
     answerRomaji: 'La tua risposta in romaji', answerKana: 'La tua risposta in kana', instructionRomaji: 'scrivi in romaji',
     instructionSentenceKana: 'scrivi la frase in kana', instructionScript: (script) => `scrivi in ${script}`,
     check: 'Verifica', viewResults: 'Vedi risultati', next: 'Avanti', dontRemember: 'Salta',
@@ -1086,7 +1098,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     audioTitle: 'Pronuncia',
     audioDescription: 'Ascolta ogni risposta con la voce giapponese del tuo dispositivo. Funziona offline.',
     autoSpeak: 'Riproduci dopo ogni risposta',
-    audioUnavailable: 'Il tuo dispositivo non ha una voce giapponese. Su iPhone puoi aggiungerla in Impostazioni → Accessibilità → Contenuto letto → Voci → Giapponese.',
+    audioUnavailable: 'Sul tuo dispositivo non è disponibile una voce giapponese. Controlla le impostazioni di lingua e sintesi vocale del dispositivo.',
     statsTitle: 'Statistiche',
     totalsTitle: 'Dall’inizio',
     roundsLabel: 'Serie',
@@ -1114,7 +1126,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     achievementsUnlocked: (count) => count === 1 ? 'Traguardo sbloccato!' : `${count} traguardi sbloccati!`,
     viewAchievements: 'Vedi tutti i traguardi',
     nextAchievement: 'Il tuo prossimo traguardo',
-    allAchievementsDone: 'Hai sbloccato tutti i traguardi. お疲れさま!',
+    allAchievementsDone: 'Hai sbloccato tutti i traguardi. Ottimo lavoro!',
     unlockedOn: (date) => `Sbloccato il ${date}`,
     categoryRounds: 'Serie',
     categoryStreak: 'Costanza',
@@ -1125,7 +1137,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     achStreak: (count) => `Pratica ${count} giorni di fila`,
     achWords: (count) => `Consolida ${count} parole`,
     achPerfect: (count) => count === 1 ? 'Completa una serie da 5 o più senza errori' : `Completa ${count} serie senza errori`,
-    achBasic: (script) => `Consolida tutti i caratteri base degli ${script} in Caratteri`,
+    achBasic: (script) => `Consolida tutti i caratteri ${script} di base in modalità Caratteri`,
     achBothModes: 'Completa serie in Leggere e in Scrivere',
     achBothScripts: 'Pratica hiragana e katakana',
     achSentences: 'Completa una serie di frasi',
@@ -1165,6 +1177,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     categoryName: 'Nome',
     categoryNamePlaceholder: 'Per esempio: Anime',
     categoryIcon: 'Icona',
+    categoryIconNames: { '📺': 'Televisione', '🎮': 'Videogiochi', '🎵': 'Musica', '📝': 'Appunti', '🗣️': 'Conversazione', '🧑\u200d🏫': 'Insegnamento', '📚': 'Libri', '🎬': 'Film', '🍜': 'Cibo', '✈️': 'Viaggi', '🧠': 'Memoria', '⭐': 'Stella' },
     createCategory: 'Crea',
     cancel: 'Annulla',
     durationLabel: 'Durata',
@@ -1211,6 +1224,7 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
 
 interface I18nValue {
   language: AppLanguage;
+  deviceLanguage: AppLanguage;
   preference: LanguagePreference;
   setPreference: (preference: LanguagePreference) => void;
   messages: Messages;
@@ -1220,7 +1234,8 @@ const I18nContext = createContext<I18nValue | null>(null);
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [preference, setPreferenceState] = useState<LanguagePreference>(loadLanguagePreference);
-  const language = preference === 'auto' ? detectDeviceLanguage() : preference;
+  const deviceLanguage = detectDeviceLanguage();
+  const language = preference === 'auto' ? deviceLanguage : preference;
 
   useEffect(() => {
     document.documentElement.lang = language;
@@ -1233,10 +1248,11 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<I18nValue>(() => ({
     language,
+    deviceLanguage,
     preference,
     setPreference,
     messages: MESSAGES[language],
-  }), [language, preference]);
+  }), [language, deviceLanguage, preference]);
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }
