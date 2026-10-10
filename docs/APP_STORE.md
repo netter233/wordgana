@@ -502,23 +502,83 @@ iPhone. En ese caso no hacen falta capturas de iPad.
 Cada build que subas tiene que tener un **Build** mayor que la anterior: 1, 2, 3, etc. Lo cambiás en
 **TARGETS → App → General**. Cuando publiques una actualización, subí también **Version**, por ejemplo de 1.0 a 1.1.
 
-## 7. Probar con TestFlight (opcional)
+## 7. Probar con TestFlight
 
 En App Store Connect, abrí la pestaña **TestFlight**, agregate como tester interno e instalá la build desde
-la app TestFlight en el iPhone. Sirve para comprobar que la versión que va a la tienda funciona antes de enviarla.
+la app TestFlight en el iPhone. No lo saltees: Apple pide probar en dispositivos físicos la misma build que se
+envía a revisión. Probá en el iPhone y, si la app sigue disponible para iPad, también en un iPad.
 
 ## 8. Enviar a revisión
 
 1. En la pestaña de la app, abrí la versión 1.0 y en **Build** elegí la que subiste.
-2. En **Información para la revisión**, desmarcá **Inicio de sesión requerido** y agregá esta nota:
-   ```
-   No account is required. The app works fully offline. To try it, select one or more kana rows on the home screen, pick Read or Write mode and start a round. Write mode uses the Japanese (Kana) keyboard; Read mode uses the standard keyboard. The optional daily reminder (Settings) uses local notifications only; nothing is sent to a server.
-   ```
+2. En **Información para la revisión**, desmarcá **Inicio de sesión requerido**. En **Notas**, pegá el texto de
+   [Respuesta a la regla 2.1](#si-apple-pide-más-información-regla-21) con el modelo y la versión de iOS
+   completos, y en **Archivo adjunto** subí el video de demostración. Apple pidió que los dos queden ahí para
+   los próximos envíos.
 3. En **Lanzamiento de la versión**, elegí si se publica automáticamente al aprobarse o manualmente.
 4. Tocá **Agregar para revisión** y después **Enviar a revisión de la app**.
 
 La respuesta suele llegar en 1 o 2 días. Si la rechazan, el mensaje dice qué regla no se cumple. Corregí
 eso, subí una build nueva y reenviala.
+
+### Si Apple pide más información (regla 2.1)
+
+El mensaje **Guideline 2.1 - Information Needed** no es un rechazo por un error: Apple lo manda a las cuentas
+de desarrollador nuevas y pide un video y seis respuestas antes de seguir con la revisión. No hace falta
+cambiar nada ni subir una build nueva.
+
+**Grabar el video**
+
+1. Usá tu iPhone con la última versión de iOS. Si **Grabar pantalla** no está en el Centro de control,
+   agregalo desde el Centro de control (mantené apretado un espacio vacío → **Agregar un control**).
+2. Cerrá WordGana del todo, para que el video muestre el arranque. Empezá a grabar desde la pantalla de inicio
+   del iPhone y tocá el ícono de la app.
+3. Mostrá este recorrido, en unos 2 o 3 minutos:
+   1. Elegir hiragana y marcar un par de filas.
+   2. Una ronda de letras en modo Leer, con un acierto, un error y el botón de audio.
+   3. Una ronda de palabras en modo Escribir con el teclado japonés (Kana).
+   4. La pantalla de resultados.
+   5. Logros, Estadísticas y Tiempo de estudio.
+   6. Configuración: idioma y recordatorio diario, aceptando el permiso de notificaciones si aparece.
+   7. Si podés, marcá todas las filas y mostrá una ronda de oraciones.
+4. Recortá el principio y el final desde la app Fotos.
+
+**Responder**
+
+1. En App Store Connect, abrí el mensaje de App Review, pegá el texto de abajo y adjuntá el video.
+2. Pegá el mismo texto en **Información para la revisión → Notas** y subí el video en **Archivo adjunto**.
+   Guardá.
+3. Antes de pegarlo, reemplazá `[MODEL]` y `[VERSION]` por el modelo del iPhone y la versión de iOS del video.
+   El texto tiene unos 3000 caracteres; el límite del campo es 4000.
+
+Respuesta a la regla 2.1:
+```
+Thank you for reviewing WordGana. The requested information is below, and the same text is in the Notes field of App Review Information.
+
+1. SCREEN RECORDING
+Attached, recorded on an iPhone [MODEL] running iOS [VERSION]. It starts by launching the app from the Home Screen and shows the typical flow: choosing kana rows, a Read round, a Write round with the Japanese keyboard, results, achievements, statistics, study time and the optional daily reminder. The app has no account registration or login, no user-generated content, and no paid content or in-app purchases.
+
+2. PURPOSE AND AUDIENCE
+WordGana helps beginners learn to read and write hiragana and katakana, the two Japanese syllabaries. It is for people starting to learn Japanese, including travelers. Most kana apps either drill isolated characters or show words that contain characters the learner hasn't studied yet. In WordGana, the learner checks off the rows they already know, and every round uses only those characters: single characters first, then real words (about 450 in hiragana and 150 in katakana, each with its meaning) and, once every row is known, simple sentences and travel phrases. Missed items come back more often. Streaks, study time and achievements help the learner keep going.
+
+3. HOW TO USE IT
+No account, login or sample files are needed, and the app works fully offline.
+- Home screen: choose Hiragana or Katakana, tap "Edit" in the rows section and select the rows you know (for example, the vowels and the K row). "Select all" selects every row.
+- "What do you want to practice?": Characters or Words. Sentences unlock when every row is selected.
+- "How do you want to practice?": Read (see kana, type the romaji with the standard keyboard) or Write (see romaji, type it in kana with the Japanese Kana keyboard, which can be added in iOS Settings > General > Keyboard > Keyboards).
+- Tap "Practice 10 ..." to start a round. The speaker button plays the pronunciation. The round ends on a results screen.
+- The home screen also opens Achievements, Study time (timer and manual entries) and Statistics.
+- Settings (gear icon) has the language, pronunciation, daily goal and the optional daily reminder.
+
+4. EXTERNAL SERVICES
+None. The app has no backend, analytics, advertising, authentication, payment or AI service, and it makes no network requests. All content is bundled in the app, and progress is stored only on the device. It uses two on-device iOS features: the system's Japanese voice for pronunciation, and local notifications for the optional reminder. It is built with Capacitor, an open-source framework.
+
+5. REGIONAL DIFFERENCES
+None. The app works the same in all regions. The interface follows the device language (English, Spanish, Portuguese, French, German or Italian), with English as the fallback.
+
+6. REGULATED OR THIRD-PARTY MATERIAL
+Not applicable. WordGana is an educational app outside regulated industries. All words, meanings and sentences were written for this app, and it contains no licensed or third-party protected content.
+```
 
 ## Referencias oficiales
 
