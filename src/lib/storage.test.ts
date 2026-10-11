@@ -6,10 +6,12 @@ import {
   recordLifetimeRound,
   saveLifetime,
   dayKey,
+  loadReviewEach,
   loadSettings,
   normalizeProgress,
   recordAnswer,
   recordRound,
+  saveReviewEach,
   saveSettings,
   type Progress,
 } from './storage';
@@ -47,6 +49,14 @@ describe('settings', () => {
     };
     saveSettings(settings);
     expect(loadSettings()).toEqual(settings);
+  });
+
+  it('corrige cada respuesta por defecto y recuerda si se apaga', () => {
+    expect(loadReviewEach()).toBe(true);
+    saveReviewEach(false);
+    expect(loadReviewEach()).toBe(false);
+    saveReviewEach(true);
+    expect(loadReviewEach()).toBe(true);
   });
 });
 

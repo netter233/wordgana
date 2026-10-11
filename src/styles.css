@@ -1107,6 +1107,7 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
   font-size: 0.95rem;
 }
 .missed-list li:last-child { border-bottom: none; }
+.missed-answer { display: block; margin-top: 2px; color: var(--bad); font-size: 0.85rem; }
 .results-actions { margin-top: 20px; }
 
 @media (prefers-reduced-motion: reduce) {

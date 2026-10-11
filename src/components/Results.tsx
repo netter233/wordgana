@@ -1,5 +1,5 @@
 import type { Achievement } from '../data/achievements';
-import type { Word } from '../data/words';
+import type { MissedItem } from './Practice';
 import { readingFor } from '../lib/study';
 import { localizedMeaning } from '../data/translations';
 import { useI18n } from '../i18n';
@@ -10,7 +10,7 @@ import { UnlockedAchievements } from './UnlockedAchievements';
 interface ResultsProps {
   total: number;
   correctCount: number;
-  missed: Word[];
+  missed: MissedItem[];
   newAchievements: Achievement[];
   onOpenAchievements: () => void;
   onRestartSameRound: () => void;
@@ -47,11 +47,16 @@ export function Results({
         <div className="card missed-list">
           <h3 className="row-section-title">{messages.reviewTitle}</h3>
           <ul>
-            {missed.map((w) => (
+            {missed.map(({ word: w, answer }) => (
               <li key={w.kana}>
                 <span className="missed-text">
                   <span className="ja">{w.kana}</span> · {readingFor(w)}
                   {w.es && ` · ${localizedMeaning(w, language)}`}
+                  {answer && (
+                    <span className="missed-answer">
+                      {messages.yourAnswer}<span className="ja">{answer}</span>
+                    </span>
+                  )}
                 </span>
                 {canSpeak && <SpeakButton text={w.kana} small />}
               </li>

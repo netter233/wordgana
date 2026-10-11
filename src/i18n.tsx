@@ -133,6 +133,9 @@ export interface Messages {
   audioTitle: string;
   audioDescription: string;
   autoSpeak: string;
+  practiceSettingsTitle: string;
+  practiceSettingsDescription: string;
+  reviewEach: string;
   audioUnavailable: string;
   statsTitle: string;
   totalsTitle: string;
@@ -299,6 +302,9 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     audioTitle: 'Pronunciation',
     audioDescription: 'Hear each answer with your device’s Japanese voice. Works offline.',
     autoSpeak: 'Play after each answer',
+    practiceSettingsTitle: 'Practice',
+    practiceSettingsDescription: 'Turn it off to answer without stopping and see your mistakes at the end of the round.',
+    reviewEach: 'Review after each item',
     audioUnavailable: 'Your device has no Japanese voice available. Check the language and speech settings on your device.',
     statsTitle: 'Statistics',
     totalsTitle: 'All time',
@@ -462,6 +468,9 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     audioTitle: 'Pronunciación',
     audioDescription: 'Escuchá cada respuesta con la voz japonesa de tu dispositivo. Funciona sin conexión.',
     autoSpeak: 'Reproducir al responder',
+    practiceSettingsTitle: 'Práctica',
+    practiceSettingsDescription: 'Desactivala para responder de corrido y ver los errores al final de la ronda.',
+    reviewEach: 'Corregir cada respuesta',
     audioUnavailable: 'Tu dispositivo no tiene una voz japonesa disponible. Revisá la configuración de idioma y voz de tu dispositivo.',
     statsTitle: 'Estadísticas',
     totalsTitle: 'Desde que empezaste',
@@ -625,6 +634,9 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     audioTitle: 'Prononciation',
     audioDescription: 'Écoutez chaque réponse avec la voix japonaise de votre appareil. Fonctionne hors ligne.',
     autoSpeak: 'Lire après chaque réponse',
+    practiceSettingsTitle: 'Pratique',
+    practiceSettingsDescription: 'Désactivez-la pour répondre sans interruption et voir vos erreurs à la fin de la série.',
+    reviewEach: 'Corriger chaque réponse',
     audioUnavailable: 'Aucune voix japonaise n’est disponible sur votre appareil. Vérifiez les réglages de langue et de synthèse vocale de votre appareil.',
     statsTitle: 'Statistiques',
     totalsTitle: "Depuis le début",
@@ -788,6 +800,9 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     audioTitle: 'Aussprache',
     audioDescription: 'Höre jede Antwort mit der japanischen Stimme deines Geräts. Funktioniert offline.',
     autoSpeak: 'Nach jeder Antwort abspielen',
+    practiceSettingsTitle: 'Üben',
+    practiceSettingsDescription: 'Schalte es aus, um ohne Unterbrechung zu antworten und deine Fehler am Ende der Runde zu sehen.',
+    reviewEach: 'Jede Antwort sofort prüfen',
     audioUnavailable: 'Auf deinem Gerät ist keine japanische Stimme verfügbar. Prüfe die Sprach- und Sprachausgabeeinstellungen deines Geräts.',
     statsTitle: 'Statistik',
     totalsTitle: 'Seit Beginn',
@@ -952,6 +967,9 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     audioTitle: 'Pronúncia',
     audioDescription: 'Ouça cada resposta com a voz japonesa do seu dispositivo. Funciona sem internet.',
     autoSpeak: 'Tocar ao responder',
+    practiceSettingsTitle: 'Prática',
+    practiceSettingsDescription: 'Desative para responder sem parar e ver os erros no fim da rodada.',
+    reviewEach: 'Corrigir cada resposta',
     audioUnavailable: 'Seu dispositivo não tem uma voz japonesa disponível. Confira as configurações de idioma e voz do seu dispositivo.',
     statsTitle: 'Estatísticas',
     totalsTitle: 'Desde o começo',
@@ -1116,6 +1134,9 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     audioTitle: 'Pronuncia',
     audioDescription: 'Ascolta ogni risposta con la voce giapponese del tuo dispositivo. Funziona offline.',
     autoSpeak: 'Riproduci dopo ogni risposta',
+    practiceSettingsTitle: 'Pratica',
+    practiceSettingsDescription: 'Disattivala per rispondere senza interruzioni e vedere gli errori alla fine della serie.',
+    reviewEach: 'Correggi ogni risposta',
     audioUnavailable: 'Sul tuo dispositivo non è disponibile una voce giapponese. Controlla le impostazioni di lingua e sintesi vocale del dispositivo.',
     statsTitle: 'Statistiche',
     totalsTitle: 'Dall’inizio',

@@ -2,11 +2,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { ContentCards } from './components/ContentCards';
 import { AchievementsScreen } from './components/AchievementsScreen';
 import { AudioSettings } from './components/AudioSettings';
+import { PracticeSettings } from './components/PracticeSettings';
 import { LanguagePicker } from './components/LanguagePicker';
 import { GoalSettings } from './components/GoalSettings';
 import { ModeCards } from './components/ModeCards';
 import { ReminderSettings } from './components/ReminderSettings';
-import { Practice } from './components/Practice';
+import { Practice, type RoundSummary } from './components/Practice';
 import { Results } from './components/Results';
 import { RowPicker } from './components/RowPicker';
 import { ScriptSwitch } from './components/ScriptSwitch';
@@ -68,11 +69,6 @@ const WORD_ROUND_SIZE = 10;
 const SENTENCE_ROUND_SIZE = 5;
 
 type Screen = 'setup' | 'practice' | 'results' | 'settings' | 'stats' | 'achievements' | 'study';
-
-interface RoundSummary {
-  correctCount: number;
-  missed: Word[];
-}
 
 export function App() {
   const { language, messages } = useI18n();
@@ -198,7 +194,7 @@ export function App() {
 
   function reviewMissed() {
     if (!summary || summary.missed.length === 0) return;
-    setRound(summary.missed);
+    setRound(summary.missed.map((item) => item.word));
     setSummary(null);
     setScreen('practice');
   }
@@ -401,6 +397,7 @@ export function App() {
         <TopBar title={messages.settings} mark={mark} onBack={() => setScreen('setup')} />
         <LanguagePicker />
         <GoalSettings goalMinutes={goalMinutes} onChange={changeGoal} />
+        <PracticeSettings />
         <AudioSettings />
         <ReminderSettings practicedToday={practicedToday} texts={reminderTexts} />
       </main>

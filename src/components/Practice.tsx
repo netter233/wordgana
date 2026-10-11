@@ -6,11 +6,22 @@ import { checkAnswer, type PracticeMode } from '../lib/kana';
 import { alignAnswer } from '../lib/answerDiff';
 import { readingFor } from '../lib/study';
 import { speakJapanese, useJapaneseSpeech } from '../lib/speech';
-import { loadAutoSpeak } from '../lib/storage';
+import { loadAutoSpeak, loadReviewEach } from '../lib/storage';
 import { activeDelta } from '../lib/studyTime';
 import { SpeakButton } from './SpeakButton';
 import { localizedMeaning } from '../data/translations';
 import { useI18n } from '../i18n';
+
+/** Ítem fallado y lo que escribió quien practica (vacío si no escribió nada). */
+export interface MissedItem {
+  word: Word;
+  answer: string;
+}
+
+export interface RoundSummary {
+  correctCount: number;
+  missed: MissedItem[];
+}
 
 interface PracticeProps {
   words: Word[];
@@ -20,7 +31,7 @@ interface PracticeProps {
   onAnswer: (word: Word, correct: boolean) => void;
   /** Segundos de práctica activa, informados de a poco para no perderlos si se cierra la ronda. */
   onActiveTime?: (seconds: number) => void;
-  onFinish: (summary: { correctCount: number; missed: Word[] }) => void;
+  onFinish: (summary: RoundSummary) => void;
 }
 
 export function Practice({ words, mode, script, practiceKind, onAnswer, onActiveTime, onFinish }: PracticeProps) {
@@ -29,12 +40,14 @@ export function Practice({ words, mode, script, practiceKind, onAnswer, onActive
   const [value, setValue] = useState('');
   const [correct, setCorrect] = useState<boolean | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
-  const [missed, setMissed] = useState<Word[]>([]);
+  const [missed, setMissed] = useState<MissedItem[]>([]);
   const wordInputRef = useRef<HTMLInputElement>(null);
   const sentenceInputRef = useRef<HTMLTextAreaElement>(null);
   const composingRef = useRef(false);
   const canSpeak = useJapaneseSpeech();
   const autoSpeak = useMemo(loadAutoSpeak, []);
+  // Apagado, cada respuesta se corrige sin mostrar nada y la ronda sigue de corrido.
+  const reviewEach = useMemo(loadReviewEach, []);
   const lastEventRef = useRef(Date.now());
   const onActiveTimeRef = useRef(onActiveTime);
   onActiveTimeRef.current = onActiveTime;
@@ -80,11 +93,27 @@ export function Practice({ words, mode, script, practiceKind, onAnswer, onActive
 
   function gradeAnswer(ok: boolean) {
     trackActiveTime();
-    setCorrect(ok);
     onAnswer(word, ok);
+    const nextCount = ok ? correctCount + 1 : correctCount;
+    const nextMissed = ok ? missed : [...missed, { word, answer: value.trim() }];
+    setCorrectCount(nextCount);
+    setMissed(nextMissed);
+    if (!reviewEach) {
+      advance(nextCount, nextMissed);
+      return;
+    }
+    setCorrect(ok);
     if (canSpeak && autoSpeak) speakJapanese(word.kana);
-    if (ok) setCorrectCount((count) => count + 1);
-    else setMissed((items) => [...items, word]);
+  }
+
+  function advance(count: number, missedItems: MissedItem[]) {
+    if (index + 1 >= words.length) {
+      onFinish({ correctCount: count, missed: missedItems });
+      return;
+    }
+    setIndex((i) => i + 1);
+    setValue('');
+    setCorrect(null);
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -98,13 +127,7 @@ export function Practice({ words, mode, script, practiceKind, onAnswer, onActive
     }
 
     trackActiveTime();
-    if (index + 1 >= words.length) {
-      onFinish({ correctCount, missed });
-      return;
-    }
-    setIndex((i) => i + 1);
-    setValue('');
-    setCorrect(null);
+    advance(correctCount, missed);
   }
 
   function handleReveal() {

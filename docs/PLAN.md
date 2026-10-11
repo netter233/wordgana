@@ -172,7 +172,7 @@ abrir el repo, leer `CLAUDE.md` y continuar desde la primera etapa sin tildar.
       cronómetro en pausa no avanza aunque se cierre la app. Al detenerlo se registra solo el tiempo activo.
       Un cronómetro guardado con el formato viejo sigue cargando, sin pausas. Tests en `studyTime.test.ts`
       y textos en los seis idiomas.
-- [ ] **Etapa 25 — Corregir al final de la ronda (versión 1.1).** Opción "Corregir cada respuesta" ("Review
+- [x] **Etapa 25 — Corregir al final de la ronda (versión 1.1).** Opción "Corregir cada respuesta" ("Review
       after each item") en Configuración, activada por defecto y guardada como `loadAutoSpeak`/`saveAutoSpeak`
       en `storage.ts`. Activada, la ronda funciona como hasta ahora. Desactivada, **Comprobar** corrige en
       silencio y pasa directo al siguiente ítem, sin el cartel de correcto/incorrecto ni el paso de

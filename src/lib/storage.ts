@@ -224,6 +224,25 @@ export function saveAutoSpeak(value: boolean): void {
   }
 }
 
+const REVIEW_EACH_KEY = 'wordgana:review-each:v1';
+
+/** Mostrar la corrección después de cada respuesta. Encendido por defecto; apagado, se corrige al final. */
+export function loadReviewEach(): boolean {
+  try {
+    return localStorage.getItem(REVIEW_EACH_KEY) !== '0';
+  } catch {
+    return true;
+  }
+}
+
+export function saveReviewEach(value: boolean): void {
+  try {
+    localStorage.setItem(REVIEW_EACH_KEY, value ? '1' : '0');
+  } catch {
+    // Sin persistencia esta sesión.
+  }
+}
+
 const LIFETIME_KEY = 'wordgana:lifetime:v1';
 
 /** Historial acumulado que no depende de un día: base de estadísticas y logros. */
