@@ -552,6 +552,7 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
 .study-actions .secondary-btn:only-child { grid-column: 1 / -1; }
 .timer-banner {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 12px;
   margin-top: 14px;
@@ -569,7 +570,7 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
   animation: timer-pulse 1.6s ease-in-out infinite;
 }
 @keyframes timer-pulse { 50% { opacity: 0.35; } }
-.timer-banner-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.timer-banner-text { flex: 1 1 96px; min-width: 0; display: flex; flex-direction: column; }
 .timer-banner-label { overflow: hidden; color: var(--text); font-size: 0.85rem; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
 .timer-banner-clock { color: var(--accent); font-size: 1.35rem; font-weight: 800; font-variant-numeric: tabular-nums; }
 .small-btn {
@@ -587,6 +588,10 @@ h2 { font-size: 1.05rem; margin: 0 0 4px; font-weight: 700; }
 }
 .small-btn:active:not(:disabled) { transform: scale(0.96); }
 .small-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.small-btn--secondary { padding: 8px 12px; background: var(--surface); color: var(--accent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent); }
+.timer-banner-actions { display: flex; gap: 8px; margin-left: auto; }
+.timer-banner--paused .timer-banner-dot { animation: none; opacity: 0.35; }
+.timer-banner--paused .timer-banner-clock { color: var(--muted); }
 .link-btn--muted { color: var(--muted); }
 .link-btn--danger { color: var(--bad); }
 .category-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }

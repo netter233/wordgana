@@ -211,9 +211,9 @@ export function App() {
     });
   }
 
-  /** Tiempo de práctica en WordGana. Con el cronómetro en marcha no se suma, para no contarlo dos veces. */
+  /** Tiempo de práctica en WordGana. Con el cronómetro corriendo no se suma, para no contarlo dos veces. */
   function addPracticeTime(seconds: number, rounds = 0) {
-    if (timer) return;
+    if (timer && !timer.pausedAt) return;
     const categoryId = practiceCategoryId(activeScript, practiceKind);
     setStudyEntries((previous) => {
       const next = addAutoTime(previous, categoryId, seconds, new Date(), rounds);
@@ -412,7 +412,12 @@ export function App() {
       <TopBar title="WordGana" mark={mark} onSettings={() => setScreen('settings')} />
       <p className="tagline">{messages.tagline}</p>
       {timer && (
-        <TimerBanner timer={timer} customCategories={customCategories} onStop={() => openStudy('timer-stop')} />
+        <TimerBanner
+          timer={timer}
+          customCategories={customCategories}
+          onTimerChange={changeTimer}
+          onStop={() => openStudy('timer-stop')}
+        />
       )}
 
       <ScriptSwitch value={activeScript} onChange={setActiveScript} />

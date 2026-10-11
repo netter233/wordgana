@@ -14,6 +14,7 @@ import {
   addEntry,
   deleteEntry,
   updateEntry,
+  startTimer,
   timerElapsed,
   type EntryInput,
   type RunningTimer,
@@ -128,7 +129,7 @@ export function StudyArea({
             className="primary-btn"
             disabled={!timerCategory}
             onClick={() => {
-              onTimerChange({ categoryId: timerCategory, startedAt: new Date().toISOString() });
+              onTimerChange(startTimer(timerCategory));
               setView('overview');
             }}
           >
@@ -230,7 +231,12 @@ export function StudyArea({
           <>
             {celebration}
             {timer && (
-              <TimerBanner timer={timer} customCategories={customCategories} onStop={() => setView('timer-stop')} />
+              <TimerBanner
+                timer={timer}
+                customCategories={customCategories}
+                onTimerChange={onTimerChange}
+                onStop={() => setView('timer-stop')}
+              />
             )}
           </>
         )}

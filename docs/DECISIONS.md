@@ -295,3 +295,13 @@ español usa tuteo. La interfaz de la app sigue en español rioplatense.
 **Por qué:** App Store Connect rechazó el mismo nombre en un segundo idioma con "ya se usa para otra app", y
 cambiar uno solo movía el error al otro. Con una variante por idioma, además, cada nombre queda en su idioma
 («y», «e», «et»). Las fichas de español se publican en México y España, donde el voseo suena extraño.
+
+## 2026-10-11 — Pausa del cronómetro guardada como segundos acumulados
+
+**Decisión:** `RunningTimer` guarda `pausedSeconds` (las pausas ya terminadas) y `pausedAt` (la pausa en curso).
+El tiempo activo es el transcurrido desde el inicio, hasta la pausa si la hay, menos `pausedSeconds`. Un
+cronómetro guardado con el formato viejo carga con `pausedSeconds: 0`. Mientras el cronómetro está en pausa,
+la práctica en WordGana vuelve a sumarse sola como tiempo automático.
+**Por qué:** igual que el inicio, son datos fijos que no dependen de que la app siga abierta, así que la pausa
+sobrevive a cerrar la app y no hace falta guardar la lista de pausas. Con el cronómetro corriendo, la práctica
+no se suma para no contarla dos veces; en pausa ese riesgo no existe, y si no se sumara se perdería.

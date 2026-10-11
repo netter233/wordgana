@@ -11,10 +11,15 @@ import {
   groupByDay,
   loadGoal,
   loadStudyEntries,
+  loadTimer,
+  pauseTimer,
   practiceCategoryId,
   rangeStart,
+  resumeTimer,
   saveGoal,
   saveStudyEntries,
+  saveTimer,
+  startTimer,
   totalsByCategory,
   timerElapsed,
   totalsByDay,
@@ -186,7 +191,36 @@ describe('registros manuales', () => {
   });
 
   it('calcula el tiempo del cronómetro', () => {
-    expect(timerElapsed({ categoryId: 'reading', startedAt: new Date(2026, 9, 8, 11, 30).toISOString() }, today)).toBe(1800);
+    expect(timerElapsed(startTimer('reading', new Date(2026, 9, 8, 11, 30)), today)).toBe(1800);
+  });
+
+  it('no cuenta las pausas del cronómetro', () => {
+    const at = (minute: number) => new Date(2026, 9, 8, 11, minute);
+    const started = startTimer('reading', at(0));
+    const paused = pauseTimer(started, at(10));
+    expect(timerElapsed(paused, at(25))).toBe(600);
+    expect(pauseTimer(paused, at(20))).toBe(paused);
+
+    const resumed = resumeTimer(paused, at(25));
+    expect(resumed.pausedAt).toBeUndefined();
+    expect(resumed.pausedSeconds).toBe(900);
+    expect(resumeTimer(resumed, at(26))).toBe(resumed);
+    expect(timerElapsed(resumed, at(30))).toBe(900);
+
+    const second = resumeTimer(pauseTimer(resumed, at(30)), at(40));
+    expect(timerElapsed(second, at(45))).toBe(1200);
+  });
+
+  it('guarda y carga el cronómetro en pausa', () => {
+    const paused = pauseTimer({ ...startTimer('reading', new Date(2026, 9, 8, 11, 0)), pausedSeconds: 120 }, today);
+    saveTimer(paused);
+    expect(loadTimer()).toEqual(paused);
+  });
+
+  it('carga un cronómetro guardado antes de que existiera la pausa', () => {
+    const startedAt = new Date(2026, 9, 8, 11, 30).toISOString();
+    store.set('wordgana:study-timer:v1', JSON.stringify({ categoryId: 'reading', startedAt }));
+    expect(loadTimer()).toEqual({ categoryId: 'reading', startedAt, pausedSeconds: 0 });
   });
 });
 

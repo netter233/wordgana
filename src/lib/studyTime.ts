@@ -97,20 +97,37 @@ export function saveStudyEntries(entries: readonly StudyEntry[]): void {
 export interface RunningTimer {
   categoryId: string;
   startedAt: string;
+  /** Segundos de las pausas ya terminadas. */
+  pausedSeconds: number;
+  /** Inicio de la pausa actual; sin valor, el cronómetro corre. */
+  pausedAt?: string;
 }
 
 const TIMER_KEY = 'wordgana:study-timer:v1';
 
-/** Cronómetro en marcha. Se guarda el inicio, así sigue contando aunque se cierre la app. */
+function isDate(value: unknown): value is string {
+  return typeof value === 'string' && !Number.isNaN(Date.parse(value));
+}
+
+/**
+ * Cronómetro en marcha. Se guardan el inicio y las pausas, así sigue contando (o sigue en pausa) aunque se
+ * cierre la app. Un cronómetro guardado antes de que existiera la pausa carga sin pausas.
+ */
 export function loadTimer(): RunningTimer | null {
   try {
     const raw = localStorage.getItem(TIMER_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as Partial<RunningTimer>;
-    return typeof parsed.categoryId === 'string' && typeof parsed.startedAt === 'string'
-      && !Number.isNaN(Date.parse(parsed.startedAt))
-      ? { categoryId: parsed.categoryId, startedAt: parsed.startedAt }
-      : null;
+    if (typeof parsed.categoryId !== 'string' || !isDate(parsed.startedAt)) return null;
+    const pausedSeconds = typeof parsed.pausedSeconds === 'number' && Number.isFinite(parsed.pausedSeconds)
+      ? Math.max(0, Math.floor(parsed.pausedSeconds))
+      : 0;
+    return {
+      categoryId: parsed.categoryId,
+      startedAt: parsed.startedAt,
+      pausedSeconds,
+      ...(isDate(parsed.pausedAt) ? { pausedAt: parsed.pausedAt } : {}),
+    };
   } catch {
     return null;
   }
@@ -295,9 +312,28 @@ export function deleteEntry(entries: readonly StudyEntry[], id: string): StudyEn
   return entries.filter((entry) => entry.id !== id);
 }
 
-/** Segundos transcurridos desde que arrancó el cronómetro. */
+export function startTimer(categoryId: string, now = new Date()): RunningTimer {
+  return { categoryId, startedAt: now.toISOString(), pausedSeconds: 0 };
+}
+
+function secondsBetween(from: string, to: Date): number {
+  return Math.max(0, Math.floor((to.getTime() - Date.parse(from)) / 1000));
+}
+
+/** Segundos activos desde que arrancó el cronómetro, sin contar las pausas. */
 export function timerElapsed(timer: RunningTimer, now = new Date()): number {
-  return Math.max(0, Math.floor((now.getTime() - Date.parse(timer.startedAt)) / 1000));
+  const end = timer.pausedAt ? new Date(timer.pausedAt) : now;
+  return Math.max(0, secondsBetween(timer.startedAt, end) - timer.pausedSeconds);
+}
+
+export function pauseTimer(timer: RunningTimer, now = new Date()): RunningTimer {
+  return timer.pausedAt ? timer : { ...timer, pausedAt: now.toISOString() };
+}
+
+export function resumeTimer(timer: RunningTimer, now = new Date()): RunningTimer {
+  if (!timer.pausedAt) return timer;
+  const { pausedAt, ...running } = timer;
+  return { ...running, pausedSeconds: timer.pausedSeconds + secondsBetween(pausedAt, now) };
 }
 
 export interface DayGroup {

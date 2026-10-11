@@ -205,6 +205,9 @@ export interface Messages {
   addTime: string;
   stopTimer: string;
   timerRunning: string;
+  pauseTimer: string;
+  resumeTimer: string;
+  timerPaused: string;
   chooseCategory: string;
   startTimerAction: string;
   categoryLabel: string;
@@ -368,6 +371,9 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     addTime: 'Add time',
     stopTimer: 'Stop',
     timerRunning: 'Timer running',
+    pauseTimer: 'Pause',
+    resumeTimer: 'Resume',
+    timerPaused: 'Paused',
     chooseCategory: 'What are you studying?',
     startTimerAction: 'Start',
     categoryLabel: 'Category',
@@ -528,6 +534,9 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     addTime: 'Agregar tiempo',
     stopTimer: 'Detener',
     timerRunning: 'Cronómetro en marcha',
+    pauseTimer: 'Pausar',
+    resumeTimer: 'Reanudar',
+    timerPaused: 'En pausa',
     chooseCategory: '¿Qué vas a estudiar?',
     startTimerAction: 'Empezar',
     categoryLabel: 'Categoría',
@@ -688,6 +697,9 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     addTime: 'Ajouter du temps',
     stopTimer: 'Arrêter',
     timerRunning: 'Chrono en cours',
+    pauseTimer: 'Pause',
+    resumeTimer: 'Reprendre',
+    timerPaused: 'En pause',
     chooseCategory: 'Qu’allez-vous étudier ?',
     startTimerAction: 'Commencer',
     categoryLabel: 'Catégorie',
@@ -848,6 +860,9 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     addTime: 'Zeit hinzufügen',
     stopTimer: 'Stoppen',
     timerRunning: 'Timer läuft',
+    pauseTimer: 'Pause',
+    resumeTimer: 'Fortsetzen',
+    timerPaused: 'Pausiert',
     chooseCategory: 'Was lernst du?',
     startTimerAction: 'Los geht’s',
     categoryLabel: 'Kategorie',
@@ -1009,6 +1024,9 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     addTime: 'Adicionar tempo',
     stopTimer: 'Parar',
     timerRunning: 'Cronômetro em andamento',
+    pauseTimer: 'Pausar',
+    resumeTimer: 'Retomar',
+    timerPaused: 'Pausado',
     chooseCategory: 'O que você vai estudar?',
     startTimerAction: 'Começar',
     categoryLabel: 'Categoria',
@@ -1170,6 +1188,9 @@ export const MESSAGES: Record<AppLanguage, Messages> = {
     addTime: 'Aggiungi tempo',
     stopTimer: 'Ferma',
     timerRunning: 'Cronometro in corso',
+    pauseTimer: 'Pausa',
+    resumeTimer: 'Riprendi',
+    timerPaused: 'In pausa',
     chooseCategory: 'Cosa studierai?',
     startTimerAction: 'Inizia',
     categoryLabel: 'Categoria',
