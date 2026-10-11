@@ -309,8 +309,7 @@ no se suma para no contarla dos veces; en pausa ese riesgo no existe, y si no se
 ## 2026-10-11 — Corregir al final de la ronda
 
 **Decisión:** con "Corregir cada respuesta" apagado, la ronda corrige en silencio y avanza; los resultados
-muestran, debajo de cada error, lo que se escribió. Si no se escribió nada (por ejemplo, con **No me
-acuerdo**), esa línea no aparece. La pronunciación automática no suena en este modo.
+muestran, debajo de cada error, lo que se escribió. Si no se escribió nada (por ejemplo, con **Omitir**), esa línea no aparece. La pronunciación automática no suena en este modo.
 **Por qué:** quien apaga la corrección quiere ir rápido, y sin ver lo que escribió no sabe en qué se equivocó.
 "Tu respuesta: (vacía)" no agrega información. Un audio que se dispara al avanzar se superpondría con el
 ítem siguiente; la pronunciación sigue disponible en los resultados.
