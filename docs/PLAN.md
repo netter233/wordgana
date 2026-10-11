@@ -166,7 +166,13 @@ abrir el repo, leer `CLAUDE.md` y continuar desde la primera etapa sin tildar.
       CLAUDE.md, ficha de la tienda y capturas.
 - [x] **Etapa 23 — Portugués de Brasil e italiano.** Interfaz, significados de todo el contenido, títulos de
       logros, idiomas declarados en iOS y fichas de la tienda en los dos idiomas nuevos, antes de la versión 1.0.
-- [ ] **Etapa 24 — Donaciones (versión 1.1).** Opción "Apoyá WordGana" en Configuración, sin desbloquear nada.
+- [ ] **Etapa 24 — Pausar el cronómetro (versión 1.1).** Botón para pausar y reanudar en el banner y en la
+      pantalla del cronómetro, por ejemplo para ir al baño sin cortar la sesión. `RunningTimer` suma `pausedAt`
+      (si está en pausa) y `pausedSeconds` (pausas anteriores); `timerElapsed` descuenta las dos, y el
+      cronómetro en pausa no avanza aunque se cierre la app. Al detenerlo se registra solo el tiempo activo.
+      Un cronómetro guardado con el formato viejo sigue cargando, sin pausas. Tests en `studyTime.test.ts`
+      y textos en los seis idiomas.
+- [ ] **Etapa 25 — Donaciones (versión 1.1).** Opción "Apoyá WordGana" en Configuración, sin desbloquear nada.
       En la app de iOS, propinas como compras consumibles de Apple (tres montos fijos, por ejemplo USD 0,99, 2,99
       y 4,99) con un plugin de Capacitor para StoreKit, anotado en `docs/DECISIONS.md`. En la PWA, un link
       externo (Cafecito o similar), porque fuera de la tienda de EE. UU. Apple rechaza links de pago en la app
