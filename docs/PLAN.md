@@ -172,7 +172,16 @@ abrir el repo, leer `CLAUDE.md` y continuar desde la primera etapa sin tildar.
       cronómetro en pausa no avanza aunque se cierre la app. Al detenerlo se registra solo el tiempo activo.
       Un cronómetro guardado con el formato viejo sigue cargando, sin pausas. Tests en `studyTime.test.ts`
       y textos en los seis idiomas.
-- [ ] **Etapa 25 — Donaciones (versión 1.1).** Opción "Apoyá WordGana" en Configuración, sin desbloquear nada.
+- [ ] **Etapa 25 — Corregir al final de la ronda (versión 1.1).** Opción "Corregir cada respuesta" ("Review
+      after each item") en Configuración, activada por defecto y guardada como `loadAutoSpeak`/`saveAutoSpeak`
+      en `storage.ts`. Activada, la ronda funciona como hasta ahora. Desactivada, **Comprobar** corrige en
+      silencio y pasa directo al siguiente ítem, sin el cartel de correcto/incorrecto ni el paso de
+      **Siguiente**; **No me acuerdo** cuenta como error y también avanza. El campo no se deshabilita entre
+      ítems, para que el teclado del iPhone no se cierre. Las estadísticas, los logros y el tiempo de práctica
+      se registran igual. En este modo no suena la pronunciación automática, para que no se pise con el
+      ítem siguiente. En los resultados, cada error muestra también lo que escribiste (en los dos modos), y
+      **Repasar los errores** sigue funcionando. Tests de la preferencia y textos en los seis idiomas.
+- [ ] **Etapa 26 — Donaciones (versión 1.1).** Opción "Apoyá WordGana" en Configuración, sin desbloquear nada.
       En la app de iOS, propinas como compras consumibles de Apple (tres montos fijos, por ejemplo USD 0,99, 2,99
       y 4,99) con un plugin de Capacitor para StoreKit, anotado en `docs/DECISIONS.md`. En la PWA, un link
       externo (Cafecito o similar), porque fuera de la tienda de EE. UU. Apple rechaza links de pago en la app
